@@ -55,13 +55,20 @@
   "pre-commit": "lint:staged",
   "babel": {
     "presets": [
-      ["es2015", { "modules": false }],
+      [
+        "es2015",
+        {
+          "modules": false
+        }
+      ],
       "react",
       "stage-0"
     ],
     "env": {
       "production": {
-        "only": ["app"],
+        "only": [
+          "app"
+        ],
         "plugins": [
           "transform-react-remove-prop-types",
           "transform-react-constant-elements",
@@ -91,15 +98,27 @@
       }
     },
     "rules": {
-      "arrow-body-style": [2, "as-needed"],
-      "comma-dangle": [2, "always-multiline"],
+      "arrow-body-style": [
+        2,
+        "as-needed"
+      ],
+      "comma-dangle": [
+        2,
+        "always-multiline"
+      ],
       "import/imports-first": 0,
       "import/newline-after-import": 0,
       "import/no-extraneous-dependencies": 0,
       "import/no-named-as-default": 0,
       "import/no-unresolved": 2,
       "import/prefer-default-export": 0,
-      "indent": [2, 2, { "SwitchCase": 1 }],
+      "indent": [
+        2,
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
       "jsx-a11y/aria-props": 2,
       "jsx-a11y/heading-has-content": 0,
       "jsx-a11y/href-no-hash": 2,
@@ -132,9 +151,14 @@
       "color-hex-case": "upper",
       "string-quotes": "single",
       "font-family-name-quotes": "always-where-recommended",
-      "selector-pseudo-class-no-unknown": [true, {
-        "ignorePseudoClasses": ["global"]
-      }],
+      "selector-pseudo-class-no-unknown": [
+        true,
+        {
+          "ignorePseudoClasses": [
+            "global"
+          ]
+        }
+      ],
       "indentation": 2
     }
   },
@@ -197,6 +221,7 @@
     "babel-preset-react": "6.11.1",
     "babel-preset-react-hmre": "1.1.1",
     "babel-preset-stage-0": "6.5.0",
+    "body-parser": "^1.15.2",
     "chai": "3.5.0",
     "chai-enzyme": "0.5.0",
     "cheerio": "0.20.0",
@@ -237,6 +262,7 @@
     "minimist": "1.2.0",
     "mocha": "2.5.3",
     "ngrok": "2.2.2",
+    "nightmare": "^2.6.0",
     "null-loader": "0.1.1",
     "offline-plugin": "3.4.2",
     "plop": "1.5.0",
@@ -252,6 +278,7 @@
     "style-loader": "0.13.1",
     "stylelint": "7.0.3",
     "stylelint-config-standard": "11.0.0",
+    "tinder": "^1.19.0",
     "url-loader": "0.5.7",
     "webpack": "2.1.0-beta.15",
     "webpack-dev-middleware": "1.6.1",
