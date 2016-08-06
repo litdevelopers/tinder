@@ -1,0 +1,9 @@
+/*
+ *
+ * Dashboard constants
+ *
+ */
+
+export const FETCH_TINDER_DATA = 'FETCH_TINDER_DATA';
+export const FETCH_TINDER_DATA_SUCCESS = 'FETCH_TINDER_DATA_SUCCESS';
+export const FETCH_TINDER_DATA_ERROR = 'FETCH_TINDER_DATA_ERROR';
