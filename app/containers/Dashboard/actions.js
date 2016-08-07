@@ -16,14 +16,17 @@ export function fetchTinderData() {
   };
 }
 
-export function fetchTinderDataSuccess(){
-  return{ 
-    type: FETCH_TINDER_DATA_SUCCESS
+export function fetchTinderDataSuccess(data) {
+  return {
+    type: FETCH_TINDER_DATA_SUCCESS,
+    user: data[0],
+    history: data[1],
+    matches: data[2],
   };
 }
 
-export function fetchTinderDataError(){
+export function fetchTinderDataError() {
   return {
-    type: FETCH_TINDER_DATA_ERROR
+    type: FETCH_TINDER_DATA_ERROR,
   };
 }

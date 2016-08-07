@@ -8,7 +8,6 @@ import {
 } from './constants';
 
 import {
-  fetchTinderData,
   fetchTinderDataSuccess,
   fetchTinderDataError,
 } from './actions';
@@ -26,11 +25,16 @@ export function* getTinderData() {
   const postURL = `${AUTH_URL}/tinder/data`;
 
   const data = yield call(postRequest, postURL, { token, id });
-  console.log(data);
+
+  if (data.status === 200) {
+    yield put(fetchTinderDataSuccess((data.data)));
+  } else {
+    yield put(fetchTinderDataError(data.data.errors));
+  }
 }
 
 export function* dashboardWatcher() {
-  while(yield take(FETCH_TINDER_DATA)) {
+  while (yield take(FETCH_TINDER_DATA)) {
     yield call(getTinderData);
   }
 }

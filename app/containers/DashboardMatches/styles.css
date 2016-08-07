@@ -1,0 +1,16 @@
+.dashboardMatchesContainer{
+  display:flex;
+  flex-basis: 100%;
+  flex-direction: row;
+}
+
+.dashboardMatchesCards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex:3;
+}
+
+.dashboardMatchesDetails {
+  flex:1;
+}

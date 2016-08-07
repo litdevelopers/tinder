@@ -12,7 +12,9 @@ import {
 } from './constants';
 
 const initialState = fromJS({
-  data: '',
+  user: '',
+  history: '',
+  matches: '',
   errors: '',
   isFetching: false,
 });
@@ -21,11 +23,14 @@ function dashboardReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_TINDER_DATA:
       return state
-        .set('isFetching', true)
+        .set('isFetching', true);
     case FETCH_TINDER_DATA_SUCCESS:
       return state
         .set('data', action.payload)
-        .set('isFetching', false);
+        .set('isFetching', false)
+        .set('user', action.user)
+        .set('history', action.history)
+        .set('matches', action.matches);
     case FETCH_TINDER_DATA_ERROR:
       return state
         .set('errors', action.payload)

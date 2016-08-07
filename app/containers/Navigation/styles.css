@@ -1,0 +1,23 @@
+.navigation{
+  display: flex;
+  flex:1;
+  min-height:50px;
+  border-bottom:1px solid #e2e2e2;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-content: center;
+}
+
+.navigation a{
+  text-decoration: none;
+  color:#eee;
+}
+
+.navigation_item_active {
+  color:black !important;
+}
+
+.navigation_item{
+  flex-basis: 10%;
+  margin-right:40px;
+}

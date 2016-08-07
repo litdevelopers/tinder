@@ -4,7 +4,18 @@
  * App container styles
  */
 
+body{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
 
 .container {
-  display: block;
+  height:100vh;
+  flex-direction: column;
+  display: flex;
+}
+
+.mainContainer{
+  display:flex;
+  flex:20;
+  margin:10px 20px;
 }

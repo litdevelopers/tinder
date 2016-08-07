@@ -1,0 +1,14 @@
+.card{
+  display: flex;
+}
+
+.matchCard{
+  display: flex;
+  min-width: 300px;
+  border-radius: 3px;
+  height:400px;
+  width: 400px;
+  margin:15px;  
+  background-size: cover;
+  background-repeat: no-repeat;
+}
