@@ -80,7 +80,7 @@ export default function createRoutes(store) {
       name: 'matches',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/DashboardMatches'),
+          System.import('containers/Matches'),
         ]);
 
         const renderRoute = loadModule(cb);

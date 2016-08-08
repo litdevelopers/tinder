@@ -10,7 +10,7 @@ import MatchCard from 'components/MatchCard';
 
 
 class DashboardMatches extends React.Component { // eslint-disable-line
-  mapMatches() { return this.props.matches.results.map((each) => <MatchCard key={each._id} data={each} />); }
+  mapMatches() { return this.props.matches.map((each) => <MatchCard key={each._id} data={each} />); }
 
   render() {
     const matches = (this.props && this.props.matches !== '') ? this.mapMatches() : null;

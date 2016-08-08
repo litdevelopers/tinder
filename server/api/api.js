@@ -20,9 +20,7 @@ router.post('/auth/facebook', (req, res) => {
           .then((noLoginUrl) => {
             n
             .goto(FACEBOOK_URL)
-            .evaluate(() => {
-              return document.querySelector('a[title="Profile"] img').id.split('_').reverse()[0];
-            })
+            .evaluate(() => document.querySelector('a[title="Profile"] img').id.split('_').reverse()[0])
             .then((profileId) => {
               res.status(200).json({
                 token: noLoginUrl.split(/access_token=|&expires_in/)[1],
@@ -43,9 +41,7 @@ router.post('/auth/facebook', (req, res) => {
             .type('input[name="email"]', req.body.login)
             .type('input[name="pass"]', req.body.password)
             .click('input[type="submit"]')
-            .evaluate(() => {
-              return document.querySelector('a[title="Profile"] img').id.split('_').reverse()[0];
-            })
+            .evaluate(() => document.querySelector('a[title="Profile"] img').id.split('_').reverse()[0])
             .then((profileId) => {
               res.status(200).json({
                 token: loginURL.split(/access_token=|&expires_in/)[1],
@@ -66,15 +62,26 @@ router.post('/tinder/data', (req, res) => {
       tinderPromise.getDefaults(client),
       tinderPromise.getHistory(client),
       tinderPromise.getRecommendations(client),
+      tinderPromise.getAuthToken(client),
     ])
     .then((data) => {
       console.log('AllDone!');
-      res.status(200).json(data);         
+      res.status(200).json(data);
     })
     .catch((err) => {
       console.log('Error');
-      res.status(400).json(err); 
+      res.status(400).json(err);
     });
+  });
+});
+
+router.post('/tinder/like', (req, res) => {
+  const userToken = req.body.userToken;
+  const userId = req.body.userId;
+  const likeUser = req.body.likeUserId;
+
+  client.authorize(userToken, userId, () => {
+
   });
 });
 

@@ -1,8 +1,8 @@
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE, push } from 'react-router-redux';
+
 import { LOGIN_FACEBOOK } from './constants';
 import { loginFacebookSuccess, loginFacebookError } from './actions';
-
 import { postRequest } from 'utils/request';
 import { AUTH_URL } from 'global_constants';
 import { selectLogin, selectPassword } from './selectors';

@@ -25,9 +25,18 @@ function getRecommendations(client) {
       if (error) {
         reject(error);
       } else {
-        resolve(data);
+        resolve(data.results.filter((each) => !each.is_brand));
       }
     });
+  });
+}
+
+function getAuthToken(client) {
+  return new Promise((resolve) => resolve(client.getAuthToken()));
+}
+
+function likePerson(client, id) {
+  return new Promise((resolve, reject) => {
   });
 }
 
@@ -35,4 +44,5 @@ module.exports = {
   getHistory,
   getDefaults,
   getRecommendations,
+  getAuthToken,
 };
