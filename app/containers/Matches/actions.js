@@ -8,7 +8,8 @@ import {
   DETAIL_PERSON,
   SUPERLIKE_PERSON,
   SUPERLIKE_PERSON_SUCCESS,
-  SUPERLIKE_PERSON_ERROR
+  SUPERLIKE_PERSON_ERROR,
+  DETAIL_IMAGE,
 } from './constants';
 
 export function superLikePerson(id) {
@@ -74,9 +75,17 @@ export function passPersonError(errors) {
   };
 }
 
-export function detailPerson(id) {
+export function detailPerson(id, image) {
   return {
     type: DETAIL_PERSON,
     id,
+    image,
+  };
+}
+
+export function detailImage(image) {
+  return {
+    type: DETAIL_IMAGE,
+    image,
   };
 }

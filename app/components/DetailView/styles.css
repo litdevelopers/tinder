@@ -1,0 +1,36 @@
+.detailViewContainer {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex:1;
+  margin:10px 0px;
+  max-width: 100%;
+}
+
+.detailViewContainer_mainPicture {
+  flex:6;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.detailViewContainer_subPictures {
+  flex: 2;
+  overflow-x: scroll;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  margin-top:5px;
+}
+
+.detailViewContainer_subPictures_picture{
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.detailViewContainer_content {
+  flex: 6;
+}

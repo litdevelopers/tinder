@@ -18,18 +18,18 @@
 
 .like {
   composes: button;
-  color: #7ac143;
-  border-color: #7ac143;
+  color: white;
+  border-color: white;
 }
 
 .superlike {
   composes: button;
-  color: #00bce4;
-  border-color: #00bce4;
+  color: white;
+  border-color: white;
 }
 
 .pass {
   composes: button;
-  color: #fd5c63;
-  border-color: #fd5c63;
+  color: white;
+  border-color: white;
 }

@@ -10,12 +10,15 @@ import {
   PASS_PERSON_SUCCESS,
   PASS_PERSON_ERROR,
   DETAIL_PERSON,
-  
+  DETAIL_IMAGE,
 } from './constants';
 
 
 const initialState = fromJS({
-  currentDetailView: '',
+  currentDetailView: {
+    id: '',
+    image: '',
+  },
   errors: '',
   isFetching: false,
   lastAction: '',
@@ -24,7 +27,12 @@ const initialState = fromJS({
 export default function matchesReducer(state = initialState, action) {
   switch (action.type) {
     case DETAIL_PERSON:
-      return state.set('currentDetailView', action.id);
+      return state
+        .setIn(['currentDetailView', 'id'], action.id)
+        .setIn(['currentDetailView', 'image'], action.image);
+    case DETAIL_IMAGE:
+      return state
+        .setIn(['currentDetailView', 'image'], action.image);
     case LIKE_PERSON:
     case PASS_PERSON:
     case SUPERLIKE_PERSON:

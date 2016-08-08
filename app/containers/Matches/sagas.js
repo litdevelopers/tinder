@@ -71,7 +71,7 @@ export function* matchesSaga() {
   ];
 
   yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
+  yield watcher.map((each) => cancel(each));
 }
 
 
