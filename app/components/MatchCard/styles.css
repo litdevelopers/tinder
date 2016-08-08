@@ -10,6 +10,14 @@
   box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.22);
 }
 
+
+
+.matchCard:hover .matchCardContainer_hide{
+    height: initial;
+    visibility: visible;
+    transition: 0.3s;
+}
+
 .matchCardContainer {
   display:flex;
   height:100%;
@@ -23,9 +31,10 @@
 
 
 .matchCardButtons {
-  flex-basis: 100%;
+  flex:1;
   flex-direction: column;
   align-content: flex-start;
+  justify-content: flex-end;
 }
 
 .matchCardContainer_name {
@@ -39,6 +48,9 @@
   color: #FFF;
   font-weight:300;
   font-size:12px;
+  overflow: hidden;
+  max-height: 160px;
+  text-overflow: ellipsis;
 }
 
 .matchCardContainer_details {
@@ -58,7 +70,7 @@
 }
 
 .matchCardContainer_distance {
-  font-size: 14px;
+  font-size: 12px;
   margin-left: 10px;
   font-weight: 400;
 }
@@ -68,4 +80,16 @@
   text-transform: uppercase;
   font-size: 10px;
   color:white;
+}
+
+.matchCardContainer_hide {
+  height: 0%;
+  visibility: hidden;
+}
+
+.matchCardContainer_wrapper {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }

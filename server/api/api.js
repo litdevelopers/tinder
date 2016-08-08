@@ -92,7 +92,8 @@ router.post('/tinder/like', (req, res) => {
 router.post('/tinder/pass', (req, res) => {
   const userToken = req.body.userToken;
   const userId = req.body.userId;
-  const passUser = req.body.likeUserId;
+  const passUser = req.body.passUserId;
+  console.log('Passing');
 
   client.authorize(userToken, userId, () => {
     tinderPromise.passPerson(client, passUser)
@@ -108,7 +109,7 @@ router.post('/tinder/pass', (req, res) => {
 router.post('/tinder/superlike', (req, res) => {
   const userToken = req.body.userToken;
   const userId = req.body.userId;
-  const likeUser = req.body.likeUserId;
+  const likeUser = req.body.superlikeUserId;
 
   client.authorize(userToken, userId, () => {
     tinderPromise.superLikePerson(client, likeUser)

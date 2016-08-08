@@ -14,7 +14,7 @@ import {
   likePersonError,
   passPersonError,
   passPersonSuccess,
-  superLikePerson,
+  superLikePersonSuccess,
   superLikePersonError,
 } from './actions';
 
@@ -31,24 +31,44 @@ export function* likePersonAction(action) {
   const postURL = `${AUTH_URL}/tinder/like`;
 
   const data = yield call(postRequest, postURL, { userToken, userId, likeUserId: action.id });
+  if (data.status === 200) {
+    yield put(likePersonSuccess({ id: action.id, action: 'like' }));
+  } else {
+    yield put(likePersonError(data.data));
+  }
 }
 
 export function* passPersonAction(action) {
+  const userToken = yield select(selectToken());
+  const userId = yield select(selectId());
+  const postURL = `${AUTH_URL}/tinder/pass`;
 
+  const data = yield call(postRequest, postURL, { userToken, userId, passUserId: action.id });
+  if (data.status === 200) {
+    yield put(passPersonSuccess({ id: action.id, action: 'pass' }));
+  } else {
+    yield put(passPersonError(data.data));
+  }
 }
 
 export function* superLikePersonAction(action) {
+  const userToken = yield select(selectToken());
+  const userId = yield select(selectId());
+  const postURL = `${AUTH_URL}/tinder/superlike`;
 
+  const data = yield call(postRequest, postURL, { userToken, userId, superlikeUserId: action.id });
+  if (data.status === 200) {
+    yield put(superLikePersonSuccess({ id: action.id, action: 'superlike' }));
+  } else {
+    yield put(superLikePersonError(data.data));
+  }
 }
-
-export function* matchesWatcher() {
-  yield takeLatest(LIKE_PERSON, likePersonAction);
-  yield takeLatest(PASS_PERSON, passPersonAction);
-  yield takeLatest(SUPERLIKE_PERSON, superLikePersonAction);
-}
-
 export function* matchesSaga() {
-  const watcher = yield fork(matchesWatcher);
+  const watcher = [
+    yield fork(takeLatest, LIKE_PERSON, likePersonAction),
+    yield fork(takeLatest, SUPERLIKE_PERSON, superLikePersonAction),
+    yield fork(takeLatest, PASS_PERSON, passPersonAction),
+  ];
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);

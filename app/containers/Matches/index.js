@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { detailPerson } from './actions';
+import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
 import { selectMatches } from './selectors';
 import styles from './styles.css';
 
@@ -11,7 +11,7 @@ import MatchCard from 'components/MatchCard';
 
 class DashboardMatches extends React.Component { // eslint-disable-line
   mapMatches() {
-    return this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} />);
+    return this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
   }
 
   render() {
@@ -40,6 +40,15 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onClickCard: (id) => dispatch(detailPerson(id)),
+    onClickButton: (id, type) => {
+      if (type === 'like') {
+        dispatch(likePerson(id));
+      } else if (type === 'pass') {
+        dispatch(passPerson(id));
+      } else if (type === 'superlike') {
+        dispatch(superLikePerson(id));
+      }
+    },
   };
 }
 

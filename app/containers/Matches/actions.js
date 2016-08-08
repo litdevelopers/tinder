@@ -6,25 +6,28 @@ import {
   PASS_PERSON_SUCCESS,
   PASS_PERSON_ERROR,
   DETAIL_PERSON,
+  SUPERLIKE_PERSON,
+  SUPERLIKE_PERSON_SUCCESS,
+  SUPERLIKE_PERSON_ERROR
 } from './constants';
 
 export function superLikePerson(id) {
   return {
-    type: LIKE_PERSON,
+    type: SUPERLIKE_PERSON,
     id,
   };
 }
 
-export function superLikePersonSuccess(id) {
+export function superLikePersonSuccess(data) {
   return {
-    type: LIKE_PERSON_SUCCESS,
-    id,
+    type: SUPERLIKE_PERSON_SUCCESS,
+    payload: data,
   };
 }
 
 export function superLikePersonError(errors) {
   return {
-    type: LIKE_PERSON_ERROR,
+    type: SUPERLIKE_PERSON_ERROR,
     errors,
   };
 }
@@ -36,10 +39,10 @@ export function likePerson(id) {
   };
 }
 
-export function likePersonSuccess(id) {
+export function likePersonSuccess(data) {
   return {
     type: LIKE_PERSON_SUCCESS,
-    id,
+    payload: data,
   };
 }
 
@@ -57,10 +60,10 @@ export function passPerson(id) {
   };
 }
 
-export function passPersonSuccess(id) {
+export function passPersonSuccess(data) {
   return {
     type: PASS_PERSON_SUCCESS,
-    id,
+    payload: data,
   };
 }
 
