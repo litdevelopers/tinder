@@ -1,3 +1,15 @@
+.matchCard{
+  display: flex;
+  border-radius: 3px;
+  height:400px;
+  width: 30%;
+  margin:10px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.22);
+}
+
 .matchCardContainer {
   display:flex;
   height:100%;
@@ -7,6 +19,11 @@
   padding:15px;
   justify-content: flex-end;
   flex-direction: column;
+}
+
+
+.matchCardButtons {
+  flex-basis: 50%;
 }
 
 .matchCardContainer_name {
@@ -26,6 +43,7 @@
   flex-basis: 5%;
   display: flex;
   flex-direction: column;
+  margin-bottom:10px;
   
 }
 

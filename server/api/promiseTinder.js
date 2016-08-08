@@ -37,12 +37,48 @@ function getAuthToken(client) {
 
 function likePerson(client, id) {
   return new Promise((resolve, reject) => {
+    client.like(id, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
   });
 }
+
+function passPerson(client, id) {
+  return new Promise((resolve, reject) => {
+    client.pass(id, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
+function superLikePerson(client, id) {
+  return new Promise((resolve, reject) => {
+    client.superLike(id, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
+
 
 module.exports = {
   getHistory,
   getDefaults,
   getRecommendations,
   getAuthToken,
+  likePerson,
+  passPerson,
+  superLikePerson,
 };

@@ -65,11 +65,9 @@ router.post('/tinder/data', (req, res) => {
       tinderPromise.getAuthToken(client),
     ])
     .then((data) => {
-      console.log('AllDone!');
       res.status(200).json(data);
     })
     .catch((err) => {
-      console.log('Error');
       res.status(400).json(err);
     });
   });
@@ -81,7 +79,45 @@ router.post('/tinder/like', (req, res) => {
   const likeUser = req.body.likeUserId;
 
   client.authorize(userToken, userId, () => {
+    tinderPromise.likePerson(client, likeUser)
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+  });
+});
 
+router.post('/tinder/pass', (req, res) => {
+  const userToken = req.body.userToken;
+  const userId = req.body.userId;
+  const passUser = req.body.likeUserId;
+
+  client.authorize(userToken, userId, () => {
+    tinderPromise.passPerson(client, passUser)
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+  });
+});
+
+router.post('/tinder/superlike', (req, res) => {
+  const userToken = req.body.userToken;
+  const userId = req.body.userId;
+  const likeUser = req.body.likeUserId;
+
+  client.authorize(userToken, userId, () => {
+    tinderPromise.superLikePerson(client, likeUser)
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
   });
 });
 

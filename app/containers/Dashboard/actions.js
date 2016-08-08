@@ -22,6 +22,7 @@ export function fetchTinderDataSuccess(data) {
     user: data[0],
     history: data[1],
     matches: data[2],
+    xAuthToken: data[3],
   };
 }
 

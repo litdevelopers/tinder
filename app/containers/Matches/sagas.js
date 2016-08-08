@@ -1,10 +1,12 @@
-import { take, takeEvery, call, put, select, fork, cancel } from 'redux-saga/effects';
+import { takeLatest } from 'redux-saga';
+import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import {
   LIKE_PERSON,
   PASS_PERSON,
+  SUPERLIKE_PERSON,
 } from './constants';
 
 import {
@@ -12,6 +14,8 @@ import {
   likePersonError,
   passPersonError,
   passPersonSuccess,
+  superLikePerson,
+  superLikePersonError,
 } from './actions';
 
 import {
@@ -27,16 +31,20 @@ export function* likePersonAction(action) {
   const postURL = `${AUTH_URL}/tinder/like`;
 
   const data = yield call(postRequest, postURL, { userToken, userId, likeUserId: action.id });
-
 }
 
 export function* passPersonAction(action) {
 
 }
 
+export function* superLikePersonAction(action) {
+
+}
+
 export function* matchesWatcher() {
-  yield takeEvery(LIKE_PERSON, likePersonAction);
-  yield takeEvery(PASS_PERSON, passPersonAction);
+  yield takeLatest(LIKE_PERSON, likePersonAction);
+  yield takeLatest(PASS_PERSON, passPersonAction);
+  yield takeLatest(SUPERLIKE_PERSON, superLikePersonAction);
 }
 
 export function* matchesSaga() {
@@ -45,3 +53,9 @@ export function* matchesSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
 }
+
+
+// All sagas to be loaded
+export default [
+  matchesSaga,
+];

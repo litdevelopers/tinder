@@ -17,13 +17,12 @@ import { selectToken, selectId } from 'containers/Auth/selectors';
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     // check if token and userid exists or not
-    if (!this.props.token || !this.props.id){
+    if (!this.props.token || !this.props.id) {
       this.props.routeTo('/login');
     } else {
       this.props.fetchInitialData();
     }
   }
-
 
   render() {
     return (

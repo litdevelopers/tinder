@@ -6,9 +6,28 @@ import {
   PASS_PERSON_SUCCESS,
   PASS_PERSON_ERROR,
   DETAIL_PERSON,
-
 } from './constants';
 
+export function superLikePerson(id) {
+  return {
+    type: LIKE_PERSON,
+    id,
+  };
+}
+
+export function superLikePersonSuccess(id) {
+  return {
+    type: LIKE_PERSON_SUCCESS,
+    id,
+  };
+}
+
+export function superLikePersonError(errors) {
+  return {
+    type: LIKE_PERSON_ERROR,
+    errors,
+  };
+}
 
 export function likePerson(id) {
   return {
