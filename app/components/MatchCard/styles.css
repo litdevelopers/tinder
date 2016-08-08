@@ -23,7 +23,9 @@
 
 
 .matchCardButtons {
-  flex-basis: 50%;
+  flex-basis: 100%;
+  flex-direction: column;
+  align-content: flex-start;
 }
 
 .matchCardContainer_name {

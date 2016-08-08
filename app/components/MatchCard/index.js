@@ -30,7 +30,7 @@ class MatchCard extends React.Component {
       >
         <div className={styles.matchCardContainer}>
           <div className={styles.matchCardButtons}>
-            <Button type="heart" />
+            <Button>Like</Button>
           </div>
           {ageText}
           <h2 className={styles.matchCardContainer_name}>
