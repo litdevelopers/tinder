@@ -1,13 +1,33 @@
 import React, { PropTypes } from 'react';
+import { DragSource } from 'react-dnd';
+
 import { getAge } from './helpers';
 import styles from './styles.css';
 import Text from 'components/Text';
 import Button from 'components/Button';
 
-class MatchCard extends React.Component {
+const matchCardSource = {
+  beginDrag(props) {
+    return {
+      data: props.data,
+      onClickButton: props.onClickButton,
+      onClick: props.onClick,
+      opacity: 1,
+    };
+  },
+};
 
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging(),
+  };
+}
+
+
+class MatchCard extends React.Component {
   render() {
-    const { data } = this.props;
+    const { data, opacity, connectDragSource, isDragging } = this.props;
     const bioText = (data.bio.trim()) ?
       <p className={styles.matchCardContainer_bio}>{data.bio}</p> :
     null;
@@ -26,12 +46,13 @@ class MatchCard extends React.Component {
           {schoolText}
         </div>
       </div> : null;
-
-    return (
+    
+    return connectDragSource(
       <div
         className={styles.matchCard}
         style={{
           backgroundImage: `url(${data.photos[0].url})`,
+          opacity: isDragging ? 0 : opacity,
         }}
         id={`matchCard_${data._id}`}
       >
@@ -63,8 +84,11 @@ MatchCard.propTypes = {
   onClickButton: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
+  isDragging: PropTypes.bool.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  opacity: PropTypes.number,
 };
 
 
-export default MatchCard;
+export default DragSource('matchCard', matchCardSource, collect)(MatchCard) ;
 

@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
 import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
@@ -27,7 +29,6 @@ class DashboardMatches extends React.Component { // eslint-disable-line
           <DetailView
             data={this.props.matchDetail}
             imageData={this.props.matchDetailImages}
-            currentImage={this.props.matchDetailCurrentImage}
             onClickButton={this.props.onClickButton}
           />
         </div>
@@ -69,4 +70,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardMatches);
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(DashboardMatches));

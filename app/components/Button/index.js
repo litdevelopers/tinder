@@ -21,7 +21,7 @@ Button.propTypes = {
     PropTypes.node,
   ]),
   type: PropTypes.string.isRequired,
-  id: PropTypes.sring,
+  id: PropTypes.string,
   onClick: PropTypes.func.isRequired,
 };
 

@@ -7,7 +7,9 @@
   max-width: 100%;
 }
 
-
+.detailViewContainer_mainPicture {
+  min-height: 300px;
+}
 
 .detailViewContainer_content {
   flex: 6;
