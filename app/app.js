@@ -10,6 +10,7 @@ import 'babel-polyfill';
 // Load the manifest.json file and the .htaccess file
 import '!file?name=[name].[ext]!./manifest.json';
 import 'file?name=[name].[ext]!./.htaccess';
+
 /* eslint-enable import/no-unresolved */
 
 // Import all the third party stuff
@@ -27,6 +28,7 @@ import { translationMessages } from './i18n';
 
 // Import the CSS reset, which HtmlWebpackPlugin transfers to the build folder
 import 'sanitize.css/sanitize.css';
+import 'react-image-gallery/build/image-gallery.css';
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router

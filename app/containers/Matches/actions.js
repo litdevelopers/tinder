@@ -82,10 +82,3 @@ export function detailPerson(id, image) {
     image,
   };
 }
-
-export function detailImage(image) {
-  return {
-    type: DETAIL_IMAGE,
-    image,
-  };
-}

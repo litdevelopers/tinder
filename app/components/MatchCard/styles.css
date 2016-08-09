@@ -1,8 +1,9 @@
 .matchCard{
   display: flex;
   border-radius: 3px;
-  height:400px;
+  min-height: 350px;
   width: 30%;
+  max-width: 300px;
   margin:10px;
   background-size: cover;
   background-position: center;

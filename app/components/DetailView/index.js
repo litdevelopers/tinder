@@ -1,4 +1,7 @@
 import React, { PropTypes } from 'react';
+import ImageGallery from 'react-image-gallery';
+
+
 import styles from './styles.css';
 import Text from 'components/Text';
 import Button from 'components/Button';
@@ -6,36 +9,26 @@ import Button from 'components/Button';
 class DetailView extends React.Component {
   shouldComponentUpdate(nextProps) {
     if (!this.props.data || !this.props.currentImage) return true;
-    return this.props.currentImage !== nextProps.currentImage;
-    return this.props.data._id !== nextProps.data._id; // eslint-disable-line react/prop-types, no-underscore-dangle
+    if (this.props.currentImage !== nextProps.currentImage || this.props.data._id !== nextProps.data._id) return true;
+    return false;
   }
 
 
   render() {
-    if (!this.props.data) return null;
+    if (!this.props.data || !this.props.imageData) return null;
     return (
       <div className={styles.detailViewContainer} >
-        <div
-          className={styles.detailViewContainer_mainPicture}
-          style={{
-            backgroundImage: `url(${this.props.currentImage})`,
-          }}
-        />
-
-        <div className={styles.detailViewContainer_subPictures}>
-          {this.props.imageData.map((each) => {
-            return (
-              <div
-                key={each}
-                onClick={() => {
-                  this.props.onClickImage(each);
-                }}
-                className={styles.detailViewContainer_subPictures_picture}
-                style={{ backgroundImage: `url(${each})` }}
-              />
-            );
-          })}
+        <div className={styles.detailViewContainer_mainPicture}>
+          <ImageGallery
+            defaultImage={this.props.data.photos[0].url}
+            items={this.props.imageData}
+            showBullets
+            showThumbnails={false}
+            showNav={false}
+            renderItem={(item) => <div style={{ backgroundImage: `url(${item.original})`, height: 400, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />}
+          />
         </div>
+
         <div className={styles.detailViewContainer_content}>
           <p>Hello</p>
         </div>
@@ -44,11 +37,28 @@ class DetailView extends React.Component {
   }
 }
 
-DetailView.PropTypes = {
+DetailView.propTypes = {
+  imageData: PropTypes.object.isRequiredOrNull,
   data: PropTypes.object.isRequired,
 };
 
 
 export default DetailView;
+          // style={{
+          //   backgroundImage: `url(${this.props.currentImage})`,
+          // }}
 
 // <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
+
+
+// <div className={styles.detailViewContainer_subPictures}>
+        //   {this.props.imageData.map((each) => {
+        //     return (
+        //       <div
+        //         key={each}
+        //         className={styles.detailViewContainer_subPictures_picture}
+        //         style={{ backgroundImage: `url(${each})` }}
+        //       />
+        //     );
+        //   })}
+        // </div>

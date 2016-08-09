@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { detailPerson, superLikePerson, likePerson, passPerson, detailImage } from './actions';
-import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks, selectCurrentImage } from './selectors';
+import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
+import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
 import styles from './styles.css';
 
 import DetailView from 'components/DetailView';
@@ -29,7 +29,6 @@ class DashboardMatches extends React.Component { // eslint-disable-line
             imageData={this.props.matchDetailImages}
             currentImage={this.props.matchDetailCurrentImage}
             onClickButton={this.props.onClickButton}
-            onClickImage={this.props.onClickImage}
           />
         </div>
       </div>
@@ -51,7 +50,6 @@ const mapStateToProps = createStructuredSelector({
   matches: selectMatches(),
   matchDetail: selectCurrentMatch(),
   matchDetailImages: selectCurrentMatchLinks(),
-  matchDetailCurrentImage: selectCurrentImage(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -59,7 +57,6 @@ function mapDispatchToProps(dispatch) {
     onClickCard: (id, image) => {
       dispatch(detailPerson(id, image));
     },
-    onClickImage: (image) => dispatch(detailImage(image)),
     onClickButton: (id, type) => {
       if (type === 'like') {
         dispatch(likePerson(id));

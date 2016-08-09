@@ -15,7 +15,7 @@ class Button extends React.Component {
   }
 }
 
-Button.PropTypes = {
+Button.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.node,

@@ -23,26 +23,14 @@ const selectCurrentMatchLinks = () => createSelector(
     }
     const tinderImages = currentMatchState.photos.map((each) => each.url);
     const instagramImages = (currentMatchState.instagram && currentMatchState.instagram.photos) ? currentMatchState.instagram.photos.map((each) => each.image) : [];
-    return [...tinderImages, ...instagramImages];
+    const allImages = [...tinderImages, ...instagramImages];
+    return allImages.map((each) => { return { original: each }; });
   }
 );
-
-const selectCurrentImage = () => createSelector(
-  selectMatchesDomain(),
-  selectCurrentMatch(),
-  (matchesState, currentMatchState) => {
-    if (!currentMatchState) {
-      return undefined;
-    }
-    return matchesState.getIn(['currentDetailView', 'image']);
-  }
-);
-
 
 export {
   selectMatchesDomain,
   selectMatches,
   selectCurrentMatch,
   selectCurrentMatchLinks,
-  selectCurrentImage,
 };

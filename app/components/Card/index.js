@@ -14,7 +14,7 @@ function Card(props) {
   );
 }
 
-Card.PropTypes = {
+Card.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   margin: PropTypes.number,

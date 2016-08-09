@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import styles from './styles.css';
 
 class Text extends React.Component {
@@ -6,5 +6,10 @@ class Text extends React.Component {
     return (<span {...this.props} className={styles[this.props.type]}>{this.props.children}</span>);
   }
 }
+
+Text.propTypes = {
+  type: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export default Text;

@@ -59,7 +59,7 @@ class MatchCard extends React.Component {
   }
 }
 
-MatchCard.PropTypes = {
+MatchCard.propTypes = {
   onClickButton: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,

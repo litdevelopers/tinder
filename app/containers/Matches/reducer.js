@@ -10,7 +10,6 @@ import {
   PASS_PERSON_SUCCESS,
   PASS_PERSON_ERROR,
   DETAIL_PERSON,
-  DETAIL_IMAGE,
 } from './constants';
 
 
@@ -29,9 +28,6 @@ export default function matchesReducer(state = initialState, action) {
     case DETAIL_PERSON:
       return state
         .setIn(['currentDetailView', 'id'], action.id)
-        .setIn(['currentDetailView', 'image'], action.image);
-    case DETAIL_IMAGE:
-      return state
         .setIn(['currentDetailView', 'image'], action.image);
     case LIKE_PERSON:
     case PASS_PERSON:
