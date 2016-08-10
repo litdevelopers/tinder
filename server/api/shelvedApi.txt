@@ -1,0 +1,103 @@
+
+/*
+NEW AUTH FLOW BECAUSE I BROKE THE OLD ONE:
+1) Go to Facebook.com.
+2) If I can find an element for my profile picture, I know im in the right place.
+2 - 1) If I can, I will go to the FACEBOOK_AUTH_URL
+2 - 2) Done
+3) If I cannot find my profile picture, I will go to facebook.com and login
+3 - 1) I will then retrieve my profile id
+3 - 2) I will THEN go on the website for oauth
+
+
+
+*/
+const FACEBOOK_AUTH_URL = 'https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token';
+const NEW_FACEBOOK = 'https://www.facebook.com/v2.6/dialog/oauth?redirect_uri=fb464891386855067%3A%2F%2Fauthorize%2F&state=%7B%22challenge%22%3A%22q1WMwhvSfbWHvd8xz5PT6lk6eoA%253D%22%2C%220_auth_logger_id%22%3A%2254783C22-558A-4E54-A1EE-BB9E357CC11F%22%2C%22com.facebook.sdk_client_state%22%3Atrue%2C%223_method%22%3A%22sfvc_auth%22%7D&scope=user_birthday%2Cuser_photos%2Cuser_education_history%2Cemail%2Cuser_relationship_details%2Cuser_friends%2Cuser_work_history%2Cuser_likes&response_type=token%2Csigned_request&default_audience=friends&return_scopes=true&auth_type=rerequest&client_id=464891386855067&ret=login&sdk=ios&logger_id=54783C22-558A-4E54-A1EE-BB9E357CC11F#_=_';
+const FACEBOOK_URL = 'https://facebook.com';
+
+
+const Phantasma = require('phantasma'); // eslint-disable-line global-require
+  const ph = new Phantasma({ webSecurity: false });
+  ph
+    .open(NEW_FACEBOOK)
+    .type('input[name="email"]', req.body.login)
+    .type('input[name="pass"]', req.body.password)
+    .click('button[id="loginbutton"]')
+    .wait()
+    .click('button[name="__CONFIRM__"]')
+    .finally(() => {
+      console.log('Done');
+    })
+    .on('onResourceReceived', (data) => {
+      console.log(data);
+    });
+
+  // const n = nightmare({ show: true, typeInterval: 20, webPreferences: { partition: 'noflexzone' } });
+  // n
+  // .on('onResourceReceived', (event) => {
+  //   console.log(event);
+  // })
+  // .goto(NEW_FACEBOOK)
+  // .type('input[name="email"]', req.body.login)
+  // .type('input[name="pass"]', req.body.password)
+  // .click('button[id="loginbutton"]')
+  // .wait('button[name="__CONFIRM__"]')
+  // .click('button[name="__CONFIRM__"]')
+  // .then((profileId) => {
+  //   // n
+  //   //   .goto(FACEBOOK_AUTH_URL)
+  //   //   .click('button[tabindex="0"]')
+  //   //   .wait(200)
+  //   //   .url()
+  //   //   .then((profileURL) => {
+  //   //     res.status(200).json({
+  //   //       token: profileURL.split(/access_token=|&expires_in/)[1],
+  //   //       id: profileId,
+  //   //     });
+  //   //   });
+  // });
+
+  // n
+  //   .goto(FACEBOOK_AUTH_URL)
+  //   .exists('form[id="login_form"]')
+  //   .then((formExists) => {
+  //     if (!formExists) {
+  //       n
+  //         .url()
+  //         .then((noLoginUrl) => {
+  //           n
+  //           .goto(FACEBOOK_URL)
+  //           .evaluate(() => document.querySelector('a[title="Profile"] img').id.split('_').reverse()[0])
+  //           .end()
+  //           .then((profileId) => {
+  //             res.status(200).json({
+  //               token: noLoginUrl.split(/access_token=|&expires_in/)[1],
+  //               id: profileId,
+  //             });
+  //           });
+  //         });
+  //     } else {
+  //       n
+  //         .type('input[name="email"]', req.body.login)
+  //         .type('input[name="pass"]', req.body.password)
+  //         .click('button[id="loginbutton"]')
+  //         .wait(200)
+  //         .url()
+  //         .then((loginURL) => {
+  //           n
+  //           .goto(FACEBOOK_URL)
+  //           .type('input[name="email"]', req.body.login)
+  //           .type('input[name="pass"]', req.body.password)
+  //           .click('input[type="submit"]')
+  //           .evaluate(() => document.querySelector('a[title="Profile"] img').id.split('_').reverse()[0])
+  //           .end()
+  //           .then((profileId) => {
+  //             res.status(200).json({
+  //               token: loginURL.split(/access_token=|&expires_in/)[1],
+  //               id: profileId,
+  //             });
+  //           });
+  //         });
+  //     }
+  //   });
