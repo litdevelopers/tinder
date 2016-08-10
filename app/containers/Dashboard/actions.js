@@ -8,7 +8,30 @@ import {
   FETCH_TINDER_DATA,
   FETCH_TINDER_DATA_ERROR,
   FETCH_TINDER_DATA_SUCCESS,
+  FETCH_MATCHES,
+  FETCH_MATCHES_SUCCESS,
+  FETCH_MATCHES_ERROR,
 } from './constants';
+
+export function fetchMatches() {
+  return {
+    type: FETCH_MATCHES,
+  };
+}
+
+export function fetchMatchesSuccess(data) {
+  return {
+    type: FETCH_MATCHES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function fetchMatchesError(errors) {
+  return {
+    type: FETCH_MATCHES_ERROR,
+    payload: errors,
+  };
+}
 
 export function fetchTinderData() {
   return {

@@ -6,15 +6,35 @@
 
 .dashboardMatchesCards {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   flex: 10;
-  overflow-y: scroll;
+  flex-direction: column;
 }
 
 
 .dashboardMatchesDetails {
   border-left:1px solid #eee;
   display: flex;
+  overflow-y: scroll;
+  flex-direction: column;
   flex: 4;
+}
+
+
+.dashboardMatchesCardsContainer{
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex: 15;
+  margin-left: 15px;
+}
+
+
+.dashboardMatchesNavigation {
+  background-color: white;
+  border-bottom: 1px solid #eee;
+  flex:1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }

@@ -12,3 +12,4 @@ export const PASS_PERSON_ERROR = 'PASS_PERSON_ERROR';
 
 export const DETAIL_PERSON = 'DETAIL_PERSON';
 export const DETAIL_IMAGE = 'DETAIL_IMAGE';
+

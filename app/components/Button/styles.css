@@ -33,3 +33,7 @@
   color: white;
   border-color: white;
 }
+
+.fetchMatches {
+  flex-basis: 10%;
+}

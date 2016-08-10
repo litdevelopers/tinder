@@ -4,12 +4,14 @@ import { createStructuredSelector } from 'reselect';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
+import { fetchMatches } from 'containers/Dashboard/actions';
 import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
 import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
 import styles from './styles.css';
 
 import DetailView from 'components/DetailView';
 import MatchCard from 'components/MatchCard';
+import Button from 'components/Button';
 
 
 class DashboardMatches extends React.Component { // eslint-disable-line
@@ -22,7 +24,19 @@ class DashboardMatches extends React.Component { // eslint-disable-line
     return (
       <div className={styles.dashboardMatchesContainer}>
         <div className={styles.dashboardMatchesCards}>
+          <div className={styles.dashboardMatchesNavigation}>
+            <Button
+              type="fetchMatches"
+              onClick={() => {
+                this.props.fetchMatches();
+              }}
+            >
+              Fetch
+            </Button>
+          </div>
+          <div className={styles.dashboardMatchesCardsContainer}>
             {matches}
+          </div>
         </div>
 
         <div className={styles.dashboardMatchesDetails}>
@@ -37,14 +51,16 @@ class DashboardMatches extends React.Component { // eslint-disable-line
   }
 }
 
-DashboardMatches.PropTypes = {
-  matches: PropTypes.object.isRequired,
+DashboardMatches.propTypes = {
+  matches: PropTypes.array.isRequired,
   matchDetail: PropTypes.oneOfType([
-    PropTypes.obj,
+    PropTypes.object,
     PropTypes.node,
   ]),
+  matchDetailImages: PropTypes.array,
   onClickCard: PropTypes.func.isRequired,
   onClickButton: PropTypes.func.isRequired,
+  fetchMatches: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -55,17 +71,14 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    fetchMatches: () => dispatch(fetchMatches()),
     onClickCard: (id, image) => {
       dispatch(detailPerson(id, image));
     },
     onClickButton: (id, type) => {
-      if (type === 'like') {
-        dispatch(likePerson(id));
-      } else if (type === 'pass') {
-        dispatch(passPerson(id));
-      } else if (type === 'superlike') {
-        dispatch(superLikePerson(id));
-      }
+      if (type === 'like') dispatch(likePerson(id));
+      if (type === 'pass') dispatch(passPerson(id));
+      if (type === 'superlike') dispatch(superLikePerson(id));
     },
   };
 }

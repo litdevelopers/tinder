@@ -1,18 +1,16 @@
 import React, { PropTypes } from 'react';
 import styles from './styles.css';
 
-class Button extends React.Component {
-  render() {
-    return (
-      <button
-        className={styles[this.props.type]}
-        onClick={() => {
-          this.props.onClick(this.props.id, this.props.type);
-        }}
-      >
-        {this.props.children}
-      </button>);
-  }
+function Button(props) {
+  return (
+    <button
+      className={styles[props.type]}
+      onClick={() => {
+        props.onClick(props.id, props.type);
+      }}
+    >
+      {props.children}
+    </button>);
 }
 
 Button.propTypes = {

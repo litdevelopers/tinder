@@ -20,6 +20,7 @@ const initialState = fromJS({
   },
   errors: '',
   isFetching: false,
+  newMatches: '',
   lastAction: '',
 });
 

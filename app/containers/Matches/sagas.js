@@ -23,6 +23,9 @@ import {
   selectId,
 } from 'containers/Auth/selectors';
 
+import { FETCH_MATCHES } from 'containers/Dashboard/constants';
+import { fetchMatchesAction } from 'containers/Dashboard/sagas';
+
 import { postRequest } from 'utils/request';
 
 export function* likePersonAction(action) {
@@ -63,11 +66,14 @@ export function* superLikePersonAction(action) {
     yield put(superLikePersonError(data.data));
   }
 }
+
+
 export function* matchesSaga() {
   const watcher = [
     yield fork(takeLatest, LIKE_PERSON, likePersonAction),
     yield fork(takeLatest, SUPERLIKE_PERSON, superLikePersonAction),
     yield fork(takeLatest, PASS_PERSON, passPersonAction),
+    yield fork(takeLatest, FETCH_MATCHES, fetchMatchesAction),
   ];
 
   yield take(LOCATION_CHANGE);

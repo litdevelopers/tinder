@@ -1,11 +1,21 @@
 import React, { PropTypes } from 'react';
 import ImageGallery from 'react-image-gallery';
+import tinderCardFemale from 'static/tinder_female.png';
+import tinderCardMale from 'static/tinder_male.png';
 
 import { getAge } from 'components/MatchCard/helpers';
+import { getFacebookUrl, getFacebookPicture } from 'utils/facebook';
 
 import styles from './styles.css';
 import Text from 'components/Text';
 import Button from 'components/Button';
+
+const placeholderMapping = {
+  FEMALE: tinderCardFemale,
+  MALE: tinderCardMale,
+};
+
+const GENDER = 'FEMALE';
 
 class DetailView extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -19,7 +29,16 @@ class DetailView extends React.Component {
   }
 
   render() {
-    if (!this.props.data || !this.props.imageData) return null;
+    if (!this.props.data || !this.props.imageData) {
+      return (
+        <div
+          className={styles.detailView_placeholder}
+        >
+          <img src={placeholderMapping[GENDER]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
+          <Text type="placeholder">Pick a match to find out more!</Text>
+        </div>);
+    }
+    
     const age = getAge(this.props.data.birth_date);
 
     return (
@@ -52,10 +71,52 @@ class DetailView extends React.Component {
           </Text>
           <Text
             type="bio"
-            style={{ color: 'black', display: 'block', fontSize: 12 }}
           >
             {this.props.data.bio}
           </Text>
+          {this.props.data.common_connections.length > 0 ?
+            <div>
+              <Text type="profileHeader">Common Connections</Text>
+              <div className={styles.commonConnectionsContainer}>
+            {this.props.data.common_connections.map((each) => {
+              return (
+                <div className={styles.connectionItem}>
+                  <a
+                    href={getFacebookUrl(each.id)}
+                    target="_blank"
+                  >
+                    <div
+                      key={each.id}
+                      style={{ backgroundImage: `url(${getFacebookPicture(each.id)})` }}
+                      className={styles.connectionImage}
+                    />
+                  </a>
+                  <Text type="connectionName">{each.name}</Text>
+                </div>
+              );
+            })}
+              </div>
+            </div> : null}
+          {this.props.data.common_interests.length > 0 ?
+            <div>
+              <Text type="profileHeader">Common Interests</Text>
+              <div className={styles.commonInterestsContainer}>
+                {this.props.data.common_interests.map((each) => {
+                  return (
+                    <a
+                      key={each.id}
+                      href={getFacebookUrl(each.id)}
+                      target="_blank"
+                      style={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <Text type="commonInterest">{each.name}</Text>
+                    </a>
+                  );
+                })}
+              </div>
+            </div> : null}
         </div>
       </div>
     );

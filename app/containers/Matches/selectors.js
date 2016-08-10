@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { selectDashboardDomain } from 'containers/Dashboard/selectors';
+import { mergeArray } from 'utils/operations';
 
 const selectMatchesDomain = () => state => state.get('matches');
 
@@ -23,8 +24,7 @@ const selectCurrentMatchLinks = () => createSelector(
     }
     const tinderImages = currentMatchState.photos.map((each) => each.url);
     const instagramImages = (currentMatchState.instagram && currentMatchState.instagram.photos) ? currentMatchState.instagram.photos.map((each) => each.image) : [];
-    const allImages = [...tinderImages, ...instagramImages];
-    return allImages.map((each) => { return { original: each }; });
+    return mergeArray(tinderImages, instagramImages, 20, (each) => { return { original: each.url }; });
   }
 );
 

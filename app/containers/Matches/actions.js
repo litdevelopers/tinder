@@ -9,7 +9,6 @@ import {
   SUPERLIKE_PERSON,
   SUPERLIKE_PERSON_SUCCESS,
   SUPERLIKE_PERSON_ERROR,
-  DETAIL_IMAGE,
 } from './constants';
 
 export function superLikePerson(id) {
