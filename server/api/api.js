@@ -1,14 +1,39 @@
 const router = require('express').Router(); // eslint-disable-line new-cap
 const tinder = require('tinder');
-const client = new tinder.TinderClient();
 const tinderPromise = require('./promiseTinder.js');
+const nightmare = require('nightmare');
+const getFBToken = require('./facebookAuth.js').getFBToken;
+
+const FACEBOOK_URL = 'https://www.facebook.com/v2.6/dialog/oauth?redirect_uri=fb464891386855067%3A%2F%2Fauthorize%2F&state=%7B%22challenge%22%3A%22q1WMwhvSfbWHvd8xz5PT6lk6eoA%253D%22%2C%220_auth_logger_id%22%3A%2254783C22-558A-4E54-A1EE-BB9E357CC11F%22%2C%22com.facebook.sdk_client_state%22%3Atrue%2C%223_method%22%3A%22sfvc_auth%22%7D&scope=user_birthday%2Cuser_photos%2Cuser_education_history%2Cemail%2Cuser_relationship_details%2Cuser_friends%2Cuser_work_history%2Cuser_likes&response_type=token%2Csigned_request&default_audience=friends&return_scopes=true&auth_type=rerequest&client_id=464891386855067&ret=login&sdk=ios&logger_id=54783C22-558A-4E54-A1EE-BB9E357CC11F#_= ';
 
 router.post('/auth/facebook', (req, res) => {
-  const id = req.body.login;
-  const token = req.body.password;
-  client.authorize(token, id, () => {
-    const authToken = client.getAuthToken();
-    res.status(200).json(authToken);
+  const n = nightmare({ typeInterval: 20, webPreferences: { partition: 'noflexzone' } });
+  n
+  .goto(FACEBOOK_URL)
+  .type('input[name="email"]', req.body.login)
+  .type('input[name="pass"]', req.body.password)
+  .click('button[name="login"]')
+  .wait('button[name="__CONFIRM__"]')
+  .click('button[name="__CONFIRM__"]')
+  .evaluate(() => document.querySelector('input[name="fb_dtsg"]').value)
+  .then((fbdtsg) => {
+    n
+    .cookies.get({ url: null })
+    .end()
+    .then((cookies) => {
+      const cookieArray = cookies.map((each) => `${each.name}=${each.value};`);
+      const requiredID = cookies.filter((each) => each.name === 'c_user')[0].value;
+      getFBToken(cookieArray.join(' '), fbdtsg, requiredID, (error, statusCode, headers, body) => {
+        if (error) {
+          res.status(400).json(error);
+        } else {
+          const client = new tinder.TinderClient();
+          client.authorize(body.match(/access_token=(.+)&/)[0].split(/=|&/)[1], 0, () => {
+            res.status(200).json(client.getAuthToken());
+          });
+        }
+      });
+    });
   });
 });
 
