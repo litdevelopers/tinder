@@ -11,8 +11,8 @@ import Text from 'components/Text';
 import Button from 'components/Button';
 
 const placeholderMapping = {
-  FEMALE: tinderCardFemale,
-  MALE: tinderCardMale,
+  1: tinderCardFemale,
+  0: tinderCardMale,
 };
 
 const GENDER = 'FEMALE';
@@ -34,12 +34,14 @@ class DetailView extends React.Component {
         <div
           className={styles.detailView_placeholder}
         >
-          <img src={placeholderMapping[GENDER]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
+          <img src={placeholderMapping[this.props.targetGender]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
           <Text type="placeholder">Pick a match to find out more!</Text>
         </div>);
     }
-    
+
     const age = getAge(this.props.data.birth_date);
+    const jobs = this.props.data.jobs[0];
+    const schools = this.props.data.schools[0];
 
     return (
       <div className={styles.detailViewContainer} >
@@ -57,30 +59,18 @@ class DetailView extends React.Component {
         </div>
 
         <div className={styles.detailViewContainer_content}>
-          <Text
-            type="name"
-            style={{ color: 'black' }}
-          >
-            {this.props.data.name}
-          </Text>
-          <Text
-            type="age"
-            style={{ color: 'black' }}
-          >
-            , {age}
-          </Text>
-          <Text
-            type="bio"
-          >
-            {this.props.data.bio}
-          </Text>
+          <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
+          <Text type="age" style={{ color: 'black' }}>, {age}</Text>
+          <Text type="school">{schools && schools.name}</Text>
+          <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? '@' : null}{jobs && jobs.company && jobs.company.name}</Text>
+          <Text type="bio">{this.props.data.bio}</Text>
           {this.props.data.common_connections.length > 0 ?
             <div>
               <Text type="profileHeader">Common Connections</Text>
               <div className={styles.commonConnectionsContainer}>
             {this.props.data.common_connections.map((each) => {
               return (
-                <div className={styles.connectionItem}>
+                <div className={styles.connectionItem} key={each.id}>
                   <a
                     href={getFacebookUrl(each.id)}
                     target="_blank"
@@ -91,7 +81,7 @@ class DetailView extends React.Component {
                       className={styles.connectionImage}
                     />
                   </a>
-                  <Text type="connectionName">{each.name}</Text>
+                  <Text type="connectionName">{each.name || 'Friend'}</Text>
                 </div>
               );
             })}
@@ -107,9 +97,7 @@ class DetailView extends React.Component {
                       key={each.id}
                       href={getFacebookUrl(each.id)}
                       target="_blank"
-                      style={{
-                        textDecoration: 'none',
-                      }}
+                      className={styles.commonInterestsLink}
                     >
                       <Text type="commonInterest">{each.name}</Text>
                     </a>

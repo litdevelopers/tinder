@@ -12,7 +12,12 @@ const selectPassword = () => createSelector(
   (authState) => authState.get('password')
 );
 
-const selectToken = () => createSelector(
+const selectFacebookToken = () => createSelector(
+  selectAuth(),
+  (authState) => authState.get('fbToken')
+);
+
+const selectAuthToken = () => createSelector(
   selectAuth(),
   (authState) => authState.get('userToken')
 );
@@ -26,5 +31,6 @@ export {
   selectLogin,
   selectPassword,
   selectId,
-  selectToken,
+  selectFacebookToken,
+  selectAuthToken,
 };

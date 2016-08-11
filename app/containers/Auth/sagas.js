@@ -3,7 +3,7 @@ import { takeLatest } from 'redux-saga';
 import { LOCATION_CHANGE, push } from 'react-router-redux';
 
 import { LOGIN_FACEBOOK, LOGIN_LOCAL } from './constants';
-import { loginFacebookSuccess, loginFacebookError } from './actions';
+import { loginFacebookSuccess, loginFacebookError, setGlobals } from './actions';
 import { postRequest } from 'utils/request';
 import { storeAuthToken, getAuthToken } from 'utils/operations';
 import { AUTH_URL } from 'global_constants';
@@ -20,8 +20,10 @@ export function* loginFacebookSaga() {
 
   const authData = yield call(postRequest, requestURL, body);
   if (authData.status === 200) {
-    yield storeAuthToken(authData.data);
-    yield put(loginFacebookSuccess(authData.data));
+    yield storeAuthToken('tinderToken', authData.data.authToken);
+    yield storeAuthToken('fbToken', authData.data.fbToken);
+    yield put(loginFacebookSuccess({ authToken: authData.data.authToken, fbToken: authData.data.fbToken }));
+    yield put(setGlobals(authData.data.defaults));
     yield put(push('/dashboard'));
   } else {
     yield put(loginFacebookError(authData.data.errors));
@@ -29,10 +31,15 @@ export function* loginFacebookSaga() {
 }
 
 export function* loginLocalSaga() {
-  const token = yield getAuthToken();
-  if (token) {
-    yield put(loginFacebookSuccess(token));
-    yield put(push('/dashboard'));
+  try {
+    const fbToken = yield getAuthToken('fbToken');
+    const authToken = yield getAuthToken('tinderToken');
+    if (authToken && fbToken) {
+      yield put(loginFacebookSuccess({ authToken, fbToken }));
+      yield put(push('/dashboard'));
+    }
+  } catch (err) {
+    console.log(err);
   }
 }
 

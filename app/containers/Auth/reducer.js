@@ -4,6 +4,7 @@ import {
   LOGIN_FACEBOOK,
   LOGIN_FACEBOOK_ERROR,
   LOGIN_FACEBOOK_SUCCESS,
+  SET_GLOBALS,
 } from './constants';
 import { fromJS } from 'immutable';
 
@@ -12,7 +13,9 @@ const initialState = fromJS({
   login: '',
   password: '',
   userToken: '',
+  fbToken: '',
   authError: '',
+  globals: '',
   isAuthing: false,
 });
 
@@ -29,12 +32,15 @@ function authReducer(state = initialState, action) {
           .set('isAuthing', true);
     case LOGIN_FACEBOOK_SUCCESS:
       return state
-          .set('userToken', action.payload.token)
+          .set('userToken', action.payload.authToken)
+          .set('fbToken', action.payload.fbToken)
           .set('isAuthing', false);
     case LOGIN_FACEBOOK_ERROR:
       return state
           .set('authError', action.payload)
           .set('isAuthing', false);
+    case SET_GLOBALS:
+      return state.set('globals', action.payload);
     default:
       return state;
   }

@@ -6,8 +6,15 @@ import {
     LOGIN_FACEBOOK_ERROR,
     LOGIN_LOCAL,
     LOGIN_LOCAL_SUCCESS,
+    SET_GLOBALS,
 } from './constants';
 
+export function setGlobals(data) {
+  return {
+    type: SET_GLOBALS,
+    payload: data,
+  };
+}
 
 export function loginLocal() {
   return {
@@ -50,11 +57,12 @@ export function loginFacebookError(error) {
   };
 }
 
-export function loginFacebookSuccess(token) {
+export function loginFacebookSuccess({ authToken, fbToken }) {
   return {
     type: LOGIN_FACEBOOK_SUCCESS,
     payload: {
-      token,
+      authToken,
+      fbToken,
     },
   };
 }

@@ -16,13 +16,14 @@ import {
 } from './actions';
 
 import {
-  selectToken,
+  selectFacebookToken,
+  selectAuthToken,
 } from 'containers/Auth/selectors';
 import { selectMatches } from 'containers/Matches/selectors';
 import { postRequest } from 'utils/request';
 
 export function* getTinderData() {
-  const token = yield select(selectToken());
+  const token = yield select(selectFacebookToken());
   const postURL = `${AUTH_URL}/tinder/data`;
 
   const data = yield call(postRequest, postURL, { token });
@@ -35,9 +36,9 @@ export function* getTinderData() {
 }
 
 export function* fetchMatchesAction() {
-  const token = yield select(selectToken());
+  const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/matches`;
-  const data = yield call(postRequest, postURL, { token });
+  const data = yield call(postRequest, postURL, { authToken });
   if (data.status === 200 && data.data.length !== 0) {
     const currentMatches = yield select(selectMatches());
     const filteredNewMatches = data.data.filter((each) => {

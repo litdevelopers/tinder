@@ -15,9 +15,9 @@
 .dashboardMatchesDetails {
   border-left:1px solid #eee;
   display: flex;
-  overflow-y: scroll;
   flex-direction: column;
   flex: 4;
+  max-width: 400px;
 }
 
 
