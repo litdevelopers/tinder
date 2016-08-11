@@ -1,10 +1,8 @@
 import React, { PropTypes } from 'react';
 import styles from './styles.css';
 
-class Text extends React.Component {
-  render() {
-    return (<span {...this.props} className={styles[this.props.type]}>{this.props.children}</span>);
-  }
+function Text(props) {
+  return (<span {...props} className={styles[props.type]}>{props.children}</span>);
 }
 
 Text.propTypes = {
