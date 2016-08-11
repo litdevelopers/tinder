@@ -3,7 +3,6 @@
   flex-basis: 100%;
   flex-direction: column;
   flex:1;
-  overflow-y: scroll;
 }
 
 .detailViewContainer_mainPicture {
@@ -59,5 +58,9 @@
   flex-direction: row;
   display: flex;
   overflow-x: scroll;
-  min-height: 30px;
+}
+
+.commonInterestsLink {
+  padding: 10px 5px;
+  text-decoration: none;
 }

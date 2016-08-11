@@ -7,17 +7,17 @@ export function mergeArray(arr1, arr2, length, mapFunc) {
   return filteredElements;
 }
 
-export function storeAuthToken(token) {
+export function storeAuthToken(key, token) {
   return new Promise((resolve, reject) => {
-    localForage.setItem('tinderToken', token)
+    localForage.setItem(key, token)
     .then(() => resolve('Token Stored'))
     .catch((err) => reject(err));
   });
 }
 
-export function getAuthToken() {
+export function getAuthToken(key) {
   return new Promise((resolve, reject) => {
-    localForage.getItem('tinderToken')
+    localForage.getItem(key)
     .then((token) => resolve(token))
     .catch((error) => reject(error));
   });

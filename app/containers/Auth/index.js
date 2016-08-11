@@ -7,8 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import {
   selectPassword,
   selectLogin,
-  selectId,
-  selectToken,
+  selectAuthToken,
 } from './selectors';
 
 class Auth extends React.Component {
@@ -63,8 +62,7 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   login: selectLogin(),
   password: selectPassword(),
-  token: selectToken(),
-  id: selectId(),
+  token: selectAuthToken(),
 });
 
 

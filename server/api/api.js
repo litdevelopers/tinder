@@ -28,8 +28,9 @@ router.post('/auth/facebook', (req, res) => {
           res.status(400).json(error);
         } else {
           const client = new tinder.TinderClient();
-          client.authorize(body.match(/access_token=(.+)&/)[0].split(/=|&/)[1], 0, () => {
-            res.status(200).json(client.getAuthToken());
+          const facebookToken = body.match(/access_token=(.+)&/)[0].split(/=|&/)[1];
+          client.authorize(facebookToken, 0, () => {
+            res.status(200).json({ authToken: client.getAuthToken(), defaults: client.getDefaults(), fbToken: facebookToken });
           });
         }
       });
@@ -38,26 +39,27 @@ router.post('/auth/facebook', (req, res) => {
 });
 
 router.post('/tinder/data', (req, res) => {
-  const xAuth = req.body.token;
+  const fbtoken = req.body.token;
   const client = new tinder.TinderClient();
-  client.setAuthToken(xAuth);
-  Promise.all([
-    tinderPromise.getDefaults(client),
-    tinderPromise.getHistory(client),
-    tinderPromise.getRecommendations(client),
-    tinderPromise.getAuthToken(client),
-  ])
-  .then((data) => {
-    res.status(200).json(data);
-  })
-  .catch((err) => {
-    res.status(400).json(err);
+  client.authorize(fbtoken, 0, () => {
+    Promise.all([
+      tinderPromise.getDefaults(client),
+      tinderPromise.getHistory(client),
+      tinderPromise.getRecommendations(client),
+      tinderPromise.getAuthToken(client),
+    ])
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
   });
 });
 
 router.post('/tinder/like', (req, res) => {
   const likeUser = req.body.likeUserId;
-  const xAuth = req.body.token;
+  const xAuth = req.body.userToken;
   const client = new tinder.TinderClient();
 
   client.setAuthToken(xAuth);
@@ -72,7 +74,7 @@ router.post('/tinder/like', (req, res) => {
 
 router.post('/tinder/pass', (req, res) => {
   const passUser = req.body.passUserId;
-  const xAuth = req.body.token;
+  const xAuth = req.body.userToken;
   const client = new tinder.TinderClient();
 
   client.setAuthToken(xAuth);
@@ -87,7 +89,7 @@ router.post('/tinder/pass', (req, res) => {
 
 router.post('/tinder/superlike', (req, res) => {
   const likeUser = req.body.superlikeUserId;
-  const xAuth = req.body.token;
+  const xAuth = req.body.userToken;
   const client = new tinder.TinderClient();
 
   client.setAuthToken(xAuth);
@@ -101,7 +103,7 @@ router.post('/tinder/superlike', (req, res) => {
 });
 
 router.post('/tinder/matches', (req, res) => {
-  const xAuth = req.body.token;
+  const xAuth = req.body.authToken;
   const client = new tinder.TinderClient();
 
   client.setAuthToken(xAuth);

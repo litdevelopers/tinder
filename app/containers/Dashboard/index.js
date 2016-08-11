@@ -11,17 +11,13 @@ import { createStructuredSelector } from 'reselect';
 
 import styles from './styles.css';
 
+import { selectAuthToken } from 'containers/Auth/selectors';
 import { fetchTinderData } from './actions';
-import { selectToken, selectId } from 'containers/Auth/selectors';
 
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     // check if token and userid exists or not
-    if (!this.props.token) {
-      this.props.routeTo('/login');
-    } else {
-      this.props.fetchInitialData();
-    }
+    this.props.fetchInitialData();
   }
 
   render() {
@@ -40,8 +36,7 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  token: selectToken(),
-  id: selectId(),
+  token: selectAuthToken(),
 });
 
 function mapDispatchToProps(dispatch) {

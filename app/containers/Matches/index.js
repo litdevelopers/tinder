@@ -7,6 +7,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { fetchMatches } from 'containers/Dashboard/actions';
 import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
 import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
+import { selectTargetGender } from 'containers/Dashboard/selectors';
 import styles from './styles.css';
 
 import DetailView from 'components/DetailView';
@@ -44,6 +45,7 @@ class DashboardMatches extends React.Component { // eslint-disable-line
             data={this.props.matchDetail}
             imageData={this.props.matchDetailImages}
             onClickButton={this.props.onClickButton}
+            targetGender={this.props.targetGender}
           />
         </div>
       </div>
@@ -61,12 +63,14 @@ DashboardMatches.propTypes = {
   onClickCard: PropTypes.func.isRequired,
   onClickButton: PropTypes.func.isRequired,
   fetchMatches: PropTypes.func.isRequired,
+  targetGender: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   matches: selectMatches(),
   matchDetail: selectCurrentMatch(),
   matchDetailImages: selectCurrentMatchLinks(),
+  targetGender: selectTargetGender(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -19,8 +19,7 @@ import {
 } from './actions';
 
 import {
-  selectToken,
-  selectId,
+  selectAuthToken,
 } from 'containers/Auth/selectors';
 
 import { FETCH_MATCHES } from 'containers/Dashboard/constants';
@@ -29,11 +28,10 @@ import { fetchMatchesAction } from 'containers/Dashboard/sagas';
 import { postRequest } from 'utils/request';
 
 export function* likePersonAction(action) {
-  const userToken = yield select(selectToken());
-  const userId = yield select(selectId());
+  const userToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/like`;
 
-  const data = yield call(postRequest, postURL, { userToken, userId, likeUserId: action.id });
+  const data = yield call(postRequest, postURL, { userToken, likeUserId: action.id });
   if (data.status === 200) {
     yield put(likePersonSuccess({ id: action.id, action: 'like' }));
   } else {
@@ -42,11 +40,10 @@ export function* likePersonAction(action) {
 }
 
 export function* passPersonAction(action) {
-  const userToken = yield select(selectToken());
-  const userId = yield select(selectId());
+  const userToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/pass`;
 
-  const data = yield call(postRequest, postURL, { userToken, userId, passUserId: action.id });
+  const data = yield call(postRequest, postURL, { userToken, passUserId: action.id });
   if (data.status === 200) {
     yield put(passPersonSuccess({ id: action.id, action: 'pass' }));
   } else {
@@ -55,11 +52,10 @@ export function* passPersonAction(action) {
 }
 
 export function* superLikePersonAction(action) {
-  const userToken = yield select(selectToken());
-  const userId = yield select(selectId());
+  const userToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/superlike`;
 
-  const data = yield call(postRequest, postURL, { userToken, userId, superlikeUserId: action.id });
+  const data = yield call(postRequest, postURL, { userToken, superlikeUserId: action.id });
   if (data.status === 200) {
     yield put(superLikePersonSuccess({ id: action.id, action: 'superlike' }));
   } else {
