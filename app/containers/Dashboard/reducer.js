@@ -30,7 +30,7 @@ function dashboardReducer(state = initialState, action) {
         .set('isFetching', true);
     case FETCH_MATCHES_SUCCESS:
       return state
-        .set('matches', state.get('matches').concat(action.payload));
+        .set('matches', action.payload);
     case FETCH_TINDER_DATA_SUCCESS:
       return state
         .set('data', action.payload)

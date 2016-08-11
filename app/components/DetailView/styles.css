@@ -50,6 +50,10 @@
   border-radius: 50px;
 }
 
+.commonInterestsWrapper {
+  white-space: nowrap;
+}
+
 .commonInterestsContainer {
   margin: 10px 0px;
   flex-direction: row;

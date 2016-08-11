@@ -24,7 +24,7 @@ const selectCurrentMatchLinks = () => createSelector(
     }
     const tinderImages = currentMatchState.photos.map((each) => each.url);
     const instagramImages = (currentMatchState.instagram && currentMatchState.instagram.photos) ? currentMatchState.instagram.photos.map((each) => each.image) : [];
-    return mergeArray(tinderImages, instagramImages, 20, (each) => { return { original: each.url }; });
+    return mergeArray(tinderImages, instagramImages, 20, (each) => { return { original: each }; });
   }
 );
 

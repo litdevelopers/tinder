@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
@@ -17,7 +17,7 @@ import { selectToken, selectId } from 'containers/Auth/selectors';
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     // check if token and userid exists or not
-    if (!this.props.token || !this.props.id) {
+    if (!this.props.token) {
       this.props.routeTo('/login');
     } else {
       this.props.fetchInitialData();
@@ -32,6 +32,12 @@ export class Dashboard extends React.Component { // eslint-disable-line react/pr
     );
   }
 }
+
+Dashboard.propTypes = {
+  token: PropTypes.string,
+  routeTo: PropTypes.func.isRequired,
+  fetchInitialData: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = createStructuredSelector({
   token: selectToken(),

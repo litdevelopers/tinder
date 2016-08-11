@@ -52,7 +52,7 @@ class DetailView extends React.Component {
             showThumbnails={false}
             showNav={false}
             startIndex={0}
-            renderItem={(item) => <div style={{ backgroundImage: `url(${item.original})`, height: 400, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />}
+            renderItem={(item) => <div key={item.original} style={{ backgroundImage: `url(${item.original})`, height: 400, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />}
           />
         </div>
 
@@ -98,7 +98,7 @@ class DetailView extends React.Component {
               </div>
             </div> : null}
           {this.props.data.common_interests.length > 0 ?
-            <div>
+            <div className={styles.commonInterestsWrapper}>
               <Text type="profileHeader">Common Interests</Text>
               <div className={styles.commonInterestsContainer}>
                 {this.props.data.common_interests.map((each) => {

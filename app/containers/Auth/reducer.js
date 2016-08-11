@@ -12,7 +12,6 @@ const initialState = fromJS({
   login: '',
   password: '',
   userToken: '',
-  userId: '',
   authError: '',
   isAuthing: false,
 });
@@ -20,7 +19,6 @@ const initialState = fromJS({
 function authReducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_LOGIN:
-      // Delete prefixed '@' from the github username
       return state
         .set('login', action.payload);
     case CHANGE_PASSWORD:
@@ -32,7 +30,6 @@ function authReducer(state = initialState, action) {
     case LOGIN_FACEBOOK_SUCCESS:
       return state
           .set('userToken', action.payload.token)
-          .set('userId', action.payload.id)
           .set('isAuthing', false);
     case LOGIN_FACEBOOK_ERROR:
       return state

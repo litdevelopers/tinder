@@ -4,7 +4,23 @@ import {
     LOGIN_FACEBOOK,
     LOGIN_FACEBOOK_SUCCESS,
     LOGIN_FACEBOOK_ERROR,
+    LOGIN_LOCAL,
+    LOGIN_LOCAL_SUCCESS,
 } from './constants';
+
+
+export function loginLocal() {
+  return {
+    type: LOGIN_LOCAL,
+  };
+}
+
+export function loginLocalSuccess(token) {
+  return {
+    type: LOGIN_LOCAL_SUCCESS,
+    payload: token,
+  };
+}
 
 
 export function changeLogin(login) {
@@ -34,11 +50,10 @@ export function loginFacebookError(error) {
   };
 }
 
-export function loginFacebookSuccess({ id, token }) {
+export function loginFacebookSuccess(token) {
   return {
     type: LOGIN_FACEBOOK_SUCCESS,
     payload: {
-      id,
       token,
     },
   };
