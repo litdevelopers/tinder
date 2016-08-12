@@ -74,27 +74,44 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    },
-    {
-      path: '/dashboard/matches',
-      name: 'matches',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/Matches/reducer'),
-          System.import('containers/Matches/sagas'),
-          System.import('containers/Matches'),
-        ]);
+      childRoutes: [{
+        path: '/dashboard/matches',
+        name: 'matches',
+        getComponent(nextState, cb) {
+          const importModules = Promise.all([
+            System.import('containers/Matches/reducer'),
+            System.import('containers/Matches/sagas'),
+            System.import('containers/Matches'),
+          ]);
 
-        const renderRoute = loadModule(cb);
+          const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
-          injectReducer('matches', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
+          importModules.then(([reducer, sagas, component]) => {
+            injectReducer('matches', reducer.default);
+            injectSagas(sagas.default);
+            renderRoute(component);
+          });
 
-        importModules.catch(errorLoading);
+          importModules.catch(errorLoading);
+        },
+      }, {
+        path: '/dashboard/home',
+        name: 'dashboard home',
+        getComponent(nextState, cb) {
+          const importModules = Promise.all([
+            System.import('containers/MainDashboard'),
+          ]);
+
+          const renderRoute = loadModule(cb);
+
+          importModules.then(([component]) => {
+            renderRoute(component);
+          });
+
+          importModules.catch(errorLoading);
+        },
       },
+    ],
     }, {
       path: '*',
       name: 'notfound',

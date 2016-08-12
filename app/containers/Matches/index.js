@@ -29,14 +29,12 @@ class DashboardMatches extends React.Component { // eslint-disable-line
           <div className={styles.dashboardMatchesNavigation}>
             <Button type="fetchMatches" onClick={() => this.props.fetchMatches()}>Fetch</Button>
             <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'like')}>Like All</Button>
-            <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'superlike')}>Superlike All</Button>
             <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'pass')}>Pass All</Button>
           </div>
           <div className={styles.dashboardMatchesCardsContainer}>
             {matches}
           </div>
         </div>
-        
         <div className={styles.dashboardMatchesDetails}>
         {this.props.matchDetail && this.props.matchDetailImages ?
           <DetailView
@@ -79,7 +77,6 @@ function mapDispatchToProps(dispatch) {
       matches.map((each) => {
         if (type === 'like') return dispatch(likePerson(each._id));
         if (type === 'pass') return dispatch(passPerson(each._id));
-        if (type === 'superlike') return dispatch(superLikePerson(each._id));
       });
     },
     onClickCard: (id, image) => {

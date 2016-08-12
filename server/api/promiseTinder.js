@@ -31,6 +31,18 @@ function getRecommendations(client) {
   });
 }
 
+function getUserUpdates(client) {
+  return new Promise((resolve, reject) => {
+    client.getUpdates((error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
 function getAuthToken(client) {
   return new Promise((resolve) => resolve(client.getAuthToken()));
 }
@@ -39,7 +51,6 @@ function likePerson(client, id) {
   return new Promise((resolve, reject) => {
     client.like(id, (error, response) => {
       if (error || !response.likes_remaining) {
-        console.log(response);
         reject(error || { message: 'LIMIT_EXCEEDED', timeUntil: response.rate_limited_until });
       } else {
         resolve(response);
@@ -79,6 +90,7 @@ module.exports = {
   getDefaults,
   getRecommendations,
   getAuthToken,
+  getUserUpdates,
   likePerson,
   passPerson,
   superLikePerson,

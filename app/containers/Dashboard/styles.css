@@ -1,3 +1,6 @@
 .dashboard {  /* stylelint-ignore */
-
+  display:flex;
+  flex-basis: 100%;
+  flex-direction: row;
+  max-width: 100%;
 }

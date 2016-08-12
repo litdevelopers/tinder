@@ -6,44 +6,33 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import { createStructuredSelector } from 'reselect';
-
+import { fetchUpdates } from './actions';
 import styles from './styles.css';
-
-import { selectAuthToken } from 'containers/Auth/selectors';
-import { fetchTinderData } from './actions';
 
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    // check if token and userid exists or not
-    this.props.fetchInitialData();
+    this.props.startBackgroundSync();
   }
 
   render() {
     return (
       <div className={styles.dashboard}>
-
+        {this.props.children}
       </div>
     );
   }
 }
 
 Dashboard.propTypes = {
-  token: PropTypes.string,
-  routeTo: PropTypes.func.isRequired,
-  fetchInitialData: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  startBackgroundSync: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = createStructuredSelector({
-  token: selectAuthToken(),
-});
 
 function mapDispatchToProps(dispatch) {
   return {
-    routeTo: (route) => dispatch(push(route)),
-    fetchInitialData: () => dispatch(fetchTinderData()),
+    startBackgroundSync: () => dispatch(fetchUpdates()),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+
+export default connect(null, mapDispatchToProps)(Dashboard);

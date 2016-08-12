@@ -15,7 +15,6 @@ const initialState = fromJS({
   userToken: '',
   fbToken: '',
   authError: '',
-  globals: '',
   isAuthing: false,
 });
 

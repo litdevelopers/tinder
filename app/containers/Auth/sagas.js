@@ -21,7 +21,7 @@ export function* loginFacebookSaga() {
   const authData = yield call(postRequest, requestURL, body);
   if (authData.status === 200) {
     yield put(loginFacebookSuccess({ authToken: authData.data.authToken, fbToken: authData.data.fbToken }));
-    yield put(push('/dashboard'));
+    yield put(push('/dashboard/home'));
     yield storeAuthToken('tinderToken', authData.data.authToken);
     yield storeAuthToken('fbToken', authData.data.fbToken);
   } else {

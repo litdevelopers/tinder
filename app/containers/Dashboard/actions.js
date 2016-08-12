@@ -12,7 +12,30 @@ import {
   FETCH_MATCHES_SUCCESS,
   FETCH_MATCHES_ERROR,
   REMOVE_MATCH,
+  FETCH_UPDATES,
+  FETCH_UPDATES_SUCCESS,
+  FETCH_UPDATES_ERROR,
 } from './constants';
+
+export function fetchUpdates() {
+  return {
+    type: FETCH_UPDATES,
+  };
+}
+
+export function fetchUpdatesSuccess(data) {
+  return {
+    type: FETCH_UPDATES_SUCCESS,
+    payload: data,
+  };
+}
+
+export function fetchUpdatesError(errors) {
+  return {
+    type: FETCH_UPDATES_ERROR,
+    payload: errors,
+  };
+}
 
 export function removeMatch(id) {
   return {

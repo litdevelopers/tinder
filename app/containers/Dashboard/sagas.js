@@ -1,12 +1,12 @@
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
-import { takeLatest, takeEvery } from 'redux-saga';
+import { takeLatest, delay } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import {
   FETCH_TINDER_DATA,
+  FETCH_UPDATES,
   FETCH_MATCHES,
-  REMOVE_MATCH,
 } from './constants';
 
 import {
@@ -14,6 +14,8 @@ import {
   fetchTinderDataError,
   fetchMatchesSuccess,
   fetchMatchesError,
+  fetchUpdatesSuccess,
+  fetchUpdatesError,
 } from './actions';
 
 import {
@@ -59,6 +61,26 @@ export function* fetchMatchesAction() {
 }
 
 
+export function* tinderBackgroundSync() {
+  try {
+    while (true) { // eslint-disable-line
+      const authToken = yield select(selectAuthToken());
+      const postURL = `${AUTH_URL}/tinder/updates`;
+      yield call(delay, 15000);
+      try {
+        const data = yield call(postRequest, postURL, { authToken });
+        console.log(data);
+        yield put(fetchUpdatesSuccess(data.data));
+      } catch (error) {
+        yield put(fetchUpdatesError(error));
+      }
+    }
+  } finally {
+    console.log('Background Sync Complete');
+  }
+}
+
+
 // Individual exports for testing
 export function* dashboardSaga() {
   const watcher = [
@@ -66,13 +88,16 @@ export function* dashboardSaga() {
     yield fork(takeLatest, FETCH_MATCHES, fetchMatchesAction),
   ];
 
-  // yield fork(takeEvery, REMOVE_MATCH, removeMatchAction);
-
-  yield take(LOCATION_CHANGE);
-  yield watcher.map(each => cancel(each));
+  while (yield take(FETCH_UPDATES)) {
+    const tinderBackground = yield fork(tinderBackgroundSync);
+    yield take(LOCATION_CHANGE);
+    yield cancel(tinderBackground);
+    yield watcher.map(each => cancel(each));
+  }
 }
 
 // All sagas to be loaded
 export default [
   dashboardSaga,
 ];
+
