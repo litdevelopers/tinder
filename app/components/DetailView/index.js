@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 import ImageGallery from 'react-image-gallery';
-import tinderCardFemale from 'static/tinder_female.png';
-import tinderCardMale from 'static/tinder_male.png';
 
 import { getAge } from 'components/MatchCard/helpers';
 import { getFacebookUrl, getFacebookPicture } from 'utils/facebook';
@@ -10,12 +8,7 @@ import styles from './styles.css';
 import Text from 'components/Text';
 import Button from 'components/Button';
 
-const placeholderMapping = {
-  1: tinderCardFemale,
-  0: tinderCardMale,
-};
 
-const GENDER = 'FEMALE';
 
 class DetailView extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -29,16 +22,6 @@ class DetailView extends React.Component {
   }
 
   render() {
-    if (!this.props.data || !this.props.imageData) {
-      return (
-        <div
-          className={styles.detailView_placeholder}
-        >
-          <img src={placeholderMapping[this.props.targetGender]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
-          <Text type="placeholder">Pick a match to find out more!</Text>
-        </div>);
-    }
-
     const age = getAge(this.props.data.birth_date);
     const jobs = this.props.data.jobs[0];
     const schools = this.props.data.schools[0];
@@ -54,6 +37,7 @@ class DetailView extends React.Component {
             showThumbnails={false}
             showNav={false}
             startIndex={0}
+            lazyLoad
             renderItem={(item) => <div key={item.original} style={{ backgroundImage: `url(${item.original})`, height: 400, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />}
           />
         </div>
@@ -62,7 +46,7 @@ class DetailView extends React.Component {
           <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
           <Text type="age" style={{ color: 'black' }}>, {age}</Text>
           <Text type="school">{schools && schools.name}</Text>
-          <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? '@' : null}{jobs && jobs.company && jobs.company.name}</Text>
+          <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? ' @ ' : null}{jobs && jobs.company && <a href={jobs.company.id} target="_blank">{jobs.company.name}</a>}</Text>
           <Text type="bio">{this.props.data.bio}</Text>
           {this.props.data.common_connections.length > 0 ?
             <div>

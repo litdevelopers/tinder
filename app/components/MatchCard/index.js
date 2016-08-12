@@ -59,8 +59,8 @@ class MatchCard extends React.Component {
         <div className={styles.matchCardContainer}>
           <div className={styles.matchCardButtons}>
             <Button type="like" onClick={this.props.onClickButton} id={data._id}>Like</Button>
-            <Button type="pass" onClick={this.props.onClickButton} id={data._id}>Pass</Button>
             <Button type="superlike" onClick={this.props.onClickButton} id={data._id}>Super Like</Button>
+            <Button type="pass" onClick={this.props.onClickButton} id={data._id}>Pass</Button>
           </div>
           <div
             className={styles.matchCardContainer_wrapper}

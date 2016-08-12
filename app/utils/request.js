@@ -2,7 +2,12 @@ import axios from 'axios';
 
 export function postRequest(url, body) {
   return new Promise((resolve, reject) => {
-    axios.post(url, body)
+    axios({
+      url,
+      method: 'POST',
+      data: body,
+      timeout: 10000,
+    })
     .then((result) => {
       resolve(result);
     })

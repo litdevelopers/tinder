@@ -38,8 +38,10 @@
   flex:1;
   flex-direction: column;
   align-content: flex-start;
-  justify-content: flex-end;
   visibility: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .matchCardContainer_bio {

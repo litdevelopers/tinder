@@ -28,8 +28,7 @@ export default function matchesReducer(state = initialState, action) {
   switch (action.type) {
     case DETAIL_PERSON:
       return state
-        .setIn(['currentDetailView', 'id'], action.id)
-        .setIn(['currentDetailView', 'image'], action.image);
+        .setIn(['currentDetailView', 'id'], action.id);
     case LIKE_PERSON:
     case PASS_PERSON:
     case SUPERLIKE_PERSON:

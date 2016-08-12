@@ -7,7 +7,7 @@ function Text(props) {
 
 Text.propTypes = {
   type: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 export default Text;

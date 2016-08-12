@@ -11,7 +11,15 @@ import {
   FETCH_MATCHES,
   FETCH_MATCHES_SUCCESS,
   FETCH_MATCHES_ERROR,
+  REMOVE_MATCH,
 } from './constants';
+
+export function removeMatch(id) {
+  return {
+    type: REMOVE_MATCH,
+    id,
+  };
+}
 
 export function fetchMatches() {
   return {

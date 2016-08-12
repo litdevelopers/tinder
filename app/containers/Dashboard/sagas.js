@@ -1,11 +1,12 @@
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
-import { takeLatest } from 'redux-saga';
+import { takeLatest, takeEvery } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import {
   FETCH_TINDER_DATA,
   FETCH_MATCHES,
+  REMOVE_MATCH,
 } from './constants';
 
 import {
@@ -55,12 +56,16 @@ export function* fetchMatchesAction() {
   }
 }
 
+
+
 // Individual exports for testing
 export function* dashboardSaga() {
   const watcher = [
     yield fork(takeLatest, FETCH_TINDER_DATA, getTinderData),
     yield fork(takeLatest, FETCH_MATCHES, fetchMatchesAction),
   ];
+
+  // yield fork(takeEvery, REMOVE_MATCH, removeMatchAction);
 
   yield take(LOCATION_CHANGE);
   yield watcher.map(each => cancel(each));

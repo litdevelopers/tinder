@@ -62,8 +62,8 @@ function passPerson(client, id) {
 function superLikePerson(client, id) {
   return new Promise((resolve, reject) => {
     client.superLike(id, (error, response) => {
-      if (error) {
-        reject(error);
+      if (error || response.limit_exceeded) {
+        reject(error || 'LIMIT_EXCEEDED');
       } else {
         resolve(response);
       }

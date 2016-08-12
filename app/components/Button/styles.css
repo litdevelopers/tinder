@@ -1,39 +1,58 @@
 .button {
   padding: 5px 5px;
-  border: 1px solid;
+  border: 2px solid;
   color: white;
   font-size: 10px;
   margin:5px;
-  opacity: 0.7;
-}
+  }
 
-.button:focus {
-}
-
-.button:hover {
-  opacity: 1;
-  transition: 0.2s;
-}
-
-
-.like {
+.buttonMatch {
   composes: button;
+  height: 50px;
+  width: 50px;
+  font-weight: 600;
+  border-radius: 50px;
+}
+
+
+.pass {
+  composes: buttonMatch;
+  color: #e95f5c;
+  border-color: #e95f5c;
+}
+
+.pass:hover{
+  background-color: #e95f5c;
   color: white;
-  border-color: white;
+  transition: 0.25s;
 }
 
 .superlike {
-  composes: button;
-  color: white;
-  border-color: white;
+  composes: buttonMatch;
+  color: #5cc3e8;
+  border-color: #5cc3e8;
 }
 
-.pass {
-  composes: button;
+
+.superlike:hover{
+  background-color: #5cc3e8;
   color: white;
-  border-color: white;
+  transition: 0.25s;
+}
+
+.like {
+  composes: buttonMatch;
+  color: #79ceb8;
+  border-color: #79ceb8;
+}
+
+.like:hover{
+  background-color: #79ceb8;
+  color: white;
+  transition: 0.25s;
 }
 
 .fetchMatches {
   flex-basis: 10%;
 }
+

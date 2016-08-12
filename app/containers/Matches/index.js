@@ -13,6 +13,7 @@ import styles from './styles.css';
 import DetailView from 'components/DetailView';
 import MatchCard from 'components/MatchCard';
 import Button from 'components/Button';
+import Panel from 'components/Panel';
 
 
 class DashboardMatches extends React.Component { // eslint-disable-line
@@ -34,19 +35,28 @@ class DashboardMatches extends React.Component { // eslint-disable-line
             >
               Fetch
             </Button>
+            <Button
+              type="fetchMatches"
+              onClick={() => {
+                this.props.onMultiple(this.props.matches, 'like');
+              }}
+            >
+              Like All
+            </Button>
           </div>
           <div className={styles.dashboardMatchesCardsContainer}>
             {matches}
           </div>
         </div>
-
+        
         <div className={styles.dashboardMatchesDetails}>
+        {this.props.matchDetail && this.props.matchDetailImages ?
           <DetailView
             data={this.props.matchDetail}
             imageData={this.props.matchDetailImages}
             onClickButton={this.props.onClickButton}
             targetGender={this.props.targetGender}
-          />
+          /> : <Panel type="matchDetailPlaceholder" targetGender={this.props.targetGender} />}
         </div>
       </div>
     );
@@ -62,20 +72,28 @@ DashboardMatches.propTypes = {
   matchDetailImages: PropTypes.array,
   onClickCard: PropTypes.func.isRequired,
   onClickButton: PropTypes.func.isRequired,
+  onMultiple: PropTypes.func.isRequired,
   fetchMatches: PropTypes.func.isRequired,
   targetGender: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   matches: selectMatches(),
-  matchDetail: selectCurrentMatch(),
-  matchDetailImages: selectCurrentMatchLinks(),
+  matchDetail: selectCurrentMatch() || null,
+  matchDetailImages: selectCurrentMatchLinks() || null,
   targetGender: selectTargetGender(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchMatches: () => dispatch(fetchMatches()),
+    onMultiple: (matches, type) => {
+      matches.map((each) => {
+        if (type === 'like') return dispatch(likePerson(each._id));
+        if (type === 'pass') return dispatch(passPerson(each._id));
+        if (type === 'superlike') return dispatch(superLikePerson(each._id));
+      });
+    },
     onClickCard: (id, image) => {
       dispatch(detailPerson(id, image));
     },

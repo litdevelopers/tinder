@@ -15,15 +15,6 @@
   overflow-y: scroll;
 }
 
-
-.detailView_placeholder {
-  flex: 1;
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .commonConnectionsContainer {
   margin: 10px 0px;
   flex-direction: row;

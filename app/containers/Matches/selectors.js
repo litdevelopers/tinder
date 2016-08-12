@@ -19,7 +19,7 @@ const selectCurrentMatch = () => createSelector(
 const selectCurrentMatchLinks = () => createSelector(
   selectCurrentMatch(),
   (currentMatchState) => {
-    if (!currentMatchState) {
+    if (!currentMatchState || currentMatchState === '') {
       return undefined;
     }
     const tinderImages = currentMatchState.photos.map((each) => each.url);

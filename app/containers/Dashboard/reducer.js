@@ -12,6 +12,7 @@ import {
   FETCH_MATCHES,
   FETCH_MATCHES_SUCCESS,
   FETCH_MATCHES_ERROR,
+  REMOVE_MATCH,
 } from './constants';
 
 const initialState = fromJS({
@@ -43,6 +44,9 @@ function dashboardReducer(state = initialState, action) {
       return state
         .set('errors', action.payload)
         .set('isFetching', false);
+    case REMOVE_MATCH:
+      return state
+        .set('matches', state.get('matches').filter((each) => each._id !== action.id));
     default:
       return state;
   }

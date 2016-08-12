@@ -19,13 +19,9 @@ const selectDashboard = () => createSelector(
   (substate) => substate.toJS()
 );
 
-
-const selectTargetGender = createSelector(
+const selectTargetGender = () => createSelector(
   selectDashboard(),
-  (dashboardState) => {
-    console.log(dashboardState);
-    return dashboardState.user.user.gender_filter;
-  },
+  (dashboardState) => dashboardState.user.user.gender_filter
 );
 
 export default selectDashboard;
