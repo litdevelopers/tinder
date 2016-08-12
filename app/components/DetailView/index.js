@@ -6,9 +6,6 @@ import { getFacebookUrl, getFacebookPicture } from 'utils/facebook';
 
 import styles from './styles.css';
 import Text from 'components/Text';
-import Button from 'components/Button';
-
-
 
 class DetailView extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -17,7 +14,7 @@ class DetailView extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     if (!this.props.data) return true;
-    if (this.props.data._id !== nextProps.data._id) return true;
+    if (this.props.data._id !== nextProps.data._id) return true; // eslint-disable-line no-underscore-dangle
     return false;
   }
 

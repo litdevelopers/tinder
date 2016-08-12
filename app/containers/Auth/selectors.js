@@ -28,6 +28,7 @@ const selectId = () => createSelector(
 );
 
 export {
+  selectAuth,
   selectLogin,
   selectPassword,
   selectId,

@@ -6,3 +6,5 @@ function getCurrentYear() {
 export function getAge(dateString) {
   return getCurrentYear() - new Date(dateString).getFullYear() - 1;
 }
+
+export const convertDistanceToLocal = (distance) => Math.floor(distance * 1.6);

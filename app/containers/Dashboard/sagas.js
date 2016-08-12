@@ -16,6 +16,7 @@ import {
   fetchMatchesError,
   fetchUpdatesSuccess,
   fetchUpdatesError,
+  fetchUpdatesEnd,
 } from './actions';
 
 import {
@@ -69,14 +70,13 @@ export function* tinderBackgroundSync() {
       yield call(delay, 15000);
       try {
         const data = yield call(postRequest, postURL, { authToken });
-        console.log(data);
         yield put(fetchUpdatesSuccess(data.data));
       } catch (error) {
         yield put(fetchUpdatesError(error));
       }
     }
   } finally {
-    console.log('Background Sync Complete');
+    yield put(fetchUpdatesEnd());
   }
 }
 
@@ -89,9 +89,9 @@ export function* dashboardSaga() {
   ];
 
   while (yield take(FETCH_UPDATES)) {
-    const tinderBackground = yield fork(tinderBackgroundSync);
+    yield fork(tinderBackgroundSync);
     yield take(LOCATION_CHANGE);
-    yield cancel(tinderBackground);
+    // yield cancel(tinderBackground);
     yield watcher.map(each => cancel(each));
   }
 }

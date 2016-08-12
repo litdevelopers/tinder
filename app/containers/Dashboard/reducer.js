@@ -14,7 +14,10 @@ import {
   FETCH_MATCHES_ERROR,
   FETCH_UPDATES,
   FETCH_UPDATES_SUCCESS,
+  FETCH_UPDATES_END,
   FETCH_UPDATES_ERROR,
+  GLOBAL_ERROR_HANDLED,
+  GLOBAL_ERROR_RECEIVED,
   REMOVE_MATCH,
 } from './constants';
 
@@ -22,8 +25,9 @@ const initialState = fromJS({
   user: '',
   history: '',
   matches: '',
+  lastError: '',
   updates: [],
-  errors: '',
+  globalErrors: [],
   isFetching: false,
 });
 
@@ -46,13 +50,22 @@ function dashboardReducer(state = initialState, action) {
         .set('matches', action.matches);
     case FETCH_UPDATES_SUCCESS:
       return state
-        .set('updates', state.get('updates').concat([action.payload]));
+        .set('updates', (state.get('updates').length > 20) ? state.get('updates').splice(1, 20).concat([action.payload]) : state.get('updates').concat([action.payload]));
     case FETCH_TINDER_DATA_ERROR:
     case FETCH_MATCHES_ERROR:
     case FETCH_UPDATES_ERROR:
       return state
-        .set('errors', action.payload)
+        .set('lastError', action.payload)
         .set('isFetching', false);
+    case FETCH_UPDATES_END:
+      return state
+        .set('isFetching', false);
+    case GLOBAL_ERROR_RECEIVED:
+      return state
+        .set('globalErrors', state.get('globalErrors').concat(action.payload));
+    case GLOBAL_ERROR_HANDLED:
+      return state
+        .set('globalErrors', state.get('globalErrors').splice(1));
     case REMOVE_MATCH:
       return state
         .set('matches', state.get('matches').filter((each) => each._id !== action.id));

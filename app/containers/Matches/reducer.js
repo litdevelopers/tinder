@@ -18,9 +18,8 @@ const initialState = fromJS({
     id: '',
     image: '',
   },
-  errors: '',
+  lastError: '',
   isFetching: false,
-  newMatches: '',
   lastAction: '',
 });
 
@@ -43,7 +42,7 @@ export default function matchesReducer(state = initialState, action) {
     case SUPERLIKE_PERSON_ERROR:
     case PASS_PERSON_ERROR:
       return state
-        .set('errors', action.payload)
+        .set('lastError', action.payload)
         .set('isFetching', false);
     default:
       return state;

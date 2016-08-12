@@ -17,15 +17,16 @@ export function* loginFacebookSaga() {
     login,
     password,
   };
-
-  const authData = yield call(postRequest, requestURL, body);
-  if (authData.status === 200) {
-    yield put(loginFacebookSuccess({ authToken: authData.data.authToken, fbToken: authData.data.fbToken }));
-    yield put(push('/dashboard/home'));
-    yield storeAuthToken('tinderToken', authData.data.authToken);
-    yield storeAuthToken('fbToken', authData.data.fbToken);
-  } else {
-    yield put(loginFacebookError(authData.data.errors));
+  try {
+    const authData = yield call(postRequest, requestURL, body);
+    if (authData.status === 200) {
+      yield put(loginFacebookSuccess({ authToken: authData.data.authToken, fbToken: authData.data.fbToken }));
+      yield put(push('/dashboard/home'));
+      yield storeAuthToken('tinderToken', authData.data.authToken);
+      yield storeAuthToken('fbToken', authData.data.fbToken);
+    }
+  } catch (loginError) {
+    yield put(loginFacebookError(loginError));
   }
 }
 

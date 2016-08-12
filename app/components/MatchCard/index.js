@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { DragSource } from 'react-dnd';
 
-import { getAge } from './helpers';
+import { getAge, convertDistanceToLocal } from './helpers';
 import styles from './styles.css';
 import Text from 'components/Text';
 import Button from 'components/Button';
@@ -34,7 +34,7 @@ class MatchCard extends React.Component {
     const ageText = (
       <Text type="age">{getAge(data.birth_date)}
         <Text type="distance">
-          {data.distance_mi} miles away
+          {convertDistanceToLocal(data.distance_mi)} km away
         </Text>
       </Text>);
     const schoolText = (data.schools[0] && data.schools[0].name) ? <Text type="detail">{data.schools[0].name}</Text> : null;

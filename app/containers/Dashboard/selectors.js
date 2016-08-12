@@ -24,8 +24,14 @@ const selectTargetGender = () => createSelector(
   (dashboardState) => dashboardState.user.user.gender_filter
 );
 
+const selectGlobalErrors = () => createSelector(
+  selectDashboard(),
+  (dashboardState) => dashboardState.globalErrors
+);
+
 export default selectDashboard;
 export {
   selectDashboardDomain,
   selectTargetGender,
+  selectGlobalErrors,
 };
