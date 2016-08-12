@@ -23,7 +23,7 @@ class Dropdown extends React.Component { // eslint-disable-line
   }
 
   render() {
-    return this.props.currentError ? null : this.renderDropdown(this.props.currentError);
+    return this.props.currentError ? this.renderDropdown(this.props.currentError) : null;
   }
 }
 
