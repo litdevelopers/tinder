@@ -2,13 +2,18 @@
   flex: 1;
   display: flex;
   margin: 10px;
+  height: 100%;
 }
 
 .errorDropdown {
-  position: absolute;
-  height: 50px;
+  position: fixed;
+  border-radius: 3px;
+  top: 0;
+  right: 0;
+  margin: 30px;
+  padding: 10px;
   display: block;
-  width: 100%;
+  width: 400px;
   z-index: 10;
   background-color: #e95f5c;
   transition: 0.3s;

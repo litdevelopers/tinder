@@ -31,6 +31,7 @@ const selectGlobalErrors = () => createSelector(
 
 export default selectDashboard;
 export {
+  selectDashboard,
   selectDashboardDomain,
   selectTargetGender,
   selectGlobalErrors,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectGlobalErrors } from 'containers/Dashboard/selectors';
+import selectCurrentError from 'containers/Notification/selectors';
 
 import styles from './styles.css';
 import Text from 'components/Text';
@@ -12,27 +12,27 @@ class Dropdown extends React.Component { // eslint-disable-line
     this.renderDropdown = this.renderDropdown.bind(this);
   }
 
-  renderDropdown() {
+  renderDropdown(currentError) {
     return (
       <div className={styles.errorDropdown}>
         <div className={styles.dropdownContainer}>
-          <Text type="dropdownText">Nah.</Text>
+          <Text type="dropdownText">{currentError || "There's no error yet dumbass."}</Text>
         </div>
       </div>
       );
   }
 
   render() {
-    return this.renderDropdown();
+    return this.props.currentError ? null : this.renderDropdown(this.props.currentError);
   }
 }
 
 Dropdown.propTypes = {
-  text: React.PropTypes.string,
+  currentError: React.PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
-  globalErrors: selectGlobalErrors(),
+  currentError: selectCurrentError(),
 });
 
 
