@@ -8,7 +8,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchUpdates } from './actions';
 
-import Dropdown from 'containers/Dropdown';
+import Notification from 'containers/Notification';
 import styles from './styles.css';
 
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -19,7 +19,7 @@ export class Dashboard extends React.Component { // eslint-disable-line react/pr
   render() {
     return (
       <div className={styles.dashboard}>
-        <Dropdown />
+        <Notification />
         {this.props.children}
       </div>
     );

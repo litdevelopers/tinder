@@ -16,8 +16,6 @@ import {
   FETCH_UPDATES_SUCCESS,
   FETCH_UPDATES_END,
   FETCH_UPDATES_ERROR,
-  GLOBAL_ERROR_HANDLED,
-  GLOBAL_ERROR_RECEIVED,
   REMOVE_MATCH,
 } from './constants';
 
@@ -60,12 +58,6 @@ function dashboardReducer(state = initialState, action) {
     case FETCH_UPDATES_END:
       return state
         .set('isFetching', false);
-    case GLOBAL_ERROR_RECEIVED:
-      return state
-        .set('globalErrors', state.get('globalErrors').concat(action.payload));
-    case GLOBAL_ERROR_HANDLED:
-      return state
-        .set('globalErrors', state.get('globalErrors').splice(1));
     case REMOVE_MATCH:
       return state
         .set('matches', state.get('matches').filter((each) => each._id !== action.id));

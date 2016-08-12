@@ -9,7 +9,8 @@ import {
   SUPERLIKE_PERSON,
 } from './constants';
 
-import { removeMatch, newError } from 'containers/Dashboard/actions';
+import { removeMatch } from 'containers/Dashboard/actions';
+import { newError } from 'containers/Notification/actions';
 
 import {
   likePersonSuccess,

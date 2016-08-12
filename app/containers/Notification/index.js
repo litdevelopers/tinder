@@ -12,21 +12,11 @@ class Dropdown extends React.Component { // eslint-disable-line
     this.renderDropdown = this.renderDropdown.bind(this);
   }
 
-
-  componentWillReceiveProps(newProps) {
-    console.log(newProps);
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (nextProps === this.props) return false;
-    return true;
-  }
-
   renderDropdown() {
     return (
       <div className={styles.errorDropdown}>
         <div className={styles.dropdownContainer}>
-          <Text type="dropdownText">{this.props.text}</Text>
+          <Text type="dropdownText">Nah.</Text>
         </div>
       </div>
       );
