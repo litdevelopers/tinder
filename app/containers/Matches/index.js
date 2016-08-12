@@ -27,22 +27,10 @@ class DashboardMatches extends React.Component { // eslint-disable-line
       <div className={styles.dashboardMatchesContainer}>
         <div className={styles.dashboardMatchesCards}>
           <div className={styles.dashboardMatchesNavigation}>
-            <Button
-              type="fetchMatches"
-              onClick={() => {
-                this.props.fetchMatches();
-              }}
-            >
-              Fetch
-            </Button>
-            <Button
-              type="fetchMatches"
-              onClick={() => {
-                this.props.onMultiple(this.props.matches, 'like');
-              }}
-            >
-              Like All
-            </Button>
+            <Button type="fetchMatches" onClick={() => this.props.fetchMatches()}>Fetch</Button>
+            <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'like')}>Like All</Button>
+            <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'superlike')}>Superlike All</Button>
+            <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'pass')}>Pass All</Button>
           </div>
           <div className={styles.dashboardMatchesCardsContainer}>
             {matches}

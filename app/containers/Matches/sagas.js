@@ -1,5 +1,5 @@
-import { takeLatest } from 'redux-saga';
-import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
+import { takeLatest, takeEvery } from 'redux-saga';
+import { take, call, put, select, fork, cancel, actionChannel } from 'redux-saga/effects';
 import { delay } from 'redux-saga/utils';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
@@ -51,7 +51,6 @@ export function* passPersonAction(action) {
   const postURL = `${AUTH_URL}/tinder/pass`;
 
   try {
-    delay(200);
     const data = yield call(postRequest, postURL, { userToken, passUserId: action.id });
     if (data.status === 200) {
       yield put(removeMatch(action.id));
@@ -68,7 +67,6 @@ export function* superLikePersonAction(action) {
   const postURL = `${AUTH_URL}/tinder/superlike`;
 
   try {
-    delay(200);
     const data = yield call(postRequest, postURL, { userToken, superlikeUserId: action.id });
     if (data.status === 200) {
       yield put(removeMatch(action.id));
@@ -80,17 +78,24 @@ export function* superLikePersonAction(action) {
   }
 }
 
+export function* cancelSaga(channels, watcher) {
+  watcher.map((each) => cancel(each));
+  channels.map((each) => each.close());
+}
 
 export function* matchesSaga() {
   const watcher = [
-    yield fork(takeLatest, LIKE_PERSON, likePersonAction),
-    yield fork(takeLatest, SUPERLIKE_PERSON, superLikePersonAction),
-    yield fork(takeLatest, PASS_PERSON, passPersonAction),
     yield fork(takeLatest, FETCH_MATCHES, fetchMatchesAction),
   ];
 
-  yield take(LOCATION_CHANGE);
-  yield watcher.map((each) => cancel(each));
+  const actionWatch = yield actionChannel([LIKE_PERSON, SUPERLIKE_PERSON, PASS_PERSON, LOCATION_CHANGE]);
+  while (true) { // eslint-disable-line
+    const action = yield take(actionWatch);
+    if (action.type === LIKE_PERSON) yield likePersonAction(action);
+    if (action.type === SUPERLIKE_PERSON) yield superLikePersonAction(action);
+    if (action.type === PASS_PERSON) yield passPersonAction(action);
+    if (action.type === LOCATION_CHANGE) yield cancelSaga([actionWatch], watcher);
+  }
 }
 
 

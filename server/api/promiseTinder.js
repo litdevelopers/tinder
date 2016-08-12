@@ -38,8 +38,9 @@ function getAuthToken(client) {
 function likePerson(client, id) {
   return new Promise((resolve, reject) => {
     client.like(id, (error, response) => {
-      if (error) {
-        reject(error);
+      if (error || !response.likes_remaining) {
+        console.log(response);
+        reject(error || { message: 'LIMIT_EXCEEDED', timeUntil: response.rate_limited_until });
       } else {
         resolve(response);
       }

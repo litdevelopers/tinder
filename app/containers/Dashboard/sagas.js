@@ -46,7 +46,9 @@ export function* fetchMatchesAction() {
       let flag = true;
       let counter = 0;
       for (; counter < currentMatches.length; counter++) {
-        if (currentMatches[counter]._id === each._id) flag = false; // eslint-disable-line no-underscore-dangle
+        if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
+          flag = false;
+        }
       }
       return flag;
     });
@@ -55,7 +57,6 @@ export function* fetchMatchesAction() {
     yield put(fetchMatchesError(data.data || 'Error Fetching Matches'));
   }
 }
-
 
 
 // Individual exports for testing
