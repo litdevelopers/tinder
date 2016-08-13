@@ -11,6 +11,25 @@
   box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.22);
 }
 
+@keyframes drop {
+  0% {
+    transform: scale(1);
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.22);
+  }
+  50% {
+    transform: scale(1.005);
+    box-shadow: 0px 14px 20px 0px rgba(0,0,0,0.32);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.22);
+  }
+}
+
+.matchCard:hover {
+  animation: drop 1.5s infinite ease-in-out;
+}
+
 .matchCard:hover .matchCardContainer_hide{
     height: initial;
     visibility: visible;

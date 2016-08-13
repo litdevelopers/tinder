@@ -8,13 +8,23 @@
   align-items: center;
 }
 
+.commonInterest {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 15px;
+  border: 2px solid #DB4C2C;
+  color: #DB4C2C;
+  border-radius: 15px;
+  margin-right: 5px;
+}
+
 .navigation a{
   text-decoration: none;
   color:#eee;
 }
 
 .navigation_item_active {
-  color:black !important;
+  color:#DB4C2C !important;
 }
 
 .navigation_item{
