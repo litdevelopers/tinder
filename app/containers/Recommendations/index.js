@@ -15,6 +15,10 @@ import Button from 'components/Button';
 import Panel from 'components/Panel';
 
 class DashboardRecommendations extends React.Component { // eslint-disable-line
+  shouldComponentUpdate(nextProps) {
+    return true;
+  }
+
   mapMatches() {
     return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />)
     .concat(<div style={{ flexBasis: '100%' }} key={"wayfinder"}><Waypoint scrollableAncestor={this.scrollContainer} onEnter={() => this.handleWaypoint()} /></div>);
@@ -30,7 +34,9 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
       <div className={styles.dashboardMatchesContainer}>
         <div className={styles.dashboardMatchesCards}>
           <div className={styles.dashboardMatchesNavigation}>
-            <select onChange={(event) => this.props.onFilter(event.target.value)}>
+            <select onChange={(event) => {
+              this.props.onFilter(event.target.value)
+            }}>
               <option value="normal">Default</option>
               <option value="lastActive">Recently Active</option>
               <option value="distance">Nearby</option>

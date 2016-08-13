@@ -68,7 +68,7 @@ function dashboardReducer(state = initialState, action) {
     case LOCATION_CHANGE:
       return state.set('isFetching', false);
     case SORT_MATCHES:
-      return state.set('matches', action.payload === 'normal' ? state.get('matches') : state.get('matches').sort(sortMapping[action.payload]));
+      return state.set('matches', action.payload === 'normal' ? state.get('matches') : state.get('matches').splice(0).sort(sortMapping[action.payload]));
     case REMOVE_MATCH:
       return state
         .set('matches', state.get('matches').filter((each) => each._id !== action.id));

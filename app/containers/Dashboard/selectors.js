@@ -34,6 +34,7 @@ const selectGlobalErrors = () => createSelector(
   (dashboardState) => dashboardState.globalErrors
 );
 
+
 export default selectDashboard;
 export {
   selectDashboard,
