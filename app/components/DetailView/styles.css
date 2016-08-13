@@ -11,7 +11,7 @@
 
 .detailViewContainer_content {
   flex: 6;
-  margin: 20px 10px;
+  padding: 20px 10px;
   overflow-y: scroll;
 }
 

@@ -18,6 +18,12 @@ class DetailView extends React.Component {
     return false;
   }
 
+  handleClickNext(e) {
+    console.log(this.imageGallery.getCurrentIndex());
+    const nextIndex = this.imageGallery.getCurrentIndex() + 1;
+    this.props.imageData[nextIndex] ? this.imageGallery.slideToIndex(nextIndex) : this.imageGallery.slideToIndex(0);
+  }
+
   render() {
     const age = getAge(this.props.data.birth_date);
     const jobs = this.props.data.jobs[0];
@@ -30,10 +36,10 @@ class DetailView extends React.Component {
             ref={i => { this.imageGallery = i; }}
             defaultImage={this.props.data.photos[0].url}
             items={this.props.imageData}
-            showBullets
             showThumbnails={false}
             showNav={false}
             startIndex={0}
+            onClick={(e) => this.handleClickNext(e)}
             lazyLoad
             renderItem={(item) => <div key={item.original} style={{ backgroundImage: `url(${item.original})`, height: 400, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />}
           />

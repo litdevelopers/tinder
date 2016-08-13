@@ -30,6 +30,7 @@
   flex: 15;
   margin-left: 15px;
   max-width: 100vw;
+  padding-top: 20px;
 }
 
 
@@ -39,5 +40,6 @@
   flex:1;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  padding: 20px;
 }
