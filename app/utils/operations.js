@@ -30,7 +30,7 @@ export function matchesSortByDistance(a, b) {
 }
 
 export function matchesSortByLastActive(a, b) {
-  if (new Date(a.ping_time).getTime() > new Date(b.ping_time).getTime()) return -1;
-  if (new Date(a.ping_time).getTime() < new Date(b.ping_time).getTime()) return 1;
+  if (new Date(a.ping_time).getTime() < new Date(b.ping_time).getTime()) return -1;
+  if (new Date(a.ping_time).getTime() > new Date(b.ping_time).getTime()) return 1;
   return 0;
 }
