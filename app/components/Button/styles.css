@@ -4,7 +4,6 @@
   color: white;
   font-size: 10px;
   margin:5px;
-
   }
 
 .commonInterest {
@@ -24,6 +23,10 @@
   width: 50px;
   font-weight: 600;
   border-radius: 50px;
+}
+
+.buttonMatch:focus {
+  outline: 0;
 }
 
 .pass {

@@ -18,10 +18,13 @@ class DetailView extends React.Component {
     return false;
   }
 
-  handleClickNext(e) {
-    console.log(this.imageGallery.getCurrentIndex());
+  handleClickNext() {
     const nextIndex = this.imageGallery.getCurrentIndex() + 1;
-    this.props.imageData[nextIndex] ? this.imageGallery.slideToIndex(nextIndex) : this.imageGallery.slideToIndex(0);
+    if (this.props.imageData[nextIndex]) {
+      this.imageGallery.slideToIndex(nextIndex);
+    } else {
+      this.imageGallery.slideToIndex(0);
+    }
   }
 
   render() {

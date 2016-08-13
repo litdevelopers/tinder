@@ -19,7 +19,3 @@ body{
   flex:20;
   max-width: 100vw;
 }
-
-input:active {
-  outline: 0;
-}
