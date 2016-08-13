@@ -15,15 +15,16 @@ import MatchCard from 'components/MatchCard';
 import Button from 'components/Button';
 import Panel from 'components/Panel';
 import Waypoint from 'react-waypoint';
-
+import {throttle} from 'lodash';
 
 class DashboardMatches extends React.Component { // eslint-disable-line
   mapMatches() {
     return this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
   }
 
-  renderWaypoint() {
-    return (this.props.isFetching ? null : <Waypoint onEnter={console.log('updating')} />);
+  handleWaypoint(scroll) {
+    this.props.fetchMatches();
+    console.log('here');
   }
 
   render() {
@@ -36,10 +37,10 @@ class DashboardMatches extends React.Component { // eslint-disable-line
             <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'like')}>Like All</Button>
             <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'pass')}>Pass All</Button>
           </div>
-          <div className={styles.dashboardMatchesCardsContainer}>
+          <div ref="scrollContainer" className={styles.dashboardMatchesCardsContainer}>
             {matches}
             <div>Loading</div>
-            {this.renderWaypoint()}
+            <Waypoint key={this.props.matches[this.props.matches.length-1]._id} scrollableAncestor={this.refs.scrollContainer} onEnter={(props) => this.handleWaypoint(props)} />
           </div>
         </div>
         <div className={styles.dashboardMatchesDetails}>

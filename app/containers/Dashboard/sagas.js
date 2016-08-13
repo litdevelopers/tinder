@@ -31,7 +31,6 @@ export function* getTinderData() {
   const postURL = `${AUTH_URL}/tinder/data`;
 
   const data = yield call(postRequest, postURL, { token });
-
   if (data.status === 200) {
     yield put(fetchTinderDataSuccess((data.data)));
   } else {
@@ -42,6 +41,7 @@ export function* getTinderData() {
 export function* fetchMatchesAction() {
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/matches`;
+  console.log('calling');
   const data = yield call(postRequest, postURL, { authToken });
   if (data.status === 200 && data.data.length !== 0) {
     const currentMatches = yield select(selectMatches());
@@ -83,16 +83,14 @@ export function* tinderBackgroundSync() {
 
 // Individual exports for testing
 export function* dashboardSaga() {
-  const watcher = [
-    yield fork(takeLatest, FETCH_TINDER_DATA, getTinderData),
-    yield fork(takeLatest, FETCH_MATCHES, fetchMatchesAction),
-  ];
+  yield* takeLatest(FETCH_TINDER_DATA, getTinderData);
+  yield* takeLatest(FETCH_MATCHES, fetchMatchesAction);
 
   while (yield take(FETCH_UPDATES)) {
     yield fork(tinderBackgroundSync);
     yield take(LOCATION_CHANGE);
     // yield cancel(tinderBackground);
-    yield watcher.map(each => cancel(each));
+    // yield watcher.map(each => cancel(each));
   }
 }
 
