@@ -1,5 +1,5 @@
-import { delay, buffers } from 'redux-saga';
-import { take, call, put, actionChannel, race, select } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { take, call, put, actionChannel, cancel, select, fork } from 'redux-saga/effects';
 import { selectQueuedError } from './selectors';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -18,15 +18,20 @@ export function* notificationHandler() {
   yield put(handledError());
 }
 
-export function* notificationSaga() {
-  const notificationChannel = yield actionChannel(GLOBAL_ERROR_ADDED, buffers.sliding(1));
+export function* notificationWatcher() {
+  const notificationChannel = yield actionChannel(GLOBAL_ERROR_ADDED);
 
   while (true) {
     yield take(notificationChannel);
-    yield notificationHandler();
-    yield take(LOCATION_CHANGE);
-    yield notificationChannel.close();
+    yield call(notificationHandler);
   }
+}
+
+export function* notificationSaga() {
+  const watcher = yield fork(notificationWatcher);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcher);
 }
 
 export default [

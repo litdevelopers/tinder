@@ -66,7 +66,6 @@ export function* matchesSaga() {
   const actionWatch = yield actionChannel([LIKE_PERSON, SUPERLIKE_PERSON, PASS_PERSON, LOCATION_CHANGE]);
   while (true) { // eslint-disable-line
     const action = yield take(actionWatch);
-    console.log(action);
     if (action.type === LIKE_PERSON) yield actionPerson(action, 'like');
     if (action.type === SUPERLIKE_PERSON) yield actionPerson(action, 'superlike');
     if (action.type === PASS_PERSON) yield actionPerson(action, 'pass');

@@ -16,7 +16,7 @@ class Dropdown extends React.Component { // eslint-disable-line
     return (
       <div className={styles.errorDropdown}>
         <div className={styles.dropdownContainer}>
-          <Text type="dropdownText">{currentError.response.data || "There's no error yet dumbass."}</Text>
+          <Text type="dropdownText">{currentError || "There's no error yet dumbass."}</Text>
         </div>
       </div>
       );
@@ -28,7 +28,10 @@ class Dropdown extends React.Component { // eslint-disable-line
 }
 
 Dropdown.propTypes = {
-  currentError: React.PropTypes.string,
+  currentError: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.object,
+  ]),
 };
 
 const mapStateToProps = createStructuredSelector({

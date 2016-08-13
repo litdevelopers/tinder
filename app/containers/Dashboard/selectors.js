@@ -20,7 +20,7 @@ const selectDashboard = () => createSelector(
 );
 
 const selectFetching = () => createSelector(
-  selectDashboardDomain(),
+  selectDashboard(),
   (dashboardState) => dashboardState.isFetching
 );
 

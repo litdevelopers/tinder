@@ -14,6 +14,10 @@ export class Dashboard extends React.Component { // eslint-disable-line react/pr
     this.props.fetchInitialData();
   }
 
+  componentWillUnmount() {
+    console.log('unmounting');
+  }
+
   render() {
     return (
       <div className={styles.mainDashboard}>
