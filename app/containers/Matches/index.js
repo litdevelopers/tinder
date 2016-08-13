@@ -7,18 +7,23 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { fetchMatches } from 'containers/Dashboard/actions';
 import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
 import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
-import { selectTargetGender } from 'containers/Dashboard/selectors';
+import { selectTargetGender, selectFetching} from 'containers/Dashboard/selectors';
 import styles from './styles.css';
 
 import DetailView from 'components/DetailView';
 import MatchCard from 'components/MatchCard';
 import Button from 'components/Button';
 import Panel from 'components/Panel';
+import Waypoint from 'react-waypoint';
 
 
 class DashboardMatches extends React.Component { // eslint-disable-line
   mapMatches() {
     return this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
+  }
+
+  renderWaypoint() {
+    return (this.props.isFetching ? null : <Waypoint onEnter={console.log('updating')} />);
   }
 
   render() {
@@ -33,6 +38,8 @@ class DashboardMatches extends React.Component { // eslint-disable-line
           </div>
           <div className={styles.dashboardMatchesCardsContainer}>
             {matches}
+            <div>Loading</div>
+            {this.renderWaypoint()}
           </div>
         </div>
         <div className={styles.dashboardMatchesDetails}>
@@ -61,6 +68,7 @@ DashboardMatches.propTypes = {
   onMultiple: PropTypes.func.isRequired,
   fetchMatches: PropTypes.func.isRequired,
   targetGender: PropTypes.number.isRequired,
+  isFetching: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -68,6 +76,7 @@ const mapStateToProps = createStructuredSelector({
   matchDetail: selectCurrentMatch() || null,
   matchDetailImages: selectCurrentMatchLinks() || null,
   targetGender: selectTargetGender(),
+  isFetching: selectFetching(),
 });
 
 function mapDispatchToProps(dispatch) {

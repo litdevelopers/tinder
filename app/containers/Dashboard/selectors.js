@@ -19,6 +19,11 @@ const selectDashboard = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const selectFetching = () => createSelector(
+  selectDashboardDomain(),
+  (dashboardState) => dashboardState.isFetching
+);
+
 const selectTargetGender = () => createSelector(
   selectDashboard(),
   (dashboardState) => dashboardState.user.user.gender_filter
@@ -35,4 +40,5 @@ export {
   selectDashboardDomain,
   selectTargetGender,
   selectGlobalErrors,
+  selectFetching,
 };
