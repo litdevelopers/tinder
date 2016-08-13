@@ -28,7 +28,7 @@ import {
 import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
 
-export function* getTinderData() {
+function* getTinderData() {
   const token = yield select(selectFacebookToken());
   const postURL = `${AUTH_URL}/tinder/data`;
   yield call(delay, 1000);
@@ -48,7 +48,7 @@ export function* getTinderData() {
   }
 }
 
-export function* fetchMatchesAction() {
+function* fetchMatchesAction() {
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/matches`;
   try {
@@ -95,19 +95,19 @@ export function* tinderBackgroundSync() {
   }
 }
 
-export function* getTinderDataWatcher() {
+function* getTinderDataWatcher() {
   while (yield take(FETCH_TINDER_DATA)) {
     yield call(getTinderData);
   }
 }
 
-export function* updateDataWatcher() {
+function* updateDataWatcher() {
   while (yield take(FETCH_UPDATES)) {
     yield call(tinderBackgroundSync);
   }
 }
 
-export function* updateMatchesWatcher() {
+function* updateMatchesWatcher() {
   while (yield take(FETCH_MATCHES)) {
     yield call(fetchMatchesAction);
   }

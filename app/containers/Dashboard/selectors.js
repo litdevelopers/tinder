@@ -21,12 +21,12 @@ const selectDashboard = () => createSelector(
 
 const selectFetching = () => createSelector(
   selectDashboard(),
-  (dashboardState) => dashboardState.isFetching
+  (dashboardState) => dashboardState.isFetching || false
 );
 
 const selectTargetGender = () => createSelector(
   selectDashboard(),
-  (dashboardState) => dashboardState.user.user.gender_filter
+  (dashboardState) => dashboardState.user.user.gender_filter || 1
 );
 
 const selectGlobalErrors = () => createSelector(

@@ -12,9 +12,9 @@ import Notification from 'containers/Notification';
 import styles from './styles.css';
 
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  componentWillMount() {
-    this.props.startBackgroundSync();
-  }
+  // componentWillMount() {
+  //   this.props.startBackgroundSync();
+  // }
 
   render() {
     return (
