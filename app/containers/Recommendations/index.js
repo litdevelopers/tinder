@@ -7,7 +7,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { fetchMatches } from 'containers/Dashboard/actions';
 import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
 import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
-import { selectTargetGender, selectFetching} from 'containers/Dashboard/selectors';
+import { selectTargetGender, selectFetching } from 'containers/Dashboard/selectors';
 import styles from './styles.css';
 
 import DetailView from 'components/DetailView';
@@ -15,20 +15,20 @@ import MatchCard from 'components/MatchCard';
 import Button from 'components/Button';
 import Panel from 'components/Panel';
 import Waypoint from 'react-waypoint';
-import {throttle} from 'lodash';
+import { throttle } from 'lodash';
 
 class DashboardMatches extends React.Component { // eslint-disable-line
   mapMatches() {
-    return this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
+    return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
   }
 
   handleWaypoint(scroll) {
-    this.props.fetchMatches();
-    console.log('here');
+    console.log(scroll);
+    if (!this.props.isFetching) this.props.fetchMatches();
   }
 
   render() {
-    const matches = (this.props && this.props.matches !== '') ? this.mapMatches() : null;
+    const matches = (this.props && this.props.matches) ? this.mapMatches() : null;
     return (
       <div className={styles.dashboardMatchesContainer}>
         <div className={styles.dashboardMatchesCards}>
@@ -43,10 +43,9 @@ class DashboardMatches extends React.Component { // eslint-disable-line
               <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'pass')}>Pass All</Button>
             </div>
           </div>
-          <div ref="scrollContainer" className={styles.dashboardMatchesCardsContainer}>
+          <div ref={(thisComponent) => { this.scrollContainer = thisComponent; }} className={styles.dashboardMatchesCardsContainer}>
             {matches}
-            <div>Loading</div>
-            <Waypoint key={this.props.matches[this.props.matches.length-1]._id} scrollableAncestor={this.refs.scrollContainer} onEnter={(props) => this.handleWaypoint(props)} />
+            <Waypoint scrollableAncestor={this.scrollContainer} onEnter={(props) => this.handleWaypoint(props)} />
           </div>
         </div>
         <div className={styles.dashboardMatchesDetails}>
@@ -80,8 +79,8 @@ DashboardMatches.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   matches: selectMatches(),
-  matchDetail: selectCurrentMatch() || null,
-  matchDetailImages: selectCurrentMatchLinks() || null,
+  matchDetail: selectCurrentMatch(),
+  matchDetailImages: selectCurrentMatchLinks(),
   targetGender: selectTargetGender(),
   isFetching: selectFetching(),
 });
@@ -93,6 +92,7 @@ function mapDispatchToProps(dispatch) {
       matches.map((each) => {
         if (type === 'like') return dispatch(likePerson(each._id));
         if (type === 'pass') return dispatch(passPerson(each._id));
+        return null;
       });
     },
     onClickCard: (id, image) => {

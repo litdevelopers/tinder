@@ -2,8 +2,7 @@ import { createSelector } from 'reselect';
 import { selectDashboardDomain } from 'containers/Dashboard/selectors';
 import { mergeArray } from 'utils/operations';
 
-const selectMatchesDomain = () => state => state.get('matches');
-
+const selectMatchesDomain = () => state => state.get('recommendations');
 
 const selectMatches = () => createSelector(
     selectDashboardDomain(),
@@ -13,7 +12,10 @@ const selectMatches = () => createSelector(
 const selectCurrentMatch = () => createSelector(
   selectMatchesDomain(),
   selectMatches(),
-  (matchesState, matches) => matches.filter((each) => each._id === matchesState.getIn(['currentDetailView', 'id']))[0]
+  (matchesState, matches) => {
+    if (!matches) return undefined; // eslint-disable-line
+    return matches.filter((each) => each._id === matchesState.getIn(['currentDetailView', 'id']))[0];
+  }
 );
 
 const selectCurrentMatchLinks = () => createSelector(

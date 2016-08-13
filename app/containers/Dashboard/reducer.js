@@ -18,6 +18,7 @@ import {
   FETCH_UPDATES_ERROR,
   REMOVE_MATCH,
 } from './constants';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 const initialState = fromJS({
   user: '',
@@ -38,6 +39,7 @@ function dashboardReducer(state = initialState, action) {
         .set('isFetching', true);
     case FETCH_MATCHES_SUCCESS:
       return state
+        .set('isFetching', false)
         .set('matches', action.payload);
     case FETCH_TINDER_DATA_SUCCESS:
       return state
@@ -58,6 +60,8 @@ function dashboardReducer(state = initialState, action) {
     case FETCH_UPDATES_END:
       return state
         .set('isFetching', false);
+    case LOCATION_CHANGE:
+      return state.set('isFetching', false);
     case REMOVE_MATCH:
       return state
         .set('matches', state.get('matches').filter((each) => each._id !== action.id));

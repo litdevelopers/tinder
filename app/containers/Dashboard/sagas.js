@@ -19,45 +19,58 @@ import {
   fetchUpdatesEnd,
 } from './actions';
 
+import { newError, newErrorAdded } from 'containers/Notification/actions';
+
 import {
   selectFacebookToken,
   selectAuthToken,
 } from 'containers/Auth/selectors';
-import { selectMatches } from 'containers/Matches/selectors';
+import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
 
-export function* getTinderData() {
+function* getTinderData() {
   const token = yield select(selectFacebookToken());
   const postURL = `${AUTH_URL}/tinder/data`;
-
-  const data = yield call(postRequest, postURL, { token });
-  if (data.status === 200) {
-    yield put(fetchTinderDataSuccess((data.data)));
-  } else {
-    yield put(fetchTinderDataError(data.data.errors));
+  yield call(delay, 1000);
+  try {
+    const data = yield call(postRequest, postURL, { token });
+    if (data.status === 200 && typeof (data.data[2]) === 'object') {
+      yield put(fetchTinderDataSuccess((data.data)));
+    } else if (data.status === 200 && typeof (data.data[2]) === 'string') {
+      yield put(fetchTinderDataSuccess(data.data));
+      yield put(newError('MATCHES NOT FOUND... TRYING AGAIN'));
+      yield put(newErrorAdded());
+    }
+  } catch (error) {
+    yield put(fetchTinderDataError(error));
+    yield put((newError(error)));
+    yield put(newErrorAdded());
   }
 }
 
-export function* fetchMatchesAction() {
+function* fetchMatchesAction() {
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/matches`;
-  console.log('fetchinnng');
-  const data = yield call(postRequest, postURL, { authToken });
-  if (data.status === 200 && data.data.length !== 0) {
-    const currentMatches = yield select(selectMatches());
-    const filteredNewMatches = data.data.filter((each) => {
-      let flag = true;
-      let counter = 0;
-      for (; counter < currentMatches.length; counter++) {
-        if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
-          flag = false;
+  try {
+    const data = yield call(postRequest, postURL, { authToken });
+    if (data.status === 200 && data.data.length !== 0) {
+      const currentMatches = yield select(selectMatches());
+      const filteredNewMatches = data.data.filter((each) => {
+        let flag = true;
+        let counter = 0;
+        for (; counter < currentMatches.length; counter++) {
+          if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
+            flag = false;
+          }
         }
-      }
-      return flag;
-    });
-    yield put(fetchMatchesSuccess(currentMatches.concat(filteredNewMatches)));
-  } else {
-    yield put(fetchMatchesError(data.data || 'Error Fetching Matches'));
+        return flag;
+      });
+      yield put(fetchMatchesSuccess(currentMatches.concat(filteredNewMatches)));
+    }
+  } catch (error) {
+    yield put(fetchMatchesError(error));
+    yield put((newError(error)));
+    yield put(newErrorAdded());
   }
 }
 
@@ -73,6 +86,8 @@ export function* tinderBackgroundSync() {
         yield put(fetchUpdatesSuccess(data.data));
       } catch (error) {
         yield put(fetchUpdatesError(error));
+        yield put((newError(error)));
+        yield put(newErrorAdded());
       }
     }
   } finally {
@@ -80,18 +95,34 @@ export function* tinderBackgroundSync() {
   }
 }
 
+function* getTinderDataWatcher() {
+  while (yield take(FETCH_TINDER_DATA)) {
+    yield call(getTinderData);
+  }
+}
+
+function* updateDataWatcher() {
+  while (yield take(FETCH_UPDATES)) {
+    yield call(tinderBackgroundSync);
+  }
+}
+
+function* updateMatchesWatcher() {
+  while (yield take(FETCH_MATCHES)) {
+    yield call(fetchMatchesAction);
+  }
+}
+
 
 // Individual exports for testing
 export function* dashboardSaga() {
-  yield* takeLatest(FETCH_TINDER_DATA, getTinderData);
-  yield* takeLatest(FETCH_MATCHES, fetchMatchesAction);
+  const tinderWatcher = yield fork(getTinderDataWatcher);
+  const fetchWatcher = yield fork(updateMatchesWatcher);
+  yield fork(updateDataWatcher);
 
-  while (yield take(FETCH_UPDATES)) {
-    yield fork(tinderBackgroundSync);
-    yield take(LOCATION_CHANGE);
-    // yield cancel(tinderBackground);
-    // yield watcher.map(each => cancel(each));
-  }
+  yield take(LOCATION_CHANGE);
+  yield cancel(tinderWatcher);
+  yield cancel(fetchWatcher);
 }
 
 // All sagas to be loaded

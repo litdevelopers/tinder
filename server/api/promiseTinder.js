@@ -24,6 +24,8 @@ function getRecommendations(client) {
     client.getRecommendations(MAX_REC_SIZE, (error, data) => {
       if (error) {
         reject(error);
+      } else if (!data.results) {
+        resolve('NO RECOMENDATIONS FOUND');
       } else {
         resolve(data.results.filter((each) => !each.is_brand));
       }

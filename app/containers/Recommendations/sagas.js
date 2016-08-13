@@ -53,24 +53,23 @@ export function* actionPerson(action, type) {
   }
 }
 
-export function* cancelSaga(channels, watcher) {
-  watcher.map((each) => cancel(each));
+export function* cancelSaga(channels) {
+  // watcher.map((each) => cancel(each));
   channels.map((each) => each.close());
 }
 
 export function* matchesSaga() {
-  const watcher = [
-    yield fork(takeLatest, FETCH_MATCHES, fetchMatchesAction),
-  ];
+  // const watcher = [
+  //   yield fork(takeLatest, FETCH_MATCHES, fetchMatchesAction),
+  // ];
 
   const actionWatch = yield actionChannel([LIKE_PERSON, SUPERLIKE_PERSON, PASS_PERSON, LOCATION_CHANGE]);
   while (true) { // eslint-disable-line
     const action = yield take(actionWatch);
-    console.log(action);
     if (action.type === LIKE_PERSON) yield actionPerson(action, 'like');
     if (action.type === SUPERLIKE_PERSON) yield actionPerson(action, 'superlike');
     if (action.type === PASS_PERSON) yield actionPerson(action, 'pass');
-    if (action.type === LOCATION_CHANGE) yield cancelSaga([actionWatch], watcher);
+    if (action.type === LOCATION_CHANGE) yield cancelSaga([actionWatch]);
   }
 }
 

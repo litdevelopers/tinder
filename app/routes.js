@@ -79,19 +79,19 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
       childRoutes: [{
-        path: '/dashboard/matches',
-        name: 'matches',
+        path: '/dashboard/recommendations',
+        name: 'recommendations',
         getComponent(nextState, cb) {
           const importModules = Promise.all([
-            System.import('containers/Matches/reducer'),
-            System.import('containers/Matches/sagas'),
-            System.import('containers/Matches'),
+            System.import('containers/Recommendations/reducer'),
+            System.import('containers/Recommendations/sagas'),
+            System.import('containers/Recommendations'),
           ]);
 
           const renderRoute = loadModule(cb);
 
           importModules.then(([reducer, sagas, component]) => {
-            injectReducer('matches', reducer.default);
+            injectReducer('recommendations', reducer.default);
             injectSagas(sagas.default);
             renderRoute(component);
           });

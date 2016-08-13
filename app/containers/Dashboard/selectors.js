@@ -20,13 +20,13 @@ const selectDashboard = () => createSelector(
 );
 
 const selectFetching = () => createSelector(
-  selectDashboardDomain(),
-  (dashboardState) => dashboardState.isFetching
+  selectDashboard(),
+  (dashboardState) => dashboardState.isFetching || false
 );
 
 const selectTargetGender = () => createSelector(
   selectDashboard(),
-  (dashboardState) => dashboardState.user.user.gender_filter
+  (dashboardState) => dashboardState.user.user.gender_filter || 1
 );
 
 const selectGlobalErrors = () => createSelector(
