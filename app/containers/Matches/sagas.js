@@ -10,7 +10,7 @@ import {
 } from './constants';
 
 import { removeMatch } from 'containers/Dashboard/actions';
-import { newError } from 'containers/Notification/actions';
+import { newError, newErrorAdded } from 'containers/Notification/actions';
 
 import {
   likePersonSuccess,
@@ -49,6 +49,7 @@ export function* actionPerson(action, type) {
     if (type === 'superlike') yield put(superLikePersonError(error));
     if (type === 'pass') yield put(passPersonError(error));
     yield put(newError(error));
+    yield put(newErrorAdded());
   }
 }
 
@@ -65,6 +66,7 @@ export function* matchesSaga() {
   const actionWatch = yield actionChannel([LIKE_PERSON, SUPERLIKE_PERSON, PASS_PERSON, LOCATION_CHANGE]);
   while (true) { // eslint-disable-line
     const action = yield take(actionWatch);
+    console.log(action);
     if (action.type === LIKE_PERSON) yield actionPerson(action, 'like');
     if (action.type === SUPERLIKE_PERSON) yield actionPerson(action, 'superlike');
     if (action.type === PASS_PERSON) yield actionPerson(action, 'pass');

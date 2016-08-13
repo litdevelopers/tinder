@@ -1,10 +1,14 @@
 import { createSelector } from 'reselect';
-import { selectDashboard } from 'containers/Dashboard/selectors';
 
+const selectNotifications = () => state => state.get('notifications').toJS();
 
-const selectCurrentError = () => createSelector(
-  selectDashboard(),
-  (dashboardState) => dashboardState.currentError
+export const selectCurrentError = () => createSelector(
+  selectNotifications(),
+  (notificationsState) => notificationsState.currentError
 );
 
-export default selectCurrentError;
+export const selectQueuedError = () => createSelector(
+	selectNotifications(),
+	(notificationsState) => notificationsState.globalErrors[0]
+);
+

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import selectCurrentError from 'containers/Notification/selectors';
+import { selectCurrentError } from 'containers/Notification/selectors';
 
 import styles from './styles.css';
 import Text from 'components/Text';
@@ -16,7 +16,7 @@ class Dropdown extends React.Component { // eslint-disable-line
     return (
       <div className={styles.errorDropdown}>
         <div className={styles.dropdownContainer}>
-          <Text type="dropdownText">{currentError || "There's no error yet dumbass."}</Text>
+          <Text type="dropdownText">{currentError.response.data || "There's no error yet dumbass."}</Text>
         </div>
       </div>
       );
