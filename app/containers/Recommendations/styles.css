@@ -44,3 +44,9 @@
   padding: 20px;
   width: 100%;
 }
+
+.dashboardMatchesContainerButtons {
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+}
