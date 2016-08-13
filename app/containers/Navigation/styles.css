@@ -4,7 +4,7 @@
   min-height:80px;
   border-bottom:1px solid #e2e2e2;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -19,5 +19,5 @@
 
 .navigation_item{
   flex-basis: 10%;
-  margin-right:40px;
+  margin-left:40px;
 }
