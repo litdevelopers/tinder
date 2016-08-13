@@ -7,6 +7,17 @@
 
   }
 
+.commonInterest {
+  composes: button;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 15px;
+  border: 2px solid #DB4C2C;
+  color: #DB4C2C;
+  border-radius: 15px;
+  margin-right: 5px;
+}
+
 .buttonMatch {
   composes: button;
   height: 50px;
@@ -14,7 +25,6 @@
   font-weight: 600;
   border-radius: 50px;
 }
-
 
 .pass {
   composes: buttonMatch;

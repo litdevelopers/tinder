@@ -43,7 +43,6 @@ export function* getTinderData() {
 export function* fetchMatchesAction() {
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/matches`;
-
   try {
     const data = yield call(postRequest, postURL, { authToken });
     if (data.status === 200 && data.data.length !== 0) {
