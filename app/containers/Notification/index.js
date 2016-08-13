@@ -13,6 +13,7 @@ class Dropdown extends React.Component { // eslint-disable-line
   }
 
   renderDropdown(currentError) {
+    console.log(currentError);
     return (
       <div className={styles.errorDropdown}>
         <div className={styles.dropdownContainer}>

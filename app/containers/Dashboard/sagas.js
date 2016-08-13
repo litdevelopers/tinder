@@ -38,7 +38,7 @@ function* getTinderData() {
       yield put(fetchTinderDataSuccess((data.data)));
     } else if (data.status === 200 && typeof (data.data[2]) === 'string') {
       yield put(fetchTinderDataSuccess(data.data));
-      yield put(newError('MATCHES NOT FOUND... TRYING AGAIN'));
+      yield put(newError('MATCHES NOT FOUND...'));
       yield put(newErrorAdded());
     }
   } catch (error) {

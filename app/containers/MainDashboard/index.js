@@ -8,14 +8,10 @@ import Text from 'components/Text';
 import styles from './styles.css';
 
 
-export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     // check if token and userid exists or not
     this.props.fetchInitialData();
-  }
-
-  componentWillUnmount() {
-    console.log('unmounting');
   }
 
   render() {
@@ -27,7 +23,7 @@ export class Dashboard extends React.Component { // eslint-disable-line react/pr
   }
 }
 
-Dashboard.propTypes = {
+MainDashboard.propTypes = {
   fetchInitialData: PropTypes.func.isRequired,
 };
 
@@ -41,4 +37,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(MainDashboard);

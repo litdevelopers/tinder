@@ -17,12 +17,13 @@ export default function Panels(props) {
       className={styles.detailView_placeholder}
     >
       <img src={placeholderMapping[props.targetGender]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
-      <Text type="placeholder">Pick a match to find out more!</Text>
+      <Text type="placeholder">{props.hasMatches ? 'Pick a match to find out more!' : 'No matches at this time. Try again later!'}</Text>
     </div>);
 }
 
 Panels.propTypes = {
   targetGender: PropTypes.number,
   type: PropTypes.string,
+  hasMatches: PropTypes.bool,
 };
 

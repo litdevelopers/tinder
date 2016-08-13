@@ -16,9 +16,10 @@ import Button from 'components/Button';
 import Panel from 'components/Panel';
 import Waypoint from 'react-waypoint';
 
-class DashboardMatches extends React.Component { // eslint-disable-line
+class DashboardRecommendations extends React.Component { // eslint-disable-line
   mapMatches() {
-    return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
+    return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />)
+    .concat(<Waypoint scrollableAncestor={this.scrollContainer} onEnter={() => this.handleWaypoint()} />);
   }
 
   handleWaypoint() {
@@ -43,7 +44,6 @@ class DashboardMatches extends React.Component { // eslint-disable-line
           </div>
           <div ref={(thisComponent) => { this.scrollContainer = thisComponent; }} className={styles.dashboardMatchesCardsContainer}>
             {matches}
-            <Waypoint scrollableAncestor={this.scrollContainer} onEnter={() => this.handleWaypoint()} />
           </div>
         </div>
         <div className={styles.dashboardMatchesDetails}>
@@ -53,15 +53,18 @@ class DashboardMatches extends React.Component { // eslint-disable-line
             imageData={this.props.matchDetailImages}
             onClickButton={this.props.onClickButton}
             targetGender={this.props.targetGender}
-          /> : <Panel type="matchDetailPlaceholder" targetGender={this.props.targetGender} />}
+          /> : <Panel type="matchDetailPlaceholder" targetGender={this.props.targetGender} hasMatches={!!this.props.matches} />}
         </div>
       </div>
     );
   }
 }
 
-DashboardMatches.propTypes = {
-  matches: PropTypes.array.isRequired,
+DashboardRecommendations.propTypes = {
+  matches: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+  ]),
   matchDetail: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.node,
@@ -87,7 +90,8 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchMatches: () => dispatch(fetchMatches()),
     onMultiple: (matches, type) => {
-      matches.map((each) => {
+      const currentMatches = matches;
+      currentMatches.map((each) => {
         if (type === 'like') return dispatch(likePerson(each._id));
         if (type === 'pass') return dispatch(passPerson(each._id));
         return null;
@@ -104,4 +108,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(DashboardMatches));
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(DashboardRecommendations));

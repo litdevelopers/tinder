@@ -19,7 +19,7 @@ function authReducer(state = initialState, action) {
         .set('globalErrors', state.get('globalErrors').concat(action.payload));
     case GLOBAL_ERROR_HANDLED:
       return state
-        .set('globalErrors', state.get('globalErrors').splice(1))
+        .set('globalErrors', state.get('globalErrors').shift())
         .set('currentError', '');
     case GLOBAL_ERROR_PUSHED:
       return state.set('currentError', action.payload);
