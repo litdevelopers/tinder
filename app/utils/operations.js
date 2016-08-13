@@ -22,3 +22,15 @@ export function getAuthToken(key) {
     .catch((error) => reject(error));
   });
 }
+
+export function matchesSortByDistance(a, b) {
+  if (a.distance_mi < b.distance_mi) return -1;
+  if (a.distance_mi > b.distance_mi.mi) return 1;
+  return 0;
+}
+
+export function matchesSortByLastActive(a, b) {
+  if (new Date(a.ping_time).getTime() < new Date(b.ping_time).getTime()) return -1;
+  if (new Date(a.ping_time).getTime() > new Date(b.ping_time).getTime()) return 1;
+  return 0;
+}

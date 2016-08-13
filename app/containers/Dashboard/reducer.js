@@ -17,7 +17,9 @@ import {
   FETCH_UPDATES_END,
   FETCH_UPDATES_ERROR,
   REMOVE_MATCH,
+  SORT_MATCHES,
 } from './constants';
+import { matchesSortByDistance, matchesSortByLastActive } from 'utils/operations';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const initialState = fromJS({
@@ -27,6 +29,11 @@ const initialState = fromJS({
   lastError: '',
   isFetching: false,
 });
+
+const sortMapping = {
+  distance: matchesSortByDistance,
+  lastActive: matchesSortByLastActive,
+};
 
 function dashboardReducer(state = initialState, action) {
   switch (action.type) {
@@ -45,7 +52,7 @@ function dashboardReducer(state = initialState, action) {
         .set('isFetching', false)
         .set('user', action.user)
         .set('history', action.history)
-        .set('matches', action.matches);
+        .set('matches', action.matches ? action.matches : state.get('matches'));
     case FETCH_UPDATES_SUCCESS:
       return state
         .set('updates', (state.get('updates').length > 20) ? state.get('updates').splice(1, 20).concat([action.payload]) : state.get('updates').concat([action.payload]));
@@ -60,6 +67,8 @@ function dashboardReducer(state = initialState, action) {
         .set('isFetching', false);
     case LOCATION_CHANGE:
       return state.set('isFetching', false);
+    case SORT_MATCHES:
+      return state.set('matches', action.payload === 'normal' ? state.get('matches') : state.get('matches').sort(sortMapping[action.payload]));
     case REMOVE_MATCH:
       return state
         .set('matches', state.get('matches').filter((each) => each._id !== action.id));

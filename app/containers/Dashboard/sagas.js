@@ -38,7 +38,7 @@ function* getTinderData() {
       yield put(fetchTinderDataSuccess((data.data)));
     } else if (data.status === 200 && typeof (data.data[2]) === 'string') {
       yield put(fetchTinderDataSuccess(data.data));
-      yield put(newError('MATCHES NOT FOUND...'));
+      yield put(newError("We're having a little trouble retrieving your matches."));
       yield put(newErrorAdded());
     }
   } catch (error) {
@@ -53,19 +53,23 @@ function* fetchMatchesAction() {
   const postURL = `${AUTH_URL}/tinder/matches`;
   try {
     const data = yield call(postRequest, postURL, { authToken });
-    if (data.status === 200 && data.data.length !== 0) {
+    if (data.status === 200 && data.data.length !== 0 && typeof (data.data) === 'object') {
       const currentMatches = yield select(selectMatches());
       const filteredNewMatches = data.data.filter((each) => {
         let flag = true;
         let counter = 0;
         for (; counter < currentMatches.length; counter++) {
           if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
+            console.log(each.name);
             flag = false;
           }
         }
         return flag;
       });
       yield put(fetchMatchesSuccess(currentMatches.concat(filteredNewMatches)));
+    } else {
+      yield put(newError("We're having a little trouble retrieving your matches."));
+      yield put(newErrorAdded());
     }
   } catch (error) {
     yield put(fetchMatchesError(error));

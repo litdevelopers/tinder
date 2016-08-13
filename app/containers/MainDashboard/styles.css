@@ -1,3 +1,17 @@
 .mainDashboard {
   display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+
+.mainDashboardHeader {
+  display: flex;
+  flex: 1;
+}
+
+.mainDashboardContent {
+  display: flex;
+  flex: 4;
+  border-top: 1px solid #eee;
 }

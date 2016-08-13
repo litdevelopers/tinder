@@ -16,11 +16,19 @@ import {
   FETCH_UPDATES_SUCCESS,
   FETCH_UPDATES_ERROR,
   FETCH_UPDATES_END,
+  SORT_MATCHES,
 } from './constants';
 
 export function fetchUpdates() {
   return {
     type: FETCH_UPDATES,
+  };
+}
+
+export function sortMatches(sortType) {
+  return {
+    type: SORT_MATCHES,
+    payload: sortType,
   };
 }
 
