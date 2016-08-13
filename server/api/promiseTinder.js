@@ -22,8 +22,8 @@ function getDefaults(client) {
 function getRecommendations(client) {
   return new Promise((resolve, reject) => {
     client.getRecommendations(MAX_REC_SIZE, (error, data) => {
-      if (error) {
-        reject(error);
+      if (error || !data.results) {
+        reject(error || 'RECOMMENDATIONS NOT FOUND');
       } else {
         resolve(data.results.filter((each) => !each.is_brand));
       }

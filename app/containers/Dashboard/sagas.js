@@ -30,34 +30,38 @@ export function* getTinderData() {
   const token = yield select(selectFacebookToken());
   const postURL = `${AUTH_URL}/tinder/data`;
 
-  const data = yield call(postRequest, postURL, { token });
-  if (data.status === 200) {
-    yield put(fetchTinderDataSuccess((data.data)));
-  } else {
-    yield put(fetchTinderDataError(data.data.errors));
+  try {
+    const data = yield call(postRequest, postURL, { token });
+    if (data.status === 200) {
+      yield put(fetchTinderDataSuccess((data.data)));
+    }
+  } catch (error) {
+    yield put(fetchTinderDataError(error));
   }
 }
 
 export function* fetchMatchesAction() {
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/matches`;
-  console.log('calling');
-  const data = yield call(postRequest, postURL, { authToken });
-  if (data.status === 200 && data.data.length !== 0) {
-    const currentMatches = yield select(selectMatches());
-    const filteredNewMatches = data.data.filter((each) => {
-      let flag = true;
-      let counter = 0;
-      for (; counter < currentMatches.length; counter++) {
-        if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
-          flag = false;
+
+  try {
+    const data = yield call(postRequest, postURL, { authToken });
+    if (data.status === 200 && data.data.length !== 0) {
+      const currentMatches = yield select(selectMatches());
+      const filteredNewMatches = data.data.filter((each) => {
+        let flag = true;
+        let counter = 0;
+        for (; counter < currentMatches.length; counter++) {
+          if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
+            flag = false;
+          }
         }
-      }
-      return flag;
-    });
-    yield put(fetchMatchesSuccess(currentMatches.concat(filteredNewMatches)));
-  } else {
-    yield put(fetchMatchesError(data.data || 'Error Fetching Matches'));
+        return flag;
+      });
+      yield put(fetchMatchesSuccess(currentMatches.concat(filteredNewMatches)));
+    }
+  } catch (error) {
+    yield put(fetchMatchesError(error));
   }
 }
 
