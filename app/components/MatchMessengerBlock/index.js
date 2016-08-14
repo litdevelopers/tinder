@@ -14,7 +14,6 @@ function MatchMessengerBlock(props) {
   const age = person && person.birth_date ? getAge(person.birth_date) : null;
   const messages = props.data.messages;
   const recentMessage = messages && messages[messages.length - 1] && messages[messages.length - 1].message;
-
   return (
     <div onClick={() => props.onClick(person._id)} className={styles.matchBlock}>
       <div className={styles.matchAvatarContainer}>

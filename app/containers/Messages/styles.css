@@ -28,6 +28,7 @@
 .profileBioPanel {
   flex: 2;
   border-left: 1px solid #eee;
+  display: flex;
 }
 
 .messagesPanel {
@@ -35,6 +36,6 @@
 }
 
 .chatBoxPanel {
-  flex: 1.5;
+  flex: 0.5;
   border-top: 1px solid #eee;
 }

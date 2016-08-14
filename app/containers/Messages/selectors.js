@@ -26,7 +26,7 @@ const selectPersonId = () => createSelector(
 
 const selectMatchesSelector = () => createSelector(
   selectDashboardHistory(),
-  (state) => [...state.matches.reverse()]
+  (state) => state.matches.slice().reverse()
 );
 
 const selectPersonSelector = () => createSelector(
@@ -36,26 +36,25 @@ const selectPersonSelector = () => createSelector(
     if (!id || id === '') {
       return undefined;
     }
-    return state.matches.filter((each) => {
-      console.log(each._id);
-      return true;
-    });
+    return state.matches.slice().filter((each) => {
+      return each.person._id === id;
+    })[0];
   }
 );
 
-// const selectMatchDetailImages = () => createSelector(
-//   selectMatchesSelector(),
-//   selectPersonSelector(),
-//   (matches, id) => {
-//     if (!id || id === '') {
-//       return undefined;
-//     }
-//     return matches.filter((each) => each._id = id)
-//   }
-// )
+const selectMatchDetailImages = () => createSelector(
+  selectPersonSelector(),
+  (person) => {
+    if (!person || person === '') {
+      return undefined;
+    }
+    return person.person.photos.map((each) => ({ original: each.url }));
+  }
+);
 
 export {
   selectMessagesDomain,
   selectPersonSelector,
   selectMatchesSelector,
+  selectMatchDetailImages,
 };
