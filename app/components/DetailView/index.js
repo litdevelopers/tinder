@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import ImageGallery from 'react-image-gallery';
 
-import { getAge, parsePingTime } from 'components/MatchCard/helpers';
+import { getAge, parsePingTime } from 'utils/operations';
 import { getFacebookUrl, getFacebookPicture } from 'utils/facebook';
 
 import styles from './styles.css';

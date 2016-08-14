@@ -2,6 +2,7 @@
   display: flex;
   flex: 1;
   border-bottom: 1px solid #eee;
+  cursor: pointer;
 }
 
 .matchAvatarContainer {

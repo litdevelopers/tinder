@@ -4,4 +4,4 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/Messages/DEFAULT_ACTION';
+export const SELECT_PERSON = 'SELECT_PERSON';

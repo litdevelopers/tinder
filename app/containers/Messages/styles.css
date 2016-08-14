@@ -20,9 +20,14 @@
   height: 100%;
 }
 
+.horizontalMessengerPanel {
+  display: flex;
+  flex: 4;
+}
+
 .profileBioPanel {
-  flex: 1;
-  border-bottom: 1px solid #eee;
+  flex: 2;
+  border-left: 1px solid #eee;
 }
 
 .messagesPanel {
