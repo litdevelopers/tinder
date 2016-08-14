@@ -32,6 +32,7 @@ const initialState = fromJS({
   history: '',
   matches: '',
   lastError: '',
+  updates: [],
   isFetching: false,
 });
 

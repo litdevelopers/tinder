@@ -44,7 +44,6 @@ const selectDashboardHistory = () => createSelector(
     (dashboard) => dashboard.history
 );
 
-
 export default selectDashboard;
 export {
   selectDashboard,
