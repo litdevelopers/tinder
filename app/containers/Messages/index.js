@@ -35,8 +35,8 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
             <div className={styles.horizontalMessengerPanel}>
               <div className={styles.columnMessengerPanel}>
                 <div className={styles.messagesPanel} >
-                  <MessageBubble from="me">This is content</MessageBubble>
-                  <MessageBubble from="you">This is other content</MessageBubble>
+                  <MessageBubble from="me">This is good content</MessageBubble>
+                  <MessageBubble from="you">This is bad content</MessageBubble>
                 </div>
                 <div className={styles.chatBoxPanel} >
                   <MessengerInput />
