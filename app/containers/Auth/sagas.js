@@ -19,8 +19,8 @@ function* loginFacebookSaga() {
   try {
     const authData = yield call(postRequest, requestURL, body);
     if (authData.status === 200) {
-      yield storeAuthToken('tinderToken', authData.data.authToken);
-      yield storeAuthToken('fbToken', authData.data.fbToken);
+      yield storeToken('tinderToken', authData.data.authToken);
+      yield storeToken('fbToken', authData.data.fbToken);
       yield put(loginFacebookSuccess({ authToken: authData.data.authToken, fbToken: authData.data.fbToken }));
       yield put(push('/dashboard/home'));
     }
@@ -37,12 +37,12 @@ function* loginLocalSaga() {
     if(authenticationData.data){
       yield put(loginFacebookSuccess({ authToken }))
       yield put(push('/dashboard/home'));
-    } 
+    }
   } catch(err) {
     console.log('Could not login locally with stored auth token. Fall back to fresh login.');
   }
 
-  
+
 }
 
 

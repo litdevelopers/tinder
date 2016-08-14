@@ -26,7 +26,7 @@ const selectFetching = () => createSelector(
 
 const selectTargetGender = () => createSelector(
   selectDashboard(),
-  (dashboardState) => dashboardState.user.user.gender_filter || 1
+  (dashboardState) => dashboardState.user.user.gender_filter
 );
 
 const selectGlobalErrors = () => createSelector(
