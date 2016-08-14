@@ -111,21 +111,24 @@ function* updateMatchesWatcher() {
   }
 }
 
+function* getUpdatesWatcher() {
+  while (yield take(FETCH_UPDATES)) {
+    // starts the task in the background
+    yield fork(tinderBackgroundSync);
+  }
+}
+
 
 // Individual exports for testing
 export function* dashboardSaga() {
   const tinderWatcher = yield fork(getTinderDataWatcher);
   const fetchWatcher = yield fork(updateMatchesWatcher);
-
-  while (yield take(FETCH_UPDATES)) {
-    // starts the task in the background
-    yield fork(tinderBackgroundSync);
+  const updateWatcher = yield fork(getUpdatesWatcher);
 
 
-    yield take(LOCATION_CHANGE);
-    yield cancel(tinderWatcher);
-    yield cancel(fetchWatcher);
-  }
+  yield take(LOCATION_CHANGE);
+  yield cancel(tinderWatcher);
+  yield cancel(fetchWatcher);
 }
 
 // All sagas to be loaded
