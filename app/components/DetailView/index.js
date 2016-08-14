@@ -29,8 +29,8 @@ class DetailView extends React.Component {
 
   render() {
     const age = getAge(this.props.data.birth_date);
-    const jobs = this.props.data.jobs[0];
-    const schools = this.props.data.schools[0];
+    const jobs = this.props.data.jobs && this.props.data.jobs[0];
+    const schools = this.props.data.jobs && this.props.data.schools[0];
 
     return (
       <div className={styles.detailViewContainer} >
@@ -57,7 +57,7 @@ class DetailView extends React.Component {
           <Text type="school">{schools && schools.name}</Text>
           <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? ' @ ' : null}{jobs && jobs.company && <a href={jobs.company.id} target="_blank">{jobs.company.name}</a>}</Text>
           <Text type="bio">{this.props.data.bio}</Text>
-          {this.props.data.common_connections.length > 0 ?
+          {this.props.data.common_connections && this.props.data.common_connections.length > 0 ?
             <div>
               <Text type="profileHeader">Common Connections</Text>
               <div className={styles.commonConnectionsContainer}>
@@ -80,7 +80,7 @@ class DetailView extends React.Component {
             })}
               </div>
             </div> : null}
-          {this.props.data.common_interests.length > 0 ?
+          {this.props.data.common_interests && this.props.data.common_interests.length > 0 ?
             <div className={styles.commonInterestsWrapper}>
               <Text type="profileHeader">Common Interests</Text>
               <div className={styles.commonInterestsContainer}>

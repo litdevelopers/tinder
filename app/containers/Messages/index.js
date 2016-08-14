@@ -6,7 +6,7 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { selectPersonSelector, selectMatchesSelector } from './selectors';
+import { selectPersonSelector, selectMatchesSelector, selectMatchDetailImages } from './selectors';
 import styles from './styles.css';
 import { selectDashboardHistory } from 'containers/Dashboard/selectors';
 import { createStructuredSelector } from 'reselect';
@@ -22,6 +22,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
 
   render() {
     console.log(this.props.currentPerson);
+    console.log(this.props.matchDetailImages);
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
@@ -36,7 +37,11 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                 <h1>This is messages</h1>
               </div>
               <div className={styles.profileBioPanel} >
-                <h1>This is profile bio</h1>
+                {this.props.currentPerson && this.props.matchDetailImages ?
+                  <DetailView
+                    data={this.props.currentPerson.person}
+                    imageData={this.props.matchDetailImages}
+                  /> : <h1>Test</h1>}
               </div>
             </div>
             <div className={styles.chatBoxPanel} >
@@ -59,12 +64,14 @@ const mapStateToProps = createStructuredSelector({
   userHistory: selectDashboardHistory(),
   currentPerson: selectPersonSelector(),
   selectMatches: selectMatchesSelector(),
+  matchDetailImages: selectMatchDetailImages(),
 });
 
 Messages.propTypes = {
   matchMessages: PropTypes.object,
   userHistory: PropTypes.object,
   currentPerson: PropTypes.object,
+  selectMatches: PropTypes.array,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

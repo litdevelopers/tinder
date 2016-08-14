@@ -6,11 +6,12 @@
 }
 
 .detailViewContainer_mainPicture {
-  min-height: 300px;
+  flex: 10;
+  overflow: hidden;
 }
 
 .detailViewContainer_content {
-  flex: 6;
+  flex: 3;
   padding: 20px 10px;
   overflow-y: scroll;
 }
