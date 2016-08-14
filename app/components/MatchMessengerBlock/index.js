@@ -10,22 +10,23 @@ import { getAge, convertDistanceToLocal, parsePingTime } from 'utils/operations'
 import styles from './styles.css';
 
 function MatchMessengerBlock(props) {
-  console.log(props);
   const person = props.data.person;
-  const age = getAge(person.birth_date);
+  const age = person && person.birth_date ? getAge(person.birth_date) : null;
   const messages = props.data.messages;
   const recentMessage = messages && messages[messages.length - 1] && messages[messages.length - 1].message;
+
   return (
-    <div onClick={() => props.onClick(person._id) } className={styles.matchBlock}>
+    <div onClick={() => props.onClick(person._id)} className={styles.matchBlock}>
       <div className={styles.matchAvatarContainer}>
         <div
           className={styles.matchAvatar}
           style={{
-            backgroundImage: `url(${person.photos[0].processedFiles[0].url})`,
-          }} />
+            backgroundImage: `url(${person && person.photos && person.photos[0].processedFiles[0].url})`,
+          }}
+        />
       </div>
       <div className={styles.matchDetails}>
-        <span className={styles.matchName}>{person.name}</span>
+        <span className={styles.matchName}>{person && person.name}</span>
         <span className={styles.matchAge}>{age}</span>
         <span className={styles.matchRecentMessage}>{recentMessage}</span>
       </div>
@@ -35,6 +36,7 @@ function MatchMessengerBlock(props) {
 
 MatchMessengerBlock.propTypes = {
   data: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default MatchMessengerBlock;
