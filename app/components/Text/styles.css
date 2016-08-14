@@ -95,3 +95,14 @@
 .bioInputTextCount {
   float: right;
 }
+
+.matchName {
+  display: inline-block;
+  font-weight: 400;
+}
+
+.matchRecentMessage {
+  display: block;
+  font-size: 14px;
+  color: #aaa;
+}

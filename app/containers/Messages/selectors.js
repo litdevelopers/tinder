@@ -33,10 +33,11 @@ const selectPersonSelector = () => createSelector(
   selectDashboardHistory(),
   selectPersonId(),
   (state, id) => {
-    if (!id || id === '') {
+    if (!id || id === '' || !state) {
       return undefined;
     }
     return state.matches.slice().filter((each) => {
+      if (!each.person) return false;
       return each.person._id === id;
     })[0];
   }
@@ -45,7 +46,7 @@ const selectPersonSelector = () => createSelector(
 const selectMatchDetailImages = () => createSelector(
   selectPersonSelector(),
   (person) => {
-    if (!person || person === '') {
+    if (!person || person === '' || !person.person) {
       return undefined;
     }
     return person.person.photos.map((each) => ({ original: each.url }));

@@ -47,12 +47,11 @@ class DetailView extends React.Component {
             renderItem={(item) => <div key={item.original} style={{ backgroundImage: `url(${item.original})`, height: 400, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />}
           />
         </div>
-
         <div className={styles.detailViewContainer_content}>
           <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
           <div>
-          <Text type="age" style={{ color: 'black' }}>{age}</Text>
-          <Text type="lastActive">{parsePingTime(this.props.data.ping_time)}</Text>
+            <Text type="age" style={{ color: 'black' }}>{age}</Text>
+            <Text type="lastActive">{parsePingTime(this.props.data.ping_time)}</Text>
           </div>
           <Text type="school">{schools && schools.name}</Text>
           <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? ' @ ' : null}{jobs && jobs.company && <a href={jobs.company.id} target="_blank">{jobs.company.name}</a>}</Text>

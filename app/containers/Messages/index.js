@@ -12,17 +12,15 @@ import { selectDashboardHistory } from 'containers/Dashboard/selectors';
 import { createStructuredSelector } from 'reselect';
 import { selectPersonAction } from './actions';
 
-import MatchMessengerBlock from 'components/MatchMessengerBlock';
+import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   mapMatches() {
-    return this.props.selectMatches && this.props.selectMatches.map((each) => <MatchMessengerBlock onClick={this.props.selectPerson} key={each._id} data={each} />);
+    return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} />);
   }
 
   render() {
-    console.log(this.props.currentPerson);
-    console.log(this.props.matchDetailImages);
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
@@ -70,6 +68,7 @@ const mapStateToProps = createStructuredSelector({
 Messages.propTypes = {
   matchMessages: PropTypes.object,
   userHistory: PropTypes.object,
+  selectPerson: PropTypes.func,
   currentPerson: PropTypes.object,
   selectMatches: PropTypes.array,
 };
