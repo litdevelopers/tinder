@@ -6,6 +6,7 @@ import { Motion, spring } from 'react-motion';
 import { fetchTinderData } from 'containers/Dashboard/actions';
 import { selectUserObject } from 'containers/Dashboard/selectors';
 import { getAge } from 'utils/operations';
+import { editingBio } from './actions';
 
 import Text from 'components/Text';
 import styles from './styles.css';
@@ -53,7 +54,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                     </div>
                     <div className={styles.bioContainer}>
                       <label htmlFor="bioInput" className={styles.bioInputLabel}>About {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
-                      <textarea value={bio} className={styles.bioInput} id="bioInput" />
+                      <textarea value={bio} className={styles.bioInput} id="bioInput" onChange={this.props.editingBio} />
                     </div>
                   </div>
                 </div>
@@ -71,6 +72,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
 MainDashboard.propTypes = {
   fetchInitialData: PropTypes.func.isRequired,
   userObject: PropTypes.object,
+  editingBio: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -80,6 +82,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     fetchInitialData: () => dispatch(fetchTinderData()),
+    editingBio: (e) => dispatch(editingBio(e.target.value)),
   };
 }
 

@@ -109,6 +109,18 @@ function superLikePerson(client, id) {
   });
 }
 
+function setBio(client, newBio) {
+  return new Promise((resolve, reject) => {
+    client.updateBio(newBio, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
 
 
 module.exports = {
@@ -122,4 +134,5 @@ module.exports = {
   superLikePerson,
   getUserFromId,
   getMeta,
+  setBio,
 };

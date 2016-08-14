@@ -1,5 +1,4 @@
-import { takeLatest } from 'redux-saga';
-import { take, call, put, select, fork, cancel, actionChannel } from 'redux-saga/effects';
+import { take, call, put, select, actionChannel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
@@ -26,8 +25,6 @@ import {
   selectAuthToken,
 } from 'containers/Auth/selectors';
 
-import { FETCH_MATCHES } from 'containers/Dashboard/constants';
-import { fetchMatchesAction } from 'containers/Dashboard/sagas';
 
 import { postRequest } from 'utils/request';
 

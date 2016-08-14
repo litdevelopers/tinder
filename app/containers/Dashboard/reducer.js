@@ -19,6 +19,12 @@ import {
   REMOVE_MATCH,
   SORT_MATCHES,
 } from './constants';
+
+import {
+  EDITING_BIO,
+} from 'containers/MainDashboard/constants';
+
+
 import {
   matchesSortByDistance,
   matchesSortByLastActive,
@@ -29,8 +35,9 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 
 const initialState = fromJS({
   user: '',
+  rating: '',
   history: '',
-  matches: '',
+  recommendations: '',
   lastError: '',
   updates: [],
   isFetching: false,
@@ -53,14 +60,14 @@ function dashboardReducer(state = initialState, action) {
     case FETCH_MATCHES_SUCCESS:
       return state
         .set('isFetching', false)
-        .set('matches', action.payload);
+        .set('recommendations', fromJS(action.payload));
     case FETCH_TINDER_DATA_SUCCESS:
       return state
-        .set('data', action.payload)
         .set('isFetching', false)
-        .set('user', action.user)
-        .set('history', action.history)
-        .set('matches', action.matches ? action.matches : state.get('matches'));
+        .set('user', fromJS(action.user))
+        .set('rating', fromJS(action.rating))
+        .set('history', fromJS(action.history))
+        .set('recommendations', action.recommendations ? fromJS(action.recommendations) : fromJS(state.get('recommendations')));
     case FETCH_UPDATES_SUCCESS:
       return state
         .set('updates', (state.get('updates').length > 20) ? state.get('updates').splice(1, 20).concat([action.payload]) : state.get('updates').concat([action.payload]));
@@ -70,16 +77,18 @@ function dashboardReducer(state = initialState, action) {
       return state
         .set('lastError', action.payload)
         .set('isFetching', false);
+    case EDITING_BIO:
+      return state.setIn(['user', 'bio'], action.payload);
     case FETCH_UPDATES_END:
       return state
         .set('isFetching', false);
     case LOCATION_CHANGE:
       return state.set('isFetching', false);
     case SORT_MATCHES:
-      return state.set('matches', action.payload === 'normal' ? state.get('matches') : state.get('matches').splice(0).sort(sortMapping[action.payload]));
+      return state.set('recommendations', action.payload === 'normal' ? state.get('recommendations') : fromJS(state.get('recommendations').toJS().splice(0).sort(sortMapping[action.payload])));
     case REMOVE_MATCH:
       return state
-        .set('matches', state.get('matches').filter((each) => each._id !== action.id));
+        .set('recommendations', fromJS(state.get('recommendations').toJS().filter((each) => each._id !== action.id)));
     default:
       return state;
   }

@@ -1,20 +1,24 @@
 import { createSelector } from 'reselect';
-import { selectDashboardDomain } from 'containers/Dashboard/selectors';
+import { selectDashboard } from 'containers/Dashboard/selectors';
 import { mergeArray } from 'utils/operations';
 
-const selectMatchesDomain = () => state => state.get('recommendations');
+const selectRecommendationsDomain = () => state => state.get('recommendations');
+const selectRecommendations = () => createSelector(
+  selectRecommendationsDomain(),
+  (substate) => substate.toJS()
+);
 
 const selectMatches = () => createSelector(
-    selectDashboardDomain(),
-    (dashboardState) => dashboardState.get('matches')
+    selectDashboard(),
+    (dashboardState) => dashboardState.recommendations
 );
 
 const selectCurrentMatch = () => createSelector(
-  selectMatchesDomain(),
+  selectRecommendations(),
   selectMatches(),
-  (matchesState, matches) => {
+  (recommendationsState, matches) => {
     if (!matches) return undefined; // eslint-disable-line
-    return matches.filter((each) => each._id === matchesState.getIn(['currentDetailView', 'id']))[0];
+    return matches.filter((each) => each._id === recommendationsState.currentDetailView.id)[0];
   }
 );
 
@@ -31,7 +35,7 @@ const selectCurrentMatchLinks = () => createSelector(
 );
 
 export {
-  selectMatchesDomain,
+  selectRecommendationsDomain,
   selectMatches,
   selectCurrentMatch,
   selectCurrentMatchLinks,

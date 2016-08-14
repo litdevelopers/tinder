@@ -88,9 +88,10 @@ export function fetchTinderData() {
 export function fetchTinderDataSuccess(data) {
   return {
     type: FETCH_TINDER_DATA_SUCCESS,
-    user: data[0],
+    user: data[0].user,
+    rating: data[0].rating,
     history: data[1],
-    matches: typeof (data[2]) === 'string' ? null : data[2],
+    recommendations: typeof (data[2]) === 'string' ? null : data[2],
     xAuthToken: data[3],
   };
 }

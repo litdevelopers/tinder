@@ -10,6 +10,10 @@ import {
 } from './constants';
 
 import {
+  EDITING_BIO,
+} from 'containers/MainDashboard/constants';
+
+import {
   fetchTinderDataSuccess,
   fetchTinderDataError,
   fetchMatchesSuccess,
@@ -22,7 +26,6 @@ import {
 import { newError, newErrorAdded } from 'containers/Notification/actions';
 
 import {
-  selectFacebookToken,
   selectAuthToken,
 } from 'containers/Auth/selectors';
 import { selectMatches } from 'containers/Recommendations/selectors';
@@ -99,6 +102,19 @@ export function* tinderBackgroundSync() {
   }
 }
 
+function* updateBioAction(newBio) {
+  yield call(delay, 1000);
+  const authToken = yield select(selectAuthToken());
+  const postURL = `${AUTH_URL}/tinder/update/bio`;
+
+  try {
+    yield call(postRequest, postURL, { authToken, bio: newBio });
+  } catch (error) {
+    yield put((newError(error)));
+    yield put(newErrorAdded());
+  }
+}
+
 function* getTinderDataWatcher() {
   while (yield take(FETCH_TINDER_DATA)) {
     yield call(getTinderData);
@@ -118,17 +134,34 @@ function* getUpdatesWatcher() {
   }
 }
 
+function* getBioUpdatesWatcher() {
+  let currentUpdate;
+  while (yield take(EDITING_BIO)) {
+    const { payload } = yield take(EDITING_BIO);
+
+    if (currentUpdate) {
+      yield cancel(currentUpdate);
+    }
+
+    currentUpdate = yield fork(updateBioAction, payload);    
+  }
+}
+
 
 // Individual exports for testing
 export function* dashboardSaga() {
   const tinderWatcher = yield fork(getTinderDataWatcher);
   const fetchWatcher = yield fork(updateMatchesWatcher);
-  const updateWatcher = yield fork(getUpdatesWatcher);
+  yield fork(getUpdatesWatcher);
+
+  // Profile Editing sagas
+  const bioWatcher = yield fork(getBioUpdatesWatcher);
 
 
   yield take(LOCATION_CHANGE);
   yield cancel(tinderWatcher);
   yield cancel(fetchWatcher);
+  yield cancel(bioWatcher);
 }
 
 // All sagas to be loaded
