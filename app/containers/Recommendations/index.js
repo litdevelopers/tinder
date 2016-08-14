@@ -14,14 +14,12 @@ import MatchCard from 'components/MatchCard';
 import Button from 'components/Button';
 import Panel from 'components/Panel';
 
-class DashboardRecommendations extends React.Component { // eslint-disable-line
-  shouldComponentUpdate(nextProps) {
-    return true;
-  }
+import Infinite from 'react-infinite';
 
+class DashboardRecommendations extends React.Component { // eslint-disable-line
   mapMatches() {
     return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />)
-    .concat(<div style={{ flexBasis: '100%' }} key={"wayfinder"}><Waypoint scrollableAncestor={this.scrollContainer} onEnter={() => this.handleWaypoint()} /></div>);
+    .concat(<h1 key="nigga">nigga my nigga</h1>);
   }
 
   handleWaypoint() {
@@ -52,8 +50,10 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             }
             </div>
           </div>
-          <div ref={(thisComponent) => { this.scrollContainer = thisComponent; }} className={styles.dashboardMatchesCardsContainer}>
+          <div className={styles.dashboardMatchesCardsContainer}>
+            <Infinite useWindowAsScrollContainer elementHeight={350} itemsPerRow={3}>
             {matches}
+            </Infinite>
           </div>
         </div>
         <div className={styles.dashboardMatchesDetails}>
