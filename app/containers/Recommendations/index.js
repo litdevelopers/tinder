@@ -34,18 +34,22 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
       <div className={styles.dashboardMatchesContainer}>
         <div className={styles.dashboardMatchesCards}>
           <div className={styles.dashboardMatchesNavigation}>
-            <select onChange={(event) => {
-              this.props.onFilter(event.target.value)
-            }}>
-              <option value="normal">Default</option>
+            <select
+              onChange={(event) => {
+                this.props.onFilter(event.target.value);
+              }}
+            >
+              <option value="normal">Sort By...</option>
               <option value="lastActive">Recently Active</option>
               <option value="distance">Nearby</option>
               <option value="youngest">Youngest</option>
               <option value="oldest">Oldest</option>
             </select>
             <div className={styles.dashboardMatchesContainerButtons}>
-              <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'like')}>Like All</Button>
-              <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'pass')}>Pass All</Button>
+            {
+              // <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'like')}>Like All</Button>
+              // <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'pass')}>Pass All</Button>
+            }
             </div>
           </div>
           <div ref={(thisComponent) => { this.scrollContainer = thisComponent; }} className={styles.dashboardMatchesCardsContainer}>

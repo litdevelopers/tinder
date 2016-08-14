@@ -11,6 +11,6 @@ import {
 export function selectPersonAction(id) {
   return {
     type: SELECT_PERSON,
-    paylod: id,
+    payload: id,
   };
 }
