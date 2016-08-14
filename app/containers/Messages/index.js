@@ -80,7 +80,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 Messages.propTypes = {
-  matchMessages: PropTypes.object,
+  matchMessages: PropTypes.array,
   userHistory: PropTypes.object,
   selectPerson: PropTypes.func,
   currentPerson: PropTypes.object,

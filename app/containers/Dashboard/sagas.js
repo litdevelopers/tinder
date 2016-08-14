@@ -29,11 +29,11 @@ import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
 
 function* getTinderData() {
-  const token = yield select(selectFacebookToken());
+  const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/data`;
   yield call(delay, 1000);
   try {
-    const data = yield call(postRequest, postURL, { token });
+    const data = yield call(postRequest, postURL, { authToken });
     if (data.status === 200 && typeof (data.data[2]) === 'object') {
       yield put(fetchTinderDataSuccess((data.data)));
     } else if (data.status === 200 && typeof (data.data[2]) === 'string') {

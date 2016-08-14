@@ -45,6 +45,18 @@ function getUserFromId(client, user) {
   })
 }
 
+function getMeta(client) {
+  return new Promise((resolve, reject) => {
+    client.getAccount((error, response)=>{
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  })
+}
+
 function getUserUpdates(client) {
   return new Promise((resolve, reject) => {
     client.getUpdates((error, response) => {
@@ -109,4 +121,5 @@ module.exports = {
   passPerson,
   superLikePerson,
   getUserFromId,
+  getMeta,
 };

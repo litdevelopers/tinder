@@ -39,21 +39,19 @@ router.post('/auth/facebook', (req, res) => {
 });
 
 router.post('/tinder/data', (req, res) => {
-  const fbtoken = req.body.token;
+  const { authToken } = req.body;
   const client = new tinder.TinderClient();
-  client.authorize(fbtoken, 0, () => {
-    Promise.all([
-      tinderPromise.getDefaults(client),
-      tinderPromise.getHistory(client),
-      tinderPromise.getRecommendations(client),
-      tinderPromise.getAuthToken(client),
-    ])
-    .then((data) => {
-      res.status(200).json(data);
-    })
-    .catch((err) => {
-      res.status(400).json(err);
-    });
+  client.setAuthToken(authToken);
+  Promise.all([
+    tinderPromise.getMeta(client),
+    tinderPromise.getHistory(client),
+    tinderPromise.getRecommendations(client),
+  ])
+  .then((data) => {
+    res.status(200).json(data);
+  })
+  .catch((err) => {
+    res.status(400).json(err);
   });
 });
 
