@@ -103,12 +103,14 @@ export default function createRoutes(store) {
         name: 'dashboard home',
         getComponent(nextState, cb) {
           const importModules = Promise.all([
+            System.import('containers/MainDashboard/reducer'),
             System.import('containers/MainDashboard'),
           ]);
 
           const renderRoute = loadModule(cb);
 
-          importModules.then(([component]) => {
+          importModules.then(([reducer, component]) => {
+            injectReducer('userDashboard', reducer.default);
             renderRoute(component);
           });
 

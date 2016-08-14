@@ -91,3 +91,7 @@
 .profileName {
   font-size:40px;
 }
+
+.bioInputTextCount {
+  float: right;
+}

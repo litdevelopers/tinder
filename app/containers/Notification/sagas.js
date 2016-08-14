@@ -28,10 +28,7 @@ export function* notificationWatcher() {
 }
 
 export function* notificationSaga() {
-  const watcher = yield fork(notificationWatcher);
-
-  yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
+  yield fork(notificationWatcher);
 }
 
 export default [

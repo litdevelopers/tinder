@@ -16,10 +16,12 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
     // check if token and userid exists or not
     this.props.fetchInitialData();
   }
+
   render() {
     const { userObject } = this.props;
     if (userObject) {
-      const { schools } = userObject;
+      const { schools, bio } = userObject;
+
       return (
         <div className={styles.mainDashboard}>
           <div className={styles.mainDashboardProfile}>
@@ -41,13 +43,18 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                 <div className={styles.mainDashboardContent} style={{ flex }}>
                   <div className={styles.mainDashboardProfilePicture} style={{ backgroundImage: `url(${userObject.photos[0].url}`, width, minHeight }} />
                   <div className={styles.mainDashboardContentContainer}>
-                    <Text type="profileName">{userObject.full_name}</Text>
+                    <div className={styles.profileNameContainer}>
+                      <Text type="profileName">{userObject.full_name}</Text>
+                    </div>
                     <div className={styles.mainDashboardContentContainerTeaser}>
                       <Text type="bio">{getAge(userObject.birth_date)}</Text>
                       <Text type="bio">{userObject.gender === 0 ? 'Male' : 'Female'}</Text>
                       <Text type="bio">{schools[0] && schools[0].name}</Text>
                     </div>
-                    <Text type="bio" style={{ display: 'block' }}>{userObject.bio}</Text>
+                    <div className={styles.bioContainer}>
+                      <label htmlFor="bioInput" className={styles.bioInputLabel}>About {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
+                      <textarea value={bio} className={styles.bioInput} id="bioInput" />
+                    </div>
                   </div>
                 </div>
               }
