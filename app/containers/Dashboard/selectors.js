@@ -39,6 +39,12 @@ const selectUserObject = () => createSelector(
   (dashboardState) => dashboardState.user.user || null
 );
 
+const selectDashboardHistory = () => createSelector(
+    selectDashboard(),
+    (dashboard) => dashboard.history
+);
+
+
 export default selectDashboard;
 export {
   selectDashboard,
@@ -47,4 +53,5 @@ export {
   selectGlobalErrors,
   selectFetching,
   selectUserObject,
+  selectDashboardHistory,
 };

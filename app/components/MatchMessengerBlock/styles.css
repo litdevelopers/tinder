@@ -1,0 +1,40 @@
+.matchBlock {
+  display: flex;
+  flex: 1;
+  border-bottom: 1px solid #eee;
+}
+
+.matchAvatarContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100px;
+}
+
+.matchAvatar {
+  height: 100%;
+  flex: 1;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.matchDetails {
+  flex: 2;
+  padding: 10px;
+}
+
+.matchName {
+  display: inline-block;
+  font-weight: 400;
+}
+
+.matchAge {
+  float: right;
+}
+
+.matchRecentMessage {
+  display: block;
+  font-size: 14px;
+}
