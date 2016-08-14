@@ -18,7 +18,7 @@ const ReactBoilerplate = {
     defaults: {
       /**
        * we need to exclude dependencies which are not intended for the browser
-       * by listing them here.
+       * by listing them here.container
        */
       exclude: [
         'chalk',
