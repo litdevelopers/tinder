@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { getAge, convertDistanceToLocal, parsePingTime } from './helpers';
+import { getAge, convertDistanceToLocal, parsePingTime } from 'utils/operations';
 import styles from './styles.css';
 import Text from 'components/Text';
 import Button from 'components/Button';

@@ -19,7 +19,12 @@ import {
   REMOVE_MATCH,
   SORT_MATCHES,
 } from './constants';
-import { matchesSortByDistance, matchesSortByLastActive } from 'utils/operations';
+import {
+  matchesSortByDistance,
+  matchesSortByLastActive,
+  matchesSortByYoungest,
+  matchesSortByOldest,
+} from 'utils/operations';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const initialState = fromJS({
@@ -33,6 +38,8 @@ const initialState = fromJS({
 const sortMapping = {
   distance: matchesSortByDistance,
   lastActive: matchesSortByLastActive,
+  youngest: matchesSortByYoungest,
+  oldest: matchesSortByOldest,
 };
 
 function dashboardReducer(state = initialState, action) {

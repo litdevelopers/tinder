@@ -6,15 +6,17 @@
 
 import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
+  SELECT_PERSON,
 } from './constants';
 
-const initialState = fromJS({});
+const initialState = fromJS({
+  currentPerson: '',
+});
 
 function messagesReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case SELECT_PERSON:
+      return state.set('currentPerson', action.payload);
     default:
       return state;
   }

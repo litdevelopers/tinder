@@ -5,7 +5,7 @@
 */
 
 import React, { PropTypes } from 'react';
-import { getAge, convertDistanceToLocal, parsePingTime } from 'components/MatchCard//helpers';
+import { getAge, convertDistanceToLocal, parsePingTime } from 'utils/operations';
 
 import styles from './styles.css';
 
@@ -15,7 +15,7 @@ function MatchMessengerBlock(props) {
   const messages = props.data.messages;
   const recentMessage = messages && messages[messages.length - 1] && messages[messages.length - 1].message;
   return (
-    <div className={styles.matchBlock}>
+    <div onClick={() => props.onClick(person._id) } className={styles.matchBlock}>
       <div className={styles.matchAvatarContainer}>
         <div
           className={styles.matchAvatar}
