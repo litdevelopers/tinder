@@ -87,3 +87,7 @@
   float: right; 
   text-transform: initial;
 }
+
+.profileName {
+  font-size:40px;
+}

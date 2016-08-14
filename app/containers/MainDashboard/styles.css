@@ -35,7 +35,6 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	border: 1px solid #eee;
-	flex:1;
 	position: relative;
 	top: -75px;
 	box-shadow: 0px -7px 8px 0px rgba(157,157,157,0.03);
@@ -43,6 +42,11 @@
 
 .mainDashboardContentContainer {
 	/*margin: 100px 10px 10px 10px;*/
+	display: flex;
+	position: relative;
+	top: -50px;
+	align-items: center;
+	flex-direction: column;
 	margin: 0px 10px;
 	flex: 8;
 }

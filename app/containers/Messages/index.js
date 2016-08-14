@@ -15,11 +15,12 @@ import MatchMessengerBlock from 'components/MatchMessengerBlock';
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   mapMatches() {
-    const matches = this.props.userHistory.matches;
-    return matches && matches.reverse().map((each) => <MatchMessengerBlock key={each._id} data={each} />);
+    const messages = this.props.matchMessages;
+    return messages && messages.reverse().map((each) => <MatchMessengerBlock key={each._id} data={each} />);
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
@@ -54,7 +55,7 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({ userHistory: selectDashboardHistory() });
 
 Messages.propTypes = {
-  userHistory: PropTypes.object,
+  matchMessages: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

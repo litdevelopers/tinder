@@ -40,6 +40,8 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                   <div className={styles.mainDashboardProfilePicture} style={{ backgroundImage: `url(${userObject.photos[0].url}`, width, minHeight }} />
                   <div className={styles.mainDashboardContentContainer}>
                     <Text type="profileName">{userObject.name}</Text>
+                    <Text type="bio">{userObject.gender === 0 ? 'Male' : 'Female'}</Text>
+                    <Text type="bio" style={{ display: 'block' }}>{userObject.bio}</Text>
                   </div>
                 </div>
               }
