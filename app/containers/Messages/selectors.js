@@ -55,9 +55,34 @@ const selectMatchDetailImages = () => createSelector(
   }
 );
 
+const selectMatchMessages = () => createSelector(
+  selectPersonSelector(),
+  (person) => {
+    if (!person) {
+      return undefined;
+    }
+    return person.messages.slice().map((each) => {
+      // console.log('from', each.from);
+      // console.log('slice', person._id.slice(0, 24));
+      // console.log('to', each.to);
+      if (person._id.indexOf(each.to)) {
+        return {
+          from: 'you',
+          payload: each,
+        };
+      }
+      return {
+        from: 'me',
+        payload: each,
+      };
+    });
+  }
+);
+
 export {
   selectMessagesDomain,
   selectPersonSelector,
   selectMatchesSelector,
   selectMatchDetailImages,
+  selectMatchMessages,
 };

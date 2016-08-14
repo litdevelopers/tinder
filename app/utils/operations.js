@@ -24,6 +24,25 @@ export function parsePingTime(dateString) {
   return `active ${days} day${Number(days) === 1 ? '' : 's'} ago`;
 }
 
+export function convertActivityTime(dateString) {
+  // const activity = new Date(recentActivity);
+  // const hours = activity.getHours();
+  // const minutes = activity.getMinutes();
+  // return `${hours}:${(`${minutes}`).length === 1 ? `0${minutes}` : minutes}`;
+  const currentDate = new Date().getTime();
+  const pingTimeDifferenceMinutes = (currentDate - new Date(dateString).getTime()) / 60000;
+
+  if (pingTimeDifferenceMinutes < 60) {
+    const minutes = pingTimeDifferenceMinutes.toFixed(0);
+    return `${minutes} minute${Number(minutes) === 1 ? '' : 's'} ago`;
+  } else if (pingTimeDifferenceMinutes / 60 < 24) {
+    const hours = (pingTimeDifferenceMinutes / 60).toFixed(0);
+    return `${hours} hour${Number(hours) === 1 ? '' : 's'} ago`;
+  }
+  const days = (pingTimeDifferenceMinutes / 1440).toFixed(0);
+  return `${days} day${Number(days) === 1 ? '' : 's'} ago`;
+}
+
 export const convertDistanceToLocal = (distance) => Math.floor(distance * 1.6);
 
 export function mergeArray(arr1, arr2, length, mapFunc) {

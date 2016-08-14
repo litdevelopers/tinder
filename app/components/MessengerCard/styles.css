@@ -28,14 +28,3 @@
   flex: 2;
   padding: 20px;
 }
-
-.matchName {
-  display: inline-block;
-  font-weight: 400;
-}
-
-.matchRecentMessage {
-  display: block;
-  font-size: 14px;
-  color: #aaa;
-}
