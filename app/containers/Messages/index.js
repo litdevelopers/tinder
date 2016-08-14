@@ -14,6 +14,8 @@ import { selectPersonAction } from './actions';
 
 import MatchMessengerBlock from 'components/MatchMessengerBlock';
 import DetailView from 'components/DetailView';
+import MessageBubble from 'components/MessageBubble';
+import MessengerInput from 'components/MessengerInput';
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   mapMatches() {
@@ -21,8 +23,6 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   render() {
-    console.log(this.props.currentPerson);
-    console.log(this.props.matchDetailImages);
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
@@ -33,8 +33,14 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
         <div className={styles.messengerPanel}>
           <div className={styles.messengerPanelContainer}>
             <div className={styles.horizontalMessengerPanel}>
-              <div className={styles.messagesPanel} >
-                <h1>This is messages</h1>
+              <div className={styles.columnMessengerPanel}>
+                <div className={styles.messagesPanel} >
+                  <MessageBubble from="me">This is content</MessageBubble>
+                  <MessageBubble from="you">This is other content</MessageBubble>
+                </div>
+                <div className={styles.chatBoxPanel} >
+                  <MessengerInput />
+                </div>
               </div>
               <div className={styles.profileBioPanel} >
                 {this.props.currentPerson && this.props.matchDetailImages ?
@@ -43,9 +49,6 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                     imageData={this.props.matchDetailImages}
                   /> : <h1>Test</h1>}
               </div>
-            </div>
-            <div className={styles.chatBoxPanel} >
-              <h1>This is chatBoxPanel</h1>
             </div>
           </div>
         </div>

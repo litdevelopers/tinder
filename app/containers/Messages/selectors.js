@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 import { selectDashboardHistory } from 'containers/Dashboard/selectors';
+
+import { messagesSortByRecent } from 'utils/operations';
 /**
  * Direct selector to the messages state domain
  */
@@ -26,7 +28,7 @@ const selectPersonId = () => createSelector(
 
 const selectMatchesSelector = () => createSelector(
   selectDashboardHistory(),
-  (state) => state.matches.slice().reverse()
+  (state) => state.matches.slice().sort((a, b) => messagesSortByRecent(a, b)),
 );
 
 const selectPersonSelector = () => createSelector(

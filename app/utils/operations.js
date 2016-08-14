@@ -65,3 +65,7 @@ export function matchesSortByOldest(a, b) {
   return getAge(b.birth_date) - getAge(a.birth_date);
 }
 
+export function messagesSortByRecent(a, b) {
+  return new Date(b.last_activity_date).getTime() - new Date(a.last_activity_date).getTime();
+}
+

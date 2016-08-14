@@ -25,6 +25,12 @@
   flex: 4;
 }
 
+.columnMessengerPanel {
+  flex: 4.5;
+  display: flex;
+  flex-direction: column;
+}
+
 .profileBioPanel {
   flex: 2;
   border-left: 1px solid #eee;
@@ -33,9 +39,14 @@
 
 .messagesPanel {
   flex: 4;
+  padding: 20px;
 }
 
 .chatBoxPanel {
   flex: 0.5;
-  border-top: 1px solid #eee;
+  /*border-top: 1px solid #eee;*/
+  width: 100%;
+  display: flex;
+  padding: 20px;
+  align-items: center;
 }

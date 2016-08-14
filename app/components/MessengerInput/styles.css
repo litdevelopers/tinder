@@ -1,0 +1,41 @@
+.write {
+  font-size: 16px;
+  flex: 1;
+  height: 40px;
+  padding: 0 10px;
+  color: #1a1a1a;
+  border: 0;
+  outline: none;
+  background-color: #eceff1;
+  font-weight: 400;
+  display: flex;
+}
+
+.input {
+  font-size: 16px;
+  float: left;
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  color: #1a1a1a;
+  border: 0;
+  outline: none;
+  background-color: #eceff1;
+  font-weight: 400;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.send {
+  display: inline-block;
+  float: right;
+  width: 20px;
+  height: 42px;
+  margin-left: 11px;
+  content: '';
+  background-image: url("http://s30.postimg.org/nz9dho0pp/send.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
