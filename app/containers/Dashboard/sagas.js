@@ -119,11 +119,10 @@ export function* dashboardSaga() {
 
   while (yield take(FETCH_UPDATES)) {
     // starts the task in the background
-    const bgSyncTask = yield fork(tinderBackgroundSync);
+    yield fork(tinderBackgroundSync);
 
 
     yield take(LOCATION_CHANGE);
-    yield cancel(bgSyncTask);
     yield cancel(tinderWatcher);
     yield cancel(fetchWatcher);
   }
