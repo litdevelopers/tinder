@@ -114,6 +114,26 @@ export default function createRoutes(store) {
 
           importModules.catch(errorLoading);
         },
+      }, {
+        path: '/dashboard/messages',
+        name: 'messages',
+        getComponent(nextState, cb) {
+          const importModules = Promise.all([
+            System.import('containers/Messages/reducer'),
+            System.import('containers/Messages/sagas'),
+            System.import('containers/Messages'),
+          ]);
+
+          const renderRoute = loadModule(cb);
+
+          importModules.then(([reducer, sagas, component]) => {
+            injectReducer('messages', reducer.default);
+            injectSagas(sagas.default);
+            renderRoute(component);
+          });
+
+          importModules.catch(errorLoading);
+        },
       },
     ],
     }, {

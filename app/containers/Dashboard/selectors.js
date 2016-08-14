@@ -34,6 +34,11 @@ const selectGlobalErrors = () => createSelector(
   (dashboardState) => dashboardState.globalErrors
 );
 
+const selectDashboardHistory = () => createSelector(
+    selectDashboard(),
+    (dashboard) => dashboard.history
+);
+
 
 export default selectDashboard;
 export {
@@ -42,4 +47,5 @@ export {
   selectTargetGender,
   selectGlobalErrors,
   selectFetching,
+  selectDashboardHistory,
 };

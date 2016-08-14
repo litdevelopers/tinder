@@ -1,0 +1,35 @@
+.messagesContainer {  /* stylelint-ignore */
+  display: flex;
+  width: 100vw;
+  height: 100%;
+}
+
+.messagePanel {
+  flex: 3;
+  border-right:1px solid #eee;
+  overflow-y: scroll;
+}
+
+.messengerPanel {
+  flex: 10;
+}
+
+.messengerPanelContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.profileBioPanel {
+  flex: 1;
+  border-bottom: 1px solid #eee;
+}
+
+.messagesPanel {
+  flex: 4;
+}
+
+.chatBoxPanel {
+  flex: 1.5;
+  border-top: 1px solid #eee;
+}
