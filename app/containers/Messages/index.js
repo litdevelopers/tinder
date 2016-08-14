@@ -6,7 +6,12 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { selectPersonSelector, selectMatchesSelector, selectMatchDetailImages } from './selectors';
+import {
+  selectPersonSelector,
+  selectMatchesSelector,
+  selectMatchDetailImages,
+  selectMatchMessages,
+} from './selectors';
 import styles from './styles.css';
 import { selectDashboardHistory } from 'containers/Dashboard/selectors';
 import { createStructuredSelector } from 'reselect';
@@ -22,6 +27,10 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
     return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} />);
   }
 
+  mapMessages() {
+    return this.props.matchMessages && this.props.matchMessages.map((each) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>);
+  }
+
   render() {
     return (
       <div className={styles.messagesContainer}>
@@ -35,8 +44,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
             <div className={styles.horizontalMessengerPanel}>
               <div className={styles.columnMessengerPanel}>
                 <div className={styles.messagesPanel} >
-                  <MessageBubble from="me">This is good content</MessageBubble>
-                  <MessageBubble from="you">This is bad content</MessageBubble>
+                  {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
                 </div>
                 <div className={styles.chatBoxPanel} >
                   <MessengerInput />
@@ -68,6 +76,7 @@ const mapStateToProps = createStructuredSelector({
   currentPerson: selectPersonSelector(),
   selectMatches: selectMatchesSelector(),
   matchDetailImages: selectMatchDetailImages(),
+  matchMessages: selectMatchMessages(),
 });
 
 Messages.propTypes = {

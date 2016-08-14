@@ -2,7 +2,7 @@
   text-transform: uppercase;
   font-weight: 700;
   margin:0;
-  font-size:12px; 
+  font-size:12px;
   color: white;
 }
 
@@ -84,7 +84,7 @@
 
 .lastActive{
   composes: distance;
-  float: right; 
+  float: right;
   text-transform: initial;
 }
 
@@ -105,4 +105,10 @@
   display: block;
   font-size: 14px;
   color: #aaa;
+}
+
+.matchActivity {
+  float: right;
+  color: #aaa;
+  font-size: 14px;
 }

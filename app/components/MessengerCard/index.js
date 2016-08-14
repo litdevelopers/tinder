@@ -5,14 +5,14 @@
 */
 
 import React, { PropTypes } from 'react';
-import { getAge, convertDistanceToLocal, parsePingTime } from 'utils/operations';
+import { convertActivityTime } from 'utils/operations';
 
 import Text from 'components/Text';
 import styles from './styles.css';
 
 function MessengerCard(props) {
   const person = props.data.person;
-  const age = person && person.birth_date ? getAge(person.birth_date) : null;
+  const recentActivity = convertActivityTime(props.data.last_activity_date);
   const messages = props.data.messages;
   const recentMessage = messages && messages[messages.length - 1] && messages[messages.length - 1].message;
 
@@ -29,6 +29,7 @@ function MessengerCard(props) {
         </div>
         <div className={styles.matchDetails}>
           <Text type="matchName">{person && person.name}</Text>
+          <Text type="matchActivity">{recentActivity}</Text>
           <Text type="matchRecentMessage">{recentMessage}</Text>
         </div>
       </div>
