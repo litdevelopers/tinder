@@ -26,7 +26,6 @@ function MatchMessengerBlock(props) {
       </div>
       <div className={styles.matchDetails}>
         <span className={styles.matchName}>{person && person.name}</span>
-        <span className={styles.matchAge}>{age}</span>
         <span className={styles.matchRecentMessage}>{recentMessage}</span>
       </div>
     </div>
