@@ -4,6 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { Motion, spring } from 'react-motion';
 
 import { fetchTinderData } from 'containers/Dashboard/actions';
+import { selectUserObject } from 'containers/Dashboard/selectors';
 
 import Text from 'components/Text';
 import styles from './styles.css';
@@ -14,38 +15,53 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
     // check if token and userid exists or not
     this.props.fetchInitialData();
   }
-
   render() {
-    return (
+    const { userObject } = this.props;
+    if (userObject) {
+      return (
       <div className={styles.mainDashboard}>
-        <div className={styles.mainDashboardHeader}>
-
-        </div>
-        <Motion
-          defaultStyle={{
-            flex: 0,
-          }}
-          style={{
-            flex: spring(4, [300, 26]),
-          }}
-        >
-        {style =>
-          <div className={styles.mainDashboardContent} style={style}>
-            {style.flex === 4 ? <p>Hello</p> : <p>No</p>}
-          </div>
-        }
+          <div className={styles.mainDashboardProfile}>
+             <div className={styles.mainDashboardHeader}>
+             </div>
+            <Motion
+                defaultStyle={{
+                  flex: 0,
+                  width: 50,
+                  minHeight: 50,
+                }}
+                style={{
+                  flex: spring(4, [300, 26]),
+                  width: 150,
+                  minHeight: 150,
+                }}
+              >
+              {({ flex, width, minHeight}) =>
+                <div className={styles.mainDashboardContent} style={{ flex }}>
+                  <div className={styles.mainDashboardProfilePicture} style={{ backgroundImage: `url(${userObject.photos[0].url}`, width, minHeight }} />
+                  <div className={styles.mainDashboardContentContainer}>
+                    <Text type="profileName">{userObject.name}</Text>
+                  </div>
+                </div>
+              }
         </Motion>
-      </div>
-    );
+          </div>
+
+          <div className={styles.mainDashboardSettings}>
+
+          </div>        
+      </div>);
+    }
+    return null;
   }
 }
 
 MainDashboard.propTypes = {
   fetchInitialData: PropTypes.func.isRequired,
+  userObject: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-
+  userObject: selectUserObject(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -53,5 +69,8 @@ function mapDispatchToProps(dispatch) {
     fetchInitialData: () => dispatch(fetchTinderData()),
   };
 }
+
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainDashboard);

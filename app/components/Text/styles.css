@@ -81,3 +81,9 @@
 .dropdownText {
   color: white;
 }
+
+.lastActive{
+  composes: distance;
+  float: right; 
+  text-transform: initial;
+}

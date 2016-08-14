@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import ImageGallery from 'react-image-gallery';
 
-import { getAge } from 'components/MatchCard/helpers';
+import { getAge, parsePingTime } from 'components/MatchCard/helpers';
 import { getFacebookUrl, getFacebookPicture } from 'utils/facebook';
 
 import styles from './styles.css';
@@ -50,7 +50,10 @@ class DetailView extends React.Component {
 
         <div className={styles.detailViewContainer_content}>
           <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
-          <Text type="age" style={{ color: 'black' }}>, {age}</Text>
+          <div>
+          <Text type="age" style={{ color: 'black' }}>{age}</Text>
+          <Text type="lastActive">{parsePingTime(this.props.data.ping_time)}</Text>
+          </div>
           <Text type="school">{schools && schools.name}</Text>
           <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? ' @ ' : null}{jobs && jobs.company && <a href={jobs.company.id} target="_blank">{jobs.company.name}</a>}</Text>
           <Text type="bio">{this.props.data.bio}</Text>

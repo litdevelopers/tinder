@@ -2,7 +2,18 @@
   display: flex;
   height: 100%;
   width: 100%;
+  flex-direction: row;
+}
+
+.mainDashboardProfile {
+  border-right: 1px solid #eee;
+  flex: 3;
   flex-direction: column;
+  display: flex;
+}
+
+.mainDashboardSettings {
+  flex: 6;
 }
 
 .mainDashboardHeader {
@@ -12,6 +23,26 @@
 
 .mainDashboardContent {
   display: flex;
-  flex: 4;
   border-top: 1px solid #eee;
+  flex-direction: column;
+  box-shadow: 0px -7px 8px 0px rgba(157,157,157,0.03);
+}
+
+.mainDashboardProfilePicture {
+	align-self: center;
+	border-radius: 150px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border: 1px solid #eee;
+	flex:1;
+	position: relative;
+	top: -75px;
+	box-shadow: 0px -7px 8px 0px rgba(157,157,157,0.03);
+}
+
+.mainDashboardContentContainer {
+	/*margin: 100px 10px 10px 10px;*/
+	margin: 0px 10px;
+	flex: 8;
 }

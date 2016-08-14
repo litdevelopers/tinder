@@ -34,6 +34,10 @@ const selectGlobalErrors = () => createSelector(
   (dashboardState) => dashboardState.globalErrors
 );
 
+const selectUserObject = () => createSelector(
+  selectDashboard(),
+  (dashboardState) => dashboardState.user.user || null
+);
 
 export default selectDashboard;
 export {
@@ -42,4 +46,5 @@ export {
   selectTargetGender,
   selectGlobalErrors,
   selectFetching,
+  selectUserObject,
 };
