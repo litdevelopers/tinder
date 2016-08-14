@@ -16,19 +16,18 @@ export function setGlobals(data) {
   };
 }
 
-// Logging in locally no longer works, as Tinder will write off the auth token quickly.
-// export function loginLocal() {
-//   return {
-//     type: LOGIN_LOCAL,
-//   };
-// }
+export function loginLocal() {
+  return {
+    type: LOGIN_LOCAL,
+  };
+}
 
-// export function loginLocalSuccess(token) {
-//   return {
-//     type: LOGIN_LOCAL_SUCCESS,
-//     payload: token,
-//   };
-// }
+export function loginLocalSuccess(token) {
+  return {
+    type: LOGIN_LOCAL_SUCCESS,
+    payload: token,
+  };
+}
 
 
 export function changeLogin(login) {

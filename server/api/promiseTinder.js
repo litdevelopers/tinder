@@ -33,6 +33,18 @@ function getRecommendations(client) {
   });
 }
 
+function getUserFromId(client, user) {
+  return new Promise((resolve, reject) => {
+    client.getUser(user, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  })
+}
+
 function getUserUpdates(client) {
   return new Promise((resolve, reject) => {
     client.getUpdates((error, response) => {
@@ -96,4 +108,5 @@ module.exports = {
   likePerson,
   passPerson,
   superLikePerson,
+  getUserFromId,
 };

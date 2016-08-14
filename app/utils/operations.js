@@ -33,7 +33,7 @@ export function mergeArray(arr1, arr2, length, mapFunc) {
   return filteredElements;
 }
 
-export function storeAuthToken(key, token) {
+export function storeToken(key, token) {
   return new Promise((resolve, reject) => {
     localForage.setItem(key, token)
     .then(() => resolve('Token Stored'))
@@ -41,7 +41,7 @@ export function storeAuthToken(key, token) {
   });
 }
 
-export function getAuthToken(key) {
+export function getToken(key) {
   return new Promise((resolve, reject) => {
     localForage.getItem(key)
     .then((token) => resolve(token))
