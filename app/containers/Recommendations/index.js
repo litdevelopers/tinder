@@ -14,7 +14,6 @@ import MatchCard from 'components/MatchCard';
 import Button from 'components/Button';
 import Panel from 'components/Panel';
 
-import Infinite from 'react-infinite';
 
 class DashboardRecommendations extends React.Component { // eslint-disable-line
   mapMatches() {
@@ -51,9 +50,9 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             </div>
           </div>
           <div className={styles.dashboardMatchesCardsContainer}>
-            <Infinite useWindowAsScrollContainer elementHeight={350} itemsPerRow={3}>
+
             {matches}
-            </Infinite>
+
           </div>
         </div>
         <div className={styles.dashboardMatchesDetails}>
