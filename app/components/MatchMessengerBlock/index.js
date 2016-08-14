@@ -10,7 +10,6 @@ import { getAge, convertDistanceToLocal, parsePingTime } from 'utils/operations'
 import styles from './styles.css';
 
 function MatchMessengerBlock(props) {
-  console.log(props);
   const person = props.data.person;
   const age = getAge(person.birth_date);
   const messages = props.data.messages;

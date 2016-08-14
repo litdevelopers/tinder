@@ -21,7 +21,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.props.currentPerson);
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
