@@ -50,3 +50,8 @@
 	margin: 0px 10px;
 	flex: 8;
 }
+
+.mainDashboardContentContainerTeaser {
+	display: flex;
+	flex-direction: row;
+}
