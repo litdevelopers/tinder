@@ -18,6 +18,7 @@ const selectCurrentMatch = () => createSelector(
   selectMatches(),
   (recommendationsState, matches) => {
     if (!matches) return undefined; // eslint-disable-line
+    // console.log(matches);
     return matches.filter((each) => each._id === recommendationsState.currentDetailView.id)[0];
   }
 );

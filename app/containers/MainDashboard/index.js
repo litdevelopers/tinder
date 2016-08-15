@@ -55,9 +55,9 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                     </div>
                     <div className={styles.bioContainer}>
                       <label htmlFor="bioInput" className={styles.bioInputLabel}>About {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
-                      <textarea value={bio} className={styles.bioInput} id="bioInput" onChange={this.props.editingBio} />
+                      <textarea value={bio} className={styles.bioInput} id="bioInput" onChange={this.props.editingBio} spellCheck="false" />
+                      <Text type="bio" style={{ padding: 10 }}>Your Interests</Text>
                       <div className={styles.interestsContainer}>
-                        <Text type="profileHeader">Your Interests</Text>
                         <div className={styles.interestsContainerWrapper}>
                           {interests.map((each) => {
                             return (
