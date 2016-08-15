@@ -42,7 +42,7 @@ function getUserFromId(client, user) {
         resolve(response);
       }
     });
-  })
+  });
 }
 
 function getMeta(client) {
@@ -54,7 +54,7 @@ function getMeta(client) {
         resolve(response);
       }
     });
-  })
+  });
 }
 
 function getUserUpdates(client) {
@@ -131,6 +131,10 @@ function sendMessage(client, id, message) {
       }
     });
   });
+}
+
+function setPhotoOrder(newOrder, client) {
+
 }
 
 

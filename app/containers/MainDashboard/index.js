@@ -24,6 +24,24 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
     this.props.fetchInitialData();
   }
 
+  
+  renderPhotoItems(photos) {
+    const photoList = [];
+    for (let iter = 0; iter < 6; iter++) {
+      photoList.push(
+        <Pane
+          id={photos[iter] ? photos[iter].id : `photo-${iter}`}
+          key={photos[iter] ? photos[iter].id : `photo-${iter}`}
+          height={200}
+          width={400}
+          style={{ backgroundImage: `url(${photos[iter] ? photos[iter].processedFiles[0].url : ''})` }}
+          className={styles.photoItem}
+          isResizable={{ x: false, y: false, xy: false }}
+        />
+      );
+    }
+    return photoList;
+  }
 
   renderPhotos(photos) {
     return (
@@ -32,24 +50,11 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
         onOrderChange={(oldOrder, newOrder) => { this.props.reorderPhotos(newOrder); }}
         zIndex={1}
       >
-        {photos.map((eachPhoto) => {
-          return (
-            <Pane
-              id={eachPhoto.id}
-              key={eachPhoto.id}
-              height={200}
-              width={200}
-              style={{ backgroundImage: `url(${eachPhoto.processedFiles[0].url})` }}
-              className={styles.photoItem}
-              isResizable={{ x: false, y: false, xy: false }}
-            />
-          );
-        })}
+        {this.renderPhotoItems(photos)}
       </SortablePane>
 
      );
   }
-
 
   render() {
     const { userObject } = this.props;

@@ -1,4 +1,4 @@
-import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
+import { take, call, put, select, fork, cancel, actionChannel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
@@ -11,10 +11,13 @@ import {
   sendMessageSuccess,
   sendMessageError,
 } from './actions';
+import { newError, newErrorAdded } from 'containers/Notification/actions';
+
 
 import {
   selectAuthToken,
 } from 'containers/Auth/selectors';
+
 
 // Individual exports for testing
 export function* sendMessageData(payload) {
@@ -29,19 +32,17 @@ export function* sendMessageData(payload) {
     }
   } catch (error) {
     yield put(sendMessageError(error));
+    yield put(newError(error));
+    yield put(newErrorAdded());
   }
 }
 
 function* sendMessageWatcher() {
-  let currentMessage;
-  while (yield take(SEND_MESSAGE)) {
-    const payload = yield take(SEND_MESSAGE);
+  const messageWatch = yield actionChannel(SEND_MESSAGE);
 
-    if (currentMessage) {
-      yield cancel(currentMessage);
-    }
-
-    currentMessage = yield fork(sendMessageData, payload);
+  while (true) {
+    const { payload } = yield take(messageWatch);
+    yield sendMessageData(payload);
   }
 }
 

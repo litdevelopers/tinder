@@ -25,6 +25,8 @@
 	min-height: 200px;
 	flex-direction: row;
 	display: flex;
+	max-width: 100%;
+	position: relative;
 	border-bottom: 1px solid #eee;
 }
 
@@ -136,9 +138,10 @@
 }
 
 .photoItem {
-	flex: 1;
+	flex: 1 !important;
 	background-position: center;
 	background-size: cover;
+	max-width: 16.67%;
 	height: 100%;
 	border-right: 1px solid #eee;
 }

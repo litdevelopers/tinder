@@ -140,6 +140,13 @@ router.post('/tinder/update/bio', (req, res) => {
   .catch((error) => res.status(400).json(error));
 });
 
+router.post('/tinder/update/photoOrder', (req, res) => {
+  const client = new tinder.TinderClient();
+  const { newOrder, authToken } = req.body;
+
+  client.setAuthToken(authToken);
+});
+
 router.post('/tinder/message/:id', (req, res) => {
   const client = new tinder.TinderClient();
   const { authToken, message } = req.body;
