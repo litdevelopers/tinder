@@ -13,6 +13,7 @@ import DetailView from 'components/DetailView';
 import MatchCard from 'components/MatchCard';
 import Button from 'components/Button';
 import Panel from 'components/Panel';
+import Infinite from 'react-infinite';
 
 
 class DashboardRecommendations extends React.Component { // eslint-disable-line
