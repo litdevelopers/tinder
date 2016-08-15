@@ -37,7 +37,6 @@
 .mainDashboardHeader {
   display: flex;
   flex: 1;
-	max-height: 200px;
 }
 
 .mainDashboardContent {
@@ -97,6 +96,7 @@
 	width: 100%;
 	flex-direction: column;
 	border-top: 1px solid #eee;
+	overflow-x: hidden;
 }
 
 .bioInput {

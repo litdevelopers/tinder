@@ -16,6 +16,12 @@ const selectUserDashboard = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const selectIsSettingLocation = () => createSelector(
+  selectUserDashboard(),
+  (substate) => substate.settingLocation
+);
+
 export {
   selectUserDashboard,
+  selectIsSettingLocation,
 };

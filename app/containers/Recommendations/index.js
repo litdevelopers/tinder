@@ -20,7 +20,6 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
   }
 
   handleFetch() {
-    console.log('fetching');
     if (!this.props.isFetching) this.props.fetchMatches();
   }
 

@@ -44,7 +44,6 @@ Auth.propTypes = {
 };
 
 
-
 function mapDispatchToProps(dispatch) {
   return {
     onChangeLogin: (event) => dispatch(changeLogin(event.target.value)),

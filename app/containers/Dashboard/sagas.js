@@ -123,7 +123,7 @@ function* updatePhotoOrderAction(newOrder) {
   const postURL = `${AUTH_URL}/tinder/update/photoOrder`;
 
   try {
-    yield call(postRequest, postURL, { authToken, order: newOrder });
+    yield call(postRequest, postURL, { authToken, order: newOrder.filter((each) => each.indexOf('photo') === -1) });
   } catch (error) {
     yield put((newError(error)));
     yield put(newErrorAdded());
