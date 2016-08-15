@@ -21,6 +21,7 @@ import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
 import MessageBubble from 'components/MessageBubble';
 import MessengerInput from 'components/MessengerInput';
+import Infinite from 'react-infinite';
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   mapMatches() {
@@ -43,9 +44,16 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
           <div className={styles.messengerPanelContainer}>
             <div className={styles.horizontalMessengerPanel}>
               <div className={styles.columnMessengerPanel}>
-                <div className={styles.messagesPanel} >
-                  {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
-                </div>
+                  <Infinite
+                    displayBottomUpwards
+                    className={styles.messagesPanel}
+                    containerHeight={3000}
+                    elementHeight={105}
+                    infiniteLoadBeginEdgeOffset={200}
+                    itemsPerRow={1}
+                  >
+                    {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
+                  </Infinite>
                 <div className={styles.chatBoxPanel} >
                   <MessengerInput />
                 </div>
