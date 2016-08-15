@@ -8,7 +8,6 @@ import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './se
 import { selectTargetGender, selectFetching } from 'containers/Dashboard/selectors';
 import styles from './styles.css';
 
-import Waypoint from 'react-waypoint';
 import DetailView from 'components/DetailView';
 import MatchCard from 'components/MatchCard';
 import Button from 'components/Button';

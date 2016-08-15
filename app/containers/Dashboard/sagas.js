@@ -30,7 +30,6 @@ import {
 } from 'containers/Auth/selectors';
 import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
-import { match } from 'utils/schema';
 
 function* getTinderData() {
   const authToken = yield select(selectAuthToken());

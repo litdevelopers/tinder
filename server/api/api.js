@@ -140,5 +140,16 @@ router.post('/tinder/update/bio', (req, res) => {
   .catch((error) => res.status(400).json(error));
 });
 
+router.post('/tinder/message/:id', (req, res) => {
+  const client = new tinder.TinderClient();
+  const { authToken, message } = req.body;
+  const id = req.params.id;
+
+  client.setAuthToken(authToken);
+  tinderPromise.sendMessage(client, id, message)
+  .then((result) => res.status(200).json(result))
+  .catch((error) => res.status(400).json(error));
+});
+
 
 module.exports = router;
