@@ -17,8 +17,7 @@ import Panel from 'components/Panel';
 
 class DashboardRecommendations extends React.Component { // eslint-disable-line
   mapMatches() {
-    return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />)
-    .concat(<h1 key="nigga">nigga my nigga</h1>);
+    return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
   }
 
   handleWaypoint() {
