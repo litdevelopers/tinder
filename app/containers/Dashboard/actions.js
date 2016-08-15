@@ -101,6 +101,7 @@ export function fetchTinderDataSuccess(data) {
     },
     recommendations: typeof (data[2]) === 'string' ? null : data[2],
     xAuthToken: data[3],
+    payload: data,
   };
 }
 

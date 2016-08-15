@@ -24,6 +24,8 @@ import {
   EDITING_BIO,
 } from 'containers/MainDashboard/constants';
 
+import { normalize, arrayOf } from 'normalizr';
+import * as schema from 'utils/schema';
 
 import {
   matchesSortByDistance,
@@ -63,6 +65,7 @@ function dashboardReducer(state = initialState, action) {
         .set('isFetching', false)
         .set('recommendations', fromJS(action.payload));
     case FETCH_TINDER_DATA_SUCCESS:
+      console.log(normalize(action.payload[1], { matches: arrayOf(schema.match) }));
       return state
         .set('isFetching', false)
         .set('user', fromJS(action.user))
