@@ -15,13 +15,13 @@ import Button from 'components/Button';
 import Panel from 'components/Panel';
 import Infinite from 'react-infinite';
 
-
 class DashboardRecommendations extends React.Component { // eslint-disable-line
   mapMatches() {
     return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
   }
 
-  handleWaypoint() {
+  handleFetch() {
+    console.log('fetching');
     if (!this.props.isFetching) this.props.fetchMatches();
   }
 
@@ -49,11 +49,17 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             }
             </div>
           </div>
-          <div className={styles.dashboardMatchesCardsContainer}>
-
+          <Infinite
+            className={styles.dashboardMatchesCardsContainer}
+            onInfiniteLoad={() => this.handleFetch()}
+            containerHeight={1200}
+            elementHeight={350}
+            infiniteLoadBeginEdgeOffset={200}
+            itemsPerRow={3}
+            isInfiniteLoading={this.props.isFetching}
+          >
             {matches}
-
-          </div>
+          </Infinite>
         </div>
         <div className={styles.dashboardMatchesDetails}>
         {this.props.matchDetail && this.props.matchDetailImages ?

@@ -30,7 +30,7 @@ import {
 } from 'containers/Auth/selectors';
 import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
-import { normalize } from 'normalizr';
+import { normalize, arrayOf } from 'normalizr';
 import { match } from 'utils/schema';
 
 function* getTinderData() {
@@ -40,7 +40,8 @@ function* getTinderData() {
   try {
     const data = yield call(postRequest, postURL, { authToken });
     if (data.status === 200 && typeof (data.data[2]) === 'object') {
-      console.log(normalize(data.data[1].matches, match));
+      // console.log(data.data[1].matches);
+      console.log(normalize(data.data[1].matches, { matches: arrayOf(match) }));
       yield put(fetchTinderDataSuccess((data.data)));
     } else if (data.status === 200 && typeof (data.data[2]) === 'string') {
       yield put(fetchTinderDataSuccess(data.data));
