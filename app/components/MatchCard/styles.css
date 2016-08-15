@@ -1,5 +1,5 @@
 .matchCard{
-  display: relative;
+  display: flex !important;
   border-radius: 3px;
   min-height: 350px;
   width: 30%;

@@ -27,7 +27,7 @@ const ReactBoilerplate = {
         'express',
         'ip',
         'minimist',
-        'sanitize.css',
+        'sanitize.css'
       ],
 
       /**
