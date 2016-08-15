@@ -106,9 +106,11 @@
 
 .interestsContainerWrapper {
 	flex-wrap: wrap;
-	overflow-x: scroll;
+	overflow-x: auto;
 	height: 60px;
 	margin-top:10px;
+	width: 100%;
+	padding: 5px;
 	align-items: center;
 }
 
