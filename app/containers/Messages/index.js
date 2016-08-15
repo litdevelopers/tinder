@@ -47,9 +47,8 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                   <Infinite
                     displayBottomUpwards
                     className={styles.messagesPanel}
-                    containerHeight={3000}
-                    elementHeight={105}
-                    infiniteLoadBeginEdgeOffset={200}
+                    containerHeight={500}
+                    elementHeight={45}
                     itemsPerRow={1}
                   >
                     {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}

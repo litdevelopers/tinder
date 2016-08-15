@@ -39,6 +39,7 @@
 
 .messagesPanel {
   flex: 4;
+  min-height: 450px;
   padding: 20px;
   overflow-y: scroll;
 }
