@@ -36,7 +36,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
           <div className={styles.messagePanelContainenr}>
-            {this.props.selectMatches && this.mapMatches()}
+            {this.props.userHistory.matches && this.mapMatches()}
           </div>
         </div>
         <div className={styles.messengerPanel}>

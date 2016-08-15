@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { selectDashboard } from 'containers/Dashboard/selectors';
+import { selectDashboardHistory } from 'containers/Dashboard/selectors';
 
 import { messagesSortByRecent } from 'utils/operations';
 /**
@@ -27,12 +27,12 @@ const selectPersonId = () => createSelector(
 );
 
 const selectMatchesSelector = () => createSelector(
-  selectDashboard(),
+  selectDashboardHistory(),
   (state) => state.matches.slice().sort((a, b) => messagesSortByRecent(a, b)),
 );
 
 const selectPersonSelector = () => createSelector(
-  selectDashboard(),
+  selectDashboardHistory(),
   selectPersonId(),
   (state, id) => {
     if (!id || id === '' || !state) {

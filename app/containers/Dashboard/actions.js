@@ -90,15 +90,7 @@ export function fetchTinderDataSuccess(data) {
     type: FETCH_TINDER_DATA_SUCCESS,
     user: data[0].user,
     rating: data[0].rating,
-    matches: data[1].matches,
-    history: {
-      blocks: data[1].blocks,
-      lists: data[1].lists,
-      deleted_lists: data[1].deleted_lists,
-      liked_messages: data[1].liked_messages,
-      squads: data[1].squads,
-      last_activity_date: data[1].last_activity_date,
-    },
+    history: data[1],
     recommendations: typeof (data[2]) === 'string' ? null : data[2],
     xAuthToken: data[3],
   };

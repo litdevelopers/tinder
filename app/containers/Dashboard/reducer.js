@@ -37,7 +37,6 @@ const initialState = fromJS({
   user: '',
   rating: '',
   history: '',
-  matches: '',
   recommendations: '',
   lastError: '',
   updates: [],
@@ -68,7 +67,6 @@ function dashboardReducer(state = initialState, action) {
         .set('user', fromJS(action.user))
         .set('rating', fromJS(action.rating))
         .set('history', fromJS(action.history))
-        .set('matches', fromJS(action.matches))
         .set('recommendations', action.recommendations ? fromJS(action.recommendations) : fromJS(state.get('recommendations')));
     case FETCH_UPDATES_SUCCESS:
       return state
@@ -80,7 +78,7 @@ function dashboardReducer(state = initialState, action) {
         .set('lastError', action.payload)
         .set('isFetching', false);
     case EDITING_BIO:
-      return state.setIn(['user', 'bio'], action.payload.length <= 500 ? action.payload : state.getIn(['user', 'bio']));
+      return state.setIn(['user', 'bio'], action.payload);
     case FETCH_UPDATES_END:
       return state
         .set('isFetching', false);
