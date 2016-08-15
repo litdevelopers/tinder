@@ -5,6 +5,7 @@ import { Motion, spring } from 'react-motion';
 
 import { fetchTinderData } from 'containers/Dashboard/actions';
 import { selectUserObject } from 'containers/Dashboard/selectors';
+import { getFacebookUrl } from 'utils/facebook';
 import { getAge } from 'utils/operations';
 import { editingBio } from './actions';
 
@@ -21,7 +22,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
   render() {
     const { userObject } = this.props;
     if (userObject) {
-      const { schools, bio } = userObject;
+      const { schools, bio, interests } = userObject;
 
       return (
         <div className={styles.mainDashboard}>
@@ -55,6 +56,23 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                     <div className={styles.bioContainer}>
                       <label htmlFor="bioInput" className={styles.bioInputLabel}>About {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
                       <textarea value={bio} className={styles.bioInput} id="bioInput" onChange={this.props.editingBio} />
+                      <div className={styles.interestsContainer}>
+                        <Text type="profileHeader">Your Interests</Text>
+                        <div className={styles.interestsContainerWrapper}>
+                          {interests.map((each) => {
+                            return (
+                              <a
+                                key={each.id}
+                                href={getFacebookUrl(each.id)}
+                                target="_blank"
+                                className={styles.commonInterestsLink}
+                              >
+                                <Text type="commonInterest">{each.name}</Text>
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
