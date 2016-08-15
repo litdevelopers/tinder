@@ -44,15 +44,15 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
           <div className={styles.messengerPanelContainer}>
             <div className={styles.horizontalMessengerPanel}>
               <div className={styles.columnMessengerPanel}>
-                  <Infinite
-                    displayBottomUpwards
-                    className={styles.messagesPanel}
-                    containerHeight={500}
-                    elementHeight={45}
-                    itemsPerRow={1}
-                  >
+                <Infinite
+                  displayBottomUpwards
+                  className={styles.messagesPanel}
+                  containerHeight={500}
+                  elementHeight={45}
+                  itemsPerRow={1}
+                >
                     {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
-                  </Infinite>
+                </Infinite>
                 <div className={styles.chatBoxPanel} >
                   <MessengerInput />
                 </div>
@@ -92,6 +92,7 @@ Messages.propTypes = {
   selectPerson: PropTypes.func,
   currentPerson: PropTypes.object,
   selectMatches: PropTypes.array,
+  matchDetailImages: PropTypes.array,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

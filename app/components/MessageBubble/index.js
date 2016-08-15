@@ -20,6 +20,6 @@ function MessageBubble(props) {
 MessageBubble.propTypes = {
   from: PropTypes.string.isRequired,
   children: PropTypes.string,
-}
+};
 
 export default MessageBubble;
