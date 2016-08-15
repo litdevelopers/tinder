@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Motion, spring, presets } from 'react-motion';
+import { Motion, spring } from 'react-motion';
 import { SortablePane, Pane } from 'react-sortable-pane';
 
 import { editingBio, reorderPhotos, selectingLocation } from './actions';
@@ -59,12 +59,11 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
     const { userObject } = this.props;
     if (userObject) {
       const { schools, bio, interests, photos } = userObject;
-
       return (
         <div className={styles.mainDashboard}>
           <div className={styles.mainDashboardProfile}>
             <div className={styles.mainDashboardHeader}>
-              // <MapView onClick={this.props.selectLocation} />
+              <MapView onClick={this.props.selectLocation} open={this.props.isSelectingLocation} lat={-34.397} lng={150.644} />
             </div>
             <Motion
               defaultStyle={{
@@ -118,7 +117,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
           </div>
           <div className={styles.mainDashboardSettings}>
             <div className={styles.mainDashboardSettingsMain}>
-
+              {this.renderPhotos(photos)}
             </div>
           </div>
         </div>);

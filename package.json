@@ -195,6 +195,7 @@
     "normalizr": "^2.2.1",
     "react": "15.3.0",
     "react-dom": "15.3.0",
+    "react-google-maps": "^4.11.0",
     "react-helmet": "3.1.0",
     "react-image-gallery": "^0.6.7",
     "react-infinite": "github:eddiewang/react-infinite",
@@ -209,6 +210,7 @@
     "redux-immutable": "3.0.6",
     "redux-saga": "0.11.0",
     "reselect": "2.5.3",
+    "rheostat": "^1.1.2",
     "sanitize.css": "4.1.0",
     "warning": "^3.0.0"
   },
