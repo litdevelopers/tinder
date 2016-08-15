@@ -16,11 +16,26 @@
 
 .mainDashboardSettings {
   flex: 6;
+	flex-direction: column;
+	display: flex;
+}
+
+.mainDashboardSettingsPictureRow {
+	flex: 1;
+	min-height: 200px;
+	flex-direction: row;
+	display: flex;
+	border-bottom: 1px solid #eee;
+}
+
+.mainDashboardSettingsMain {
+	flex: 3;
 }
 
 .mainDashboardHeader {
   display: flex;
   flex: 1;
+	max-height: 200px;
 }
 
 .mainDashboardContent {
@@ -87,6 +102,7 @@
 	height: 120px;
 	resize: none;
 	padding: 10px;
+	font-size: 12px;
 }
 
 .bioInputLabel {
@@ -117,4 +133,12 @@
 .commonInterestsLink {
   padding: 10px 5px;
   text-decoration: none;
+}
+
+.photoItem {
+	flex: 1;
+	background-position: center;
+	background-size: cover;
+	height: 100%;
+	border-right: 1px solid #eee;
 }

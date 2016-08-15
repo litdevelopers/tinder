@@ -11,6 +11,7 @@ import {
 
 import {
   EDITING_BIO,
+  REORDER_PHOTOS,
 } from 'containers/MainDashboard/constants';
 
 import {
@@ -117,6 +118,19 @@ function* updateBioAction(newBio) {
   }
 }
 
+function* updatePhotoOrderAction(newOrder) {
+  yield call(delay, 1000);
+  const authToken = yield select(selectAuthToken());
+  const postURL = `${AUTH_URL}/tinder/update/photoOrder`;
+
+  try {
+    yield call(postRequest, postURL, { authToken, order: newOrder });
+  } catch (error) {
+    yield put((newError(error)));
+    yield put(newErrorAdded());
+  }
+}
+
 function* getTinderDataWatcher() {
   while (yield take(FETCH_TINDER_DATA)) {
     yield call(getTinderData);
@@ -149,6 +163,19 @@ function* getBioUpdatesWatcher() {
   }
 }
 
+function* getPhotoUpdateOrderWatcher() {
+  let currentUpdate;
+  while (yield take(REORDER_PHOTOS)) {
+    const { payload } = yield take(REORDER_PHOTOS);
+
+    if (currentUpdate) {
+      yield cancel(currentUpdate);
+    }
+
+    currentUpdate = yield fork(updatePhotoOrderAction, payload);
+  }
+}
+
 
 // Individual exports for testing
 export function* dashboardSaga() {
@@ -158,12 +185,14 @@ export function* dashboardSaga() {
 
   // Profile Editing sagas
   const bioWatcher = yield fork(getBioUpdatesWatcher);
+  const photoOrderWatcher = yield fork(getPhotoUpdateOrderWatcher);
 
 
   yield take(LOCATION_CHANGE);
   yield cancel(tinderWatcher);
   yield cancel(fetchWatcher);
   yield cancel(bioWatcher);
+  yield cancel(photoOrderWatcher);
 }
 
 // All sagas to be loaded

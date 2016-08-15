@@ -1,1 +1,2 @@
 export const EDITING_BIO = 'EDITING_BIO';
+export const REORDER_PHOTOS = 'REORDER_PHOTOS';
