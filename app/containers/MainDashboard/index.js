@@ -2,15 +2,20 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Motion, spring } from 'react-motion';
+import { SortablePane, Pane } from 'react-sortable-pane';
+
 
 import { fetchTinderData } from 'containers/Dashboard/actions';
 import { selectUserObject } from 'containers/Dashboard/selectors';
 import { getFacebookUrl } from 'utils/facebook';
 import { getAge } from 'utils/operations';
-import { editingBio } from './actions';
+import { editingBio, reorderPhotos } from './actions';
 
 import Text from 'components/Text';
 import styles from './styles.css';
+
+// const photoItem = SortableElement((imageUrl) => <div className={styles.photoItem} style={{ backgroundImage: `url(${imageUrl})` }}></div>);
+// const photoList = SortableContainer((photos) => photos.map((each, index) => <photoItem key={`photo-${index}`} index={index} value={each.processedFiles[0].iter} />));
 
 
 export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -19,10 +24,37 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
     this.props.fetchInitialData();
   }
 
+
+  renderPhotos(photos) {
+    return (
+      <SortablePane
+        className={styles.mainDashboardSettingsPictureRow}
+        onOrderChange={(oldOrder, newOrder) => { this.props.reorderPhotos(newOrder); }}
+        zIndex={1}
+      >
+        {photos.map((eachPhoto) => {
+          return (
+            <Pane
+              id={eachPhoto.id}
+              key={eachPhoto.id}
+              height={200}
+              width={200}
+              style={{ backgroundImage: `url(${eachPhoto.processedFiles[0].url})` }}
+              className={styles.photoItem}
+              isResizable={{ x: false, y: false, xy: false }}
+            />
+          );
+        })}
+      </SortablePane>
+
+     );
+  }
+
+
   render() {
     const { userObject } = this.props;
     if (userObject) {
-      const { schools, bio, interests } = userObject;
+      const { schools, bio, interests, photos } = userObject;
 
       return (
         <div className={styles.mainDashboard}>
@@ -80,6 +112,10 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
             </Motion>
           </div>
           <div className={styles.mainDashboardSettings}>
+              {photos && this.renderPhotos(photos)}
+            <div className={styles.mainDashboardSettingsMain}>
+
+            </div>
           </div>
         </div>);
     }
@@ -91,6 +127,7 @@ MainDashboard.propTypes = {
   fetchInitialData: PropTypes.func.isRequired,
   userObject: PropTypes.object,
   editingBio: PropTypes.func,
+  reorderPhotos: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -101,10 +138,9 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchInitialData: () => dispatch(fetchTinderData()),
     editingBio: (e) => dispatch(editingBio(e.target.value)),
+    reorderPhotos: (photoOrder) => dispatch(reorderPhotos(photoOrder.map((each) => each.id))),
   };
 }
-
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainDashboard);
