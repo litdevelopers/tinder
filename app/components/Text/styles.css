@@ -114,3 +114,9 @@
   color: #aaa;
   font-size: 14px;
 }
+
+.dashboardSettingsHeader {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 15px;
+}

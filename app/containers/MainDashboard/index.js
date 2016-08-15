@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Motion, spring } from 'react-motion';
 import { SortablePane, Pane } from 'react-sortable-pane';
+import Rheostat from 'rheostat';
 
 import { editingBio, reorderPhotos, selectingLocation } from './actions';
 import { fetchTinderData } from 'containers/Dashboard/actions';
@@ -16,6 +17,7 @@ import { getAge } from 'utils/operations';
 import Text from 'components/Text';
 import MapView from 'components/MapView';
 import styles from './styles.css';
+
 
 export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
@@ -117,7 +119,24 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
           </div>
           <div className={styles.mainDashboardSettings}>
             <div className={styles.mainDashboardSettingsMain}>
+              <Text type="dashboardSettingsHeader">Your Photos<Text type="matchRecentMessage">Rearrange your images</Text></Text>
               {this.renderPhotos(photos)}
+              <Text type="dashboardSettingsHeader">Age and distance options<Text type="matchRecentMessage">Adjust your  settings here</Text></Text>
+              <div className={styles.mainDashboardSliders}>
+                <div className={styles.mainDashboardSlider}>
+                  <Rheostat
+                    min={1}
+                    max={100}
+                    values={[1, 100]}
+                  />
+                </div>
+                <div className={styles.mainDashboardSlider}>
+                  <p>Hello</p>
+                </div>
+              </div>
+              <div className={styles.mainDashboardSliders}>
+
+              </div>
             </div>
           </div>
         </div>);

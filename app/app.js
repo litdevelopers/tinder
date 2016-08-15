@@ -29,6 +29,9 @@ import { translationMessages } from './i18n';
 // Import the CSS reset, which HtmlWebpackPlugin transfers to the build folder
 import 'sanitize.css/sanitize.css';
 import 'react-image-gallery/build/image-gallery.css';
+import 'rheostat/css/slider.css';
+import 'rheostat/css/slider-vertical.css';
+import 'rheostat/css/slider-horizontal.css';
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router

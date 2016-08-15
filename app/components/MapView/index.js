@@ -21,6 +21,7 @@ export default class MapView extends React.Component {
                 return;
               }
             }}
+            defaultOptions={{ mapTypeControl: false, streetViewControl: false }}
             defaultZoom={3}
             defaultCenter={{ lat: this.props.lat, lng: this.props.lng }}
           >
@@ -37,7 +38,7 @@ export default class MapView extends React.Component {
 }
 
 MapView.propTypes = {
-  lat: PropTypes.number.isRequired,
-  lng: PropTypes.number.isRequired,
+  lat: React.PropTypes.number.isRequired,
+  lng: React.PropTypes.number.isRequired,
   onClick: React.PropTypes.func,
 };

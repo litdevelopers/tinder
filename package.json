@@ -210,7 +210,7 @@
     "redux-immutable": "3.0.6",
     "redux-saga": "0.11.0",
     "reselect": "2.5.3",
-    "rheostat": "^1.1.2",
+    "rheostat": "git+https://github.com/litdevelopers/rheostat.git",
     "sanitize.css": "4.1.0",
     "warning": "^3.0.0"
   },

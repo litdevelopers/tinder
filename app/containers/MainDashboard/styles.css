@@ -23,6 +23,7 @@
 .mainDashboardSettingsPictureRow {
 	flex: 1;
 	min-height: 200px;
+	max-height: 200px;
 	flex-direction: row;
 	display: flex;
 	max-width: 100%;
@@ -32,6 +33,8 @@
 
 .mainDashboardSettingsMain {
 	flex: 3;
+	display: flex;
+	flex-direction: column;
 }
 
 .mainDashboardHeader {
@@ -144,4 +147,15 @@
 	max-width: 16.67%;
 	height: 100%;
 	border-right: 1px solid #eee;
+}
+
+.mainDashboardSliders {
+	flex: 1;
+	margin: 15px;
+	display: flex;
+	flex-direction: row;
+}
+
+.mainDashboardSlider {
+	flex: 1;
 }
