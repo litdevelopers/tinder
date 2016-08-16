@@ -10,6 +10,8 @@
   overflow-y: scroll;
 }
 
+.messagePanel::-webkit-scrollbar, messagePanelContainer::-webkit-scrollbar { width: 0 !important }
+
 .messengerPanel {
   flex: 10;
 }

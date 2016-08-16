@@ -4,13 +4,14 @@
   background-color: #00b0ff;
   align-self: flex-start;
   font-size: 16px;
-    position: relative;
-    display: inline-block;
-    clear: both;
-    margin-bottom: 8px;
-    padding: 13px 14px;
-    vertical-align: top;
-    border-radius: 5px;
+  position: relative;
+  display: inline-block;
+  clear: both;
+  margin-bottom: 8px;
+  padding: 13px 14px;
+  vertical-align: top;
+  border-radius: 5px;
+  pointer-events: none;
 }
 
 .you:before {
@@ -39,6 +40,7 @@
   padding: 13px 14px;
   vertical-align: top;
   border-radius: 5px;
+  pointer-events: none;
 }
 .me:before {
   right: -3px;

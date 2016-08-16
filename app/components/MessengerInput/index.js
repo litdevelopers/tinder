@@ -14,7 +14,7 @@ import styles from './styles.css';
 
 class MessengerInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   handleKeyPress(e) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && this.props.currentMessage) {
       const id = this.props.sendTo;
       const message = this.props.currentMessage;
       this.props.sendMessage(id, message);
