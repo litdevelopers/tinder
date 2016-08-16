@@ -139,7 +139,7 @@ router.post('/tinder/update/bio', (req, res) => {
 
   client.setAuthToken(authToken);
   tinderPromise.setBio(client, bio)
-  .then(() => res.status(200))
+  .then(() => res.status(200).end())
   .catch((error) => res.status(400).json(error));
 });
 
@@ -149,7 +149,7 @@ router.post('/tinder/update/photoOrder', (req, res) => {
 
   client.setAuthToken(authToken);
   tinderPromise.setPhotoOrder(order, client)
-  .then(() => res.status(200))
+  .then(() => res.status(200).end())
   .catch((error) => res.status(400).json(error));
 });
 
@@ -159,7 +159,7 @@ router.post('/tinder/update/location', (req, res) => {
 
   client.setAuthToken(authToken);
   tinderPromise.setLocation(location, client)
-  .then(() => res.status(200))
+  .then(() => res.status(200).end())
   .catch((error) => res.status(400).json(error));
 });
 
@@ -180,7 +180,7 @@ router.post('/tinder/update/profile', (req, res) => {
 
   client.setAuthToken(authToken);
   tinderPromise.setProfile(profile, client)
-  .then(() => res.status(200))
+  .then(() => res.status(200).end())
   .catch((error) => res.status(400).json(error));
 });
 

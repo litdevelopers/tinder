@@ -21,8 +21,7 @@ import styles from './styles.css';
 
 export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    // check if token and userid exists or not
-    if (!this.props.userObject) this.props.fetchInitialData();
+    this.props.fetchInitialData();
   }
 
   renderPhotoItems(photos) {
@@ -86,32 +85,34 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                     <div className={styles.profileNameContainer}>
                       <Text type="profileName">{userObject.full_name}</Text>
                     </div>
-                    <div className={styles.mainDashboardContentContainerTeaser}>
-                      <Text type="bio">{getAge(userObject.birth_date)}</Text>
-                      <Text type="bio">{userObject.gender === 0 ? 'Male' : 'Female'}</Text>
-                      <Text type="bio">{schools[0] && schools[0].name}</Text>
-                    </div>
-                    <div className={styles.bioContainer} style={{}}>
-                      <label htmlFor="bioInput" className={styles.bioInputLabel}>About {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
-                      <textarea value={bio} className={styles.bioInput} id="bioInput" onChange={this.props.editingBio} spellCheck="false" />
-                      <Text type="bio" style={{ padding: 10 }}>Your Interests</Text>
-                      <div className={styles.interestsContainer}>
-                        <div className={styles.interestsContainerWrapper}>
-                          {interests.map((each) => {
-                            return (
-                              <a
-                                key={each.id}
-                                href={getFacebookUrl(each.id)}
-                                target="_blank"
-                                className={styles.commonInterestsLink}
-                              >
-                                <Text type="commonInterest">{each.name}</Text>
-                              </a>
-                            );
-                          })}
+                    { flex > 3.8 ?
+                      <div className={styles.mainDashboardContentContainerTeaser}>
+                        <Text type="bio">{getAge(userObject.birth_date)}</Text>
+                        <Text type="bio">{userObject.gender === 0 ? 'Male' : 'Female'}</Text>
+                        <Text type="bio">{schools[0] && schools[0].name}</Text>
+                      </div> : null}
+                    { flex > 3.8 ?
+                      <div className={styles.bioContainer} style={{}}>
+                        <label htmlFor="bioInput" className={styles.bioInputLabel}>About {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
+                        <textarea value={bio} className={styles.bioInput} id="bioInput" onChange={this.props.editingBio} spellCheck="false" />
+                        <Text type="bio" style={{ padding: 10 }}>Your Interests</Text>
+                        <div className={styles.interestsContainer}>
+                          <div className={styles.interestsContainerWrapper}>
+                            {interests.map((each) => {
+                              return (
+                                <a
+                                  key={each.id}
+                                  href={getFacebookUrl(each.id)}
+                                  target="_blank"
+                                  className={styles.commonInterestsLink}
+                                >
+                                  <Text type="commonInterest">{each.name}</Text>
+                                </a>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      </div> : null}
                   </div>
                 </div>
               }
@@ -190,3 +191,4 @@ function mapDispatchToProps(dispatch) {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainDashboard);
+
