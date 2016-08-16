@@ -13,7 +13,7 @@ class Dropdown extends React.Component { // eslint-disable-line
   }
 
   renderDropdown(currentError) {
-    const errorString = currentError.response && currentError.response.data ? currentError.response.data : 'Network Error';
+    const errorString = currentError.response && currentError.response.data ? currentError.response.data : "There's something wrong with our servers. give us a second!";
     return (
       <div className={styles.errorDropdown}>
         <div className={styles.dropdownContainer}>
