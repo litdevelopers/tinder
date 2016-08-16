@@ -142,9 +142,22 @@ router.post('/tinder/update/bio', (req, res) => {
 
 router.post('/tinder/update/photoOrder', (req, res) => {
   const client = new tinder.TinderClient();
-  const { newOrder, authToken } = req.body;
+  const { order, authToken } = req.body;
 
   client.setAuthToken(authToken);
+  tinderPromise.setPhotoOrder(order, client)
+  .then((result) => res.status(200).json(result))
+  .catch((error) => res.status(400).json(error));
+});
+
+router.post('/tinder/update/location', (req, res) => {
+  const client = new tinder.TinderClient();
+  const { location, authToken } = req.body;
+
+  client.setAuthToken(authToken);
+  tinderPromise.setLocation(location, client)
+  .then((result) => res.status(200).json(result))
+  .catch((error) => res.status(400).json(error));
 });
 
 router.post('/tinder/message/:id', (req, res) => {

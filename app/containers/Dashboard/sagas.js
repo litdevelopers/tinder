@@ -118,7 +118,6 @@ function* updateBioAction(newBio) {
 }
 
 function* updatePhotoOrderAction(newOrder) {
-  yield call(delay, 1000);
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/update/photoOrder`;
 

@@ -134,7 +134,27 @@ function sendMessage(client, id, message) {
 }
 
 function setPhotoOrder(newOrder, client) {
+  return new Promise((resolve, reject) => {
+    client.updatePhotoOrder(newOrder, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
 
+function setLocation({ lat, lon }, client) {
+  return new Promise((resolve, reject) => {
+    client.setLocation(lon, lat, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
 }
 
 
@@ -151,4 +171,6 @@ module.exports = {
   getMeta,
   setBio,
   sendMessage,
+  setPhotoOrder,
+  setLocation,
 };
