@@ -2,6 +2,7 @@ import {
   EDITING_BIO,
   REORDER_PHOTOS,
   SET_AGE_FILTER,
+  SET_DISTANCE_FILTER,
   SELECTING_LOCATION,
 } from './constants';
 
@@ -31,6 +32,15 @@ export function setAgeFilter(newFilter) {
     payload: {
       age_filter_min: newFilter[0],
       age_filter_max: newFilter[1],
+    },
+  };
+}
+
+export function setDistanceFilter(newFilter) {
+  return {
+    type: SET_DISTANCE_FILTER,
+    payload: {
+      distance_filter: newFilter[0],
     },
   };
 }

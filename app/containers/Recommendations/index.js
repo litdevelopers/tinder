@@ -4,15 +4,17 @@ import { createStructuredSelector } from 'reselect';
 
 import { fetchMatches, sortMatches } from 'containers/Dashboard/actions';
 import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
+
 import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
 import { selectTargetGender, selectFetching } from 'containers/Dashboard/selectors';
-import styles from './styles.css';
 
 import DetailView from 'components/DetailView';
 import MatchCard from 'components/MatchCard';
-import Button from 'components/Button';
 import Panel from 'components/Panel';
 import Infinite from 'react-infinite';
+
+import styles from './styles.css';
+
 
 class DashboardRecommendations extends React.Component { // eslint-disable-line
   mapMatches() {

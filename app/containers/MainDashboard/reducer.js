@@ -17,7 +17,6 @@ function mainDashboardReducer(state = initialState, action) {
   switch (action.type) {
     case SELECTING_LOCATION:
       return state.set('settingLocation', !state.get('settingLocation'));
-
     default:
       return state;
   }

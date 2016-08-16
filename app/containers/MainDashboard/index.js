@@ -5,7 +5,7 @@ import { Motion, spring } from 'react-motion';
 import { SortablePane, Pane } from 'react-sortable-pane';
 import Rheostat from 'rheostat';
 
-import { editingBio, reorderPhotos, selectingLocation, setAgeFilter } from './actions';
+import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter } from './actions';
 import { fetchTinderData } from 'containers/Dashboard/actions';
 
 import { selectUserObject } from 'containers/Dashboard/selectors';
@@ -143,6 +143,9 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                     min={3.2}
                     snap
                     max={160}
+                    onValuesUpdated={(newValues) => {
+                      this.props.setDistanceFilter(newValues.values);
+                    }}
                     values={[Number(userObject.distance_filter)]}
                     className={styles.styledSlider}
                   />
@@ -172,6 +175,7 @@ MainDashboard.propTypes = {
   selectLocation: PropTypes.func,
   isSelectingLocation: PropTypes.bool,
   setAgeFilter: PropTypes.func,
+  setDistanceFilter: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -181,6 +185,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    setDistanceFilter: (newData) => dispatch(setDistanceFilter(newData)),
     setAgeFilter: (newData) => dispatch(setAgeFilter(newData)),
     fetchInitialData: () => dispatch(fetchTinderData()),
     editingBio: (e) => dispatch(editingBio(e.target.value)),

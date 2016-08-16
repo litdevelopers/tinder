@@ -33,7 +33,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
     return this.props.matchMessages && this.props.matchMessages.map((each) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>)
     .concat(this.props.selectOptimistic.map((every) => {
       if (every.id === this.props.currentPerson.id) {
-        return <MessageBubble key={every.message} from="me">{every.message}</MessageBubble>;
+        return <MessageBubble key={every.message} from="you">{every.message}</MessageBubble>;
       }
     }));
   }

@@ -7,6 +7,7 @@ import {
   EDITING_BIO,
   REORDER_PHOTOS,
   SET_AGE_FILTER,
+  SET_DISTANCE_FILTER,
 } from './constants';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
@@ -81,8 +82,8 @@ function* getPhotoUpdateOrderWatcher() {
 function* profileUpdateWatcherFunction() {
   let currentUpdate;
 
-  while (yield ([SET_AGE_FILTER])) {
-    const { payload } = yield take([SET_AGE_FILTER]);
+  while (yield ([SET_AGE_FILTER, SET_DISTANCE_FILTER])) {
+    const { payload } = yield take([SET_AGE_FILTER, SET_DISTANCE_FILTER]);
 
     if (currentUpdate) {
       yield cancel(currentUpdate);
