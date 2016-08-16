@@ -22,7 +22,7 @@ import styles from './styles.css';
 export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     // check if token and userid exists or not
-    this.props.fetchInitialData();
+    if (!this.props.userObject) this.props.fetchInitialData();
   }
 
   renderPhotoItems(photos) {
@@ -120,7 +120,6 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
           <div className={styles.mainDashboardSettings}>
             <div className={styles.mainDashboardSettingsMain}>
               <Text type="dashboardSettingsHeader">Your Photos<Text type="matchRecentMessage">Rearrange your images</Text></Text>
-              {this.renderPhotos(photos)}
               <Text type="dashboardSettingsHeader">Age, Gender and distance options<Text type="matchRecentMessage">Adjust your  settings here</Text></Text>
               <div className={styles.mainDashboardSliders}>
                 <div className={styles.mainDashboardSlider}>

@@ -5,14 +5,14 @@
 */
 
 import React, { PropTypes } from 'react';
-
-
 import styles from './styles.css';
 
 function MessageBubble(props) {
   return (
     <div className={styles[props.from]}>
-      <span className={styles.messageContent}>{props.children}</span>
+      {props.children.match(/gif|giphy/) ? <span className={styles.messageContent}><img role="presentation" src={props.children} /></span> :
+        <span className={styles.messageContent}>{props.children}</span>
+      }
     </div>
   );
 }

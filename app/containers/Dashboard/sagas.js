@@ -10,12 +10,6 @@ import {
 } from './constants';
 
 import {
-  EDITING_BIO,
-  REORDER_PHOTOS,
-  SET_AGE_FILTER,
-} from 'containers/MainDashboard/constants';
-
-import {
   fetchTinderDataSuccess,
   fetchTinderDataError,
   fetchMatchesSuccess,
@@ -102,44 +96,6 @@ export function* tinderBackgroundSync() {
   }
 }
 
-function* updateBioAction(newBio) {
-  yield call(delay, 1000);
-  const authToken = yield select(selectAuthToken());
-  const postURL = `${AUTH_URL}/tinder/update/bio`;
-
-  try {
-    yield call(postRequest, postURL, { authToken, bio: newBio });
-  } catch (error) {
-    yield put((newError(error)));
-    yield put(newErrorAdded());
-  }
-}
-
-function* updatePhotoOrderAction(newOrder) {
-  const authToken = yield select(selectAuthToken());
-  const postURL = `${AUTH_URL}/tinder/update/photoOrder`;
-
-  try {
-    yield call(postRequest, postURL, { authToken, order: newOrder.filter((each) => each.indexOf('photo') === -1) });
-  } catch (error) {
-    yield put((newError(error)));
-    yield put(newErrorAdded());
-  }
-}
-
-function* profileUpdateAction(newObject) {
-  yield call(delay, 100);
-  const authToken = yield select(selectAuthToken());
-  const postURL = `${AUTH_URL}/tinder/update/profile`;
-
-  try {
-    yield call(postRequest, postURL, { authToken, profile: newObject });
-  } catch (error) {
-    yield put((newError(error)));
-    yield put(newErrorAdded());
-  }
-}
-
 function* getTinderDataWatcher() {
   while (yield take(FETCH_TINDER_DATA)) {
     yield call(getTinderData);
@@ -159,66 +115,16 @@ function* getUpdatesWatcher() {
   }
 }
 
-function* getBioUpdatesWatcher() {
-  let currentUpdate;
-  while (yield take(EDITING_BIO)) {
-    const { payload } = yield take(EDITING_BIO);
-
-    if (currentUpdate) {
-      yield cancel(currentUpdate);
-    }
-
-    currentUpdate = yield fork(updateBioAction, payload);
-  }
-}
-
-function* getPhotoUpdateOrderWatcher() {
-  let currentUpdate;
-  while (yield take(REORDER_PHOTOS)) {
-    const { payload } = yield take(REORDER_PHOTOS);
-
-    if (currentUpdate) {
-      yield cancel(currentUpdate);
-    }
-
-    currentUpdate = yield fork(updatePhotoOrderAction, payload);
-  }
-}
-
-function* profileUpdateWatcherFunction() {
-  let currentUpdate;
-
-  while (yield ([SET_AGE_FILTER])) {
-    const { payload } = yield take([SET_AGE_FILTER]);
-
-    if (currentUpdate) {
-      yield cancel(currentUpdate);
-    }
-
-    
-    currentUpdate = yield fork(profileUpdateAction, payload);
-  }
-}
-
-
 // Individual exports for testing
 export function* dashboardSaga() {
   const tinderWatcher = yield fork(getTinderDataWatcher);
   const fetchWatcher = yield fork(updateMatchesWatcher);
   yield fork(getUpdatesWatcher);
 
-  // Profile Editing sagas
-  const bioWatcher = yield fork(getBioUpdatesWatcher);
-  const photoOrderWatcher = yield fork(getPhotoUpdateOrderWatcher);
-  const profileUpdateWatcher = yield fork(profileUpdateWatcherFunction);
-
 
   yield take(LOCATION_CHANGE);
   yield cancel(tinderWatcher);
   yield cancel(fetchWatcher);
-  yield cancel(bioWatcher);
-  yield cancel(photoOrderWatcher);
-  yield cancel(profileUpdateWatcher);
 }
 
 // All sagas to be loaded
