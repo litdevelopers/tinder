@@ -11,10 +11,11 @@ import {
   SUPERLIKE_PERSON_ERROR,
 } from './constants';
 
-export function superLikePerson(id) {
+export function superLikePerson(id, hash) {
   return {
     type: SUPERLIKE_PERSON,
     id,
+    hash,
   };
 }
 
@@ -32,10 +33,11 @@ export function superLikePersonError(errors) {
   };
 }
 
-export function likePerson(id) {
+export function likePerson(id, hash) {
   return {
     type: LIKE_PERSON,
     id,
+    hash,
   };
 }
 
@@ -53,10 +55,11 @@ export function likePersonError(errors) {
   };
 }
 
-export function passPerson(id) {
+export function passPerson(id, hash) {
   return {
     type: PASS_PERSON,
     id,
+    hash,
   };
 }
 

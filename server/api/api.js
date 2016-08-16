@@ -58,10 +58,11 @@ router.post('/tinder/data', (req, res) => {
 router.post('/tinder/like', (req, res) => {
   const likeUser = req.body.userID;
   const xAuth = req.body.userToken;
+  const content_hash = req.body.hash; // eslint-disable-line
   const client = new tinder.TinderClient();
 
   client.setAuthToken(xAuth);
-  tinderPromise.likePerson(client, likeUser)
+  tinderPromise.likePerson(client, likeUser, content_hash)
   .then((response) => {
     res.status(200).json(response);
   })
@@ -73,10 +74,11 @@ router.post('/tinder/like', (req, res) => {
 router.post('/tinder/pass', (req, res) => {
   const passUser = req.body.userID;
   const xAuth = req.body.userToken;
+  const content_hash = req.body.hash; // eslint-disable-line
   const client = new tinder.TinderClient();
 
   client.setAuthToken(xAuth);
-  tinderPromise.passPerson(client, passUser)
+  tinderPromise.passPerson(client, passUser, content_hash)
   .then((response) => {
     res.status(200).json(response);
   })
@@ -88,10 +90,11 @@ router.post('/tinder/pass', (req, res) => {
 router.post('/tinder/superlike', (req, res) => {
   const likeUser = req.body.userID;
   const xAuth = req.body.userToken;
+  const content_hash = req.body.hash; // eslint-disable-line
   const client = new tinder.TinderClient();
 
   client.setAuthToken(xAuth);
-  tinderPromise.superLikePerson(client, likeUser)
+  tinderPromise.superLikePerson(client, likeUser, content_hash)
   .then((response) => {
     res.status(200).json(response);
   })
@@ -171,5 +174,15 @@ router.post('/tinder/message/:id', (req, res) => {
   .catch((error) => res.status(400).json(error));
 });
 
+
+router.post('/tinder/update/profile', (req, res) => {
+  const client = new tinder.TinderClient();
+  const { profile, authToken } = req.body;
+
+  client.setAuthToken(authToken);
+  tinderPromise.setProfile(profile, client)
+  .then((result) => res.status(200).json(result))
+  .catch((error) => res.status(400).json(error));
+});
 
 module.exports = router;

@@ -107,18 +107,18 @@ function mapDispatchToProps(dispatch) {
     onMultiple: (matches, type) => {
       const currentMatches = matches;
       currentMatches.map((each) => {
-        if (type === 'like') return dispatch(likePerson(each._id));
-        if (type === 'pass') return dispatch(passPerson(each._id));
+        if (type === 'like') return dispatch(likePerson(each._id, each.content_hash));
+        if (type === 'pass') return dispatch(passPerson(each._id, each.content_hash));
         return null;
       });
     },
     onClickCard: (id, image) => {
       dispatch(detailPerson(id, image));
     },
-    onClickButton: (id, type) => {
-      if (type === 'like') dispatch(likePerson(id));
-      if (type === 'pass') dispatch(passPerson(id));
-      if (type === 'superlike') dispatch(superLikePerson(id));
+    onClickButton: (id, hash, type) => {
+      if (type === 'like') dispatch(likePerson(id, hash));
+      if (type === 'pass') dispatch(passPerson(id, hash));
+      if (type === 'superlike') dispatch(superLikePerson(id, hash));
     },
   };
 }

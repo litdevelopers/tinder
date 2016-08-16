@@ -38,9 +38,9 @@ function MatchCard(props) {
     >
       <div className={styles.matchCardContainer}>
         <div className={styles.matchCardButtons}>
-          <Button type="like" onClick={props.onClickButton} id={data._id}>Like</Button>
-          <Button type="superlike" onClick={props.onClickButton} id={data._id}>Super Like</Button>
-          <Button type="pass" onClick={props.onClickButton} id={data._id}>Pass</Button>
+          <Button type="like" onClick={props.onClickButton} id={data._id} hash={data.content_hash}>Like</Button>
+          <Button type="superlike" onClick={props.onClickButton} id={data._id} hash={data.content_hash}>Super Like</Button>
+          <Button type="pass" onClick={props.onClickButton} id={data._id} hash={data.content_hash}>Pass</Button>
         </div>
         <div
           className={styles.matchCardContainer_wrapper}
