@@ -1,5 +1,5 @@
-import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
-import { takeLatest, delay } from 'redux-saga';
+import { take, call, put, select, fork, cancel, actionChannel } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
@@ -12,6 +12,7 @@ import {
 import {
   EDITING_BIO,
   REORDER_PHOTOS,
+  SET_AGE_FILTER,
 } from 'containers/MainDashboard/constants';
 
 import {
@@ -26,9 +27,7 @@ import {
 
 import { newError, newErrorAdded } from 'containers/Notification/actions';
 
-import {
-  selectAuthToken,
-} from 'containers/Auth/selectors';
+import { selectAuthToken } from 'containers/Auth/selectors';
 import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
 
@@ -39,7 +38,6 @@ function* getTinderData() {
   try {
     const data = yield call(postRequest, postURL, { authToken });
     if (data.status === 200 && typeof (data.data[2]) === 'object') {
-      // console.log(data.data[1].matches);
       yield put(fetchTinderDataSuccess((data.data)));
     } else if (data.status === 200 && typeof (data.data[2]) === 'string') {
       yield put(fetchTinderDataSuccess(data.data));
@@ -118,12 +116,24 @@ function* updateBioAction(newBio) {
 }
 
 function* updatePhotoOrderAction(newOrder) {
-  yield call(delay, 1000);
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/update/photoOrder`;
 
   try {
     yield call(postRequest, postURL, { authToken, order: newOrder.filter((each) => each.indexOf('photo') === -1) });
+  } catch (error) {
+    yield put((newError(error)));
+    yield put(newErrorAdded());
+  }
+}
+
+function* profileUpdateAction(newObject) {
+  yield call(delay, 100);
+  const authToken = yield select(selectAuthToken());
+  const postURL = `${AUTH_URL}/tinder/update/profile`;
+
+  try {
+    yield call(postRequest, postURL, { authToken, profile: newObject });
   } catch (error) {
     yield put((newError(error)));
     yield put(newErrorAdded());
@@ -175,6 +185,21 @@ function* getPhotoUpdateOrderWatcher() {
   }
 }
 
+function* profileUpdateWatcherFunction() {
+  let currentUpdate;
+
+  while (yield ([SET_AGE_FILTER])) {
+    const { payload } = yield take([SET_AGE_FILTER]);
+
+    if (currentUpdate) {
+      yield cancel(currentUpdate);
+    }
+
+    
+    currentUpdate = yield fork(profileUpdateAction, payload);
+  }
+}
+
 
 // Individual exports for testing
 export function* dashboardSaga() {
@@ -185,6 +210,7 @@ export function* dashboardSaga() {
   // Profile Editing sagas
   const bioWatcher = yield fork(getBioUpdatesWatcher);
   const photoOrderWatcher = yield fork(getPhotoUpdateOrderWatcher);
+  const profileUpdateWatcher = yield fork(profileUpdateWatcherFunction);
 
 
   yield take(LOCATION_CHANGE);
@@ -192,6 +218,7 @@ export function* dashboardSaga() {
   yield cancel(fetchWatcher);
   yield cancel(bioWatcher);
   yield cancel(photoOrderWatcher);
+  yield cancel(profileUpdateWatcher);
 }
 
 // All sagas to be loaded

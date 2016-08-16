@@ -3,38 +3,31 @@ import { default as ScriptjsLoader } from 'react-google-maps/lib/async/ScriptjsL
 import GoogleMap from 'react-google-maps/lib/GoogleMap';
 // import styles from './styles.css';
 
-export default class MapView extends React.Component {
-  renderMapView() {
-    return (
-      <ScriptjsLoader
-        hostname={"maps.googleapis.com"}
-        pathname={"/maps/api/js"}
-        query={{ v: '3', libraries: 'geometry,drawing,places', key: 'AIzaSyBdMrXj-0n962gbf0PNSkP9r49soZamXgQ' }}
-        loadingElement={<div>hello</div>}
-        containerElement={
-          <div style={{ height: '100%', width: '100%' }} />
+export default function MapView(props) {
+  return (
+    <ScriptjsLoader
+      hostname={"maps.googleapis.com"}
+      pathname={"/maps/api/js"}
+      query={{ v: '3', libraries: 'geometry,drawing,places', key: 'AIzaSyBdMrXj-0n962gbf0PNSkP9r49soZamXgQ' }}
+      loadingElement={<div>hello</div>}
+      containerElement={
+        <div style={{ height: '100%', width: '100%' }} />
         }
-        googleMapElement={
-          <GoogleMap
-            ref={googleMap => {
-              if (!googleMap) {
-                return;
-              }
-            }}
-            defaultOptions={{ mapTypeControl: false, streetViewControl: false }}
-            defaultZoom={3}
-            defaultCenter={{ lat: this.props.lat, lng: this.props.lng }}
-          >
-          </GoogleMap>
+      googleMapElement={
+        <GoogleMap
+          ref={googleMap => {
+            if (!googleMap) {
+              return;
+            }
+          }}
+          defaultOptions={{ mapTypeControl: false, streetViewControl: false }}
+          defaultZoom={3}
+          defaultCenter={{ lat: props.lat, lng: props.lng }}
+        >
+        </GoogleMap>
         }
-      />
+    />
   );
-  }
-
-  render() {
-    return this.renderMapView();
-  }
-
 }
 
 MapView.propTypes = {

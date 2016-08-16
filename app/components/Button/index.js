@@ -6,7 +6,7 @@ function Button(props) {
     <button
       className={styles[props.type]}
       onClick={() => {
-        props.onClick(props.id, props.type);
+        props.onClick(props.id, props.hash, props.type);
       }}
     >
       {props.children}
@@ -20,6 +20,7 @@ Button.propTypes = {
   ]),
   type: PropTypes.string.isRequired,
   id: PropTypes.string,
+  hash: PropTypes.string,
   onClick: PropTypes.func.isRequired,
 };
 

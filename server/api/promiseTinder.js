@@ -47,7 +47,7 @@ function getUserFromId(client, user) {
 
 function getMeta(client) {
   return new Promise((resolve, reject) => {
-    client.getAccount((error, response)=>{
+    client.getAccount((error, response) => {
       if (error) {
         reject(error);
       } else {
@@ -73,9 +73,9 @@ function getAuthToken(client) {
   return new Promise((resolve) => resolve(client.getAuthToken()));
 }
 
-function likePerson(client, id) {
+function likePerson(client, id, hash) {
   return new Promise((resolve, reject) => {
-    client.like(id, (error, response) => {
+    client.like(id, hash, (error, response) => {
       if (error || !response.likes_remaining) {
         reject(error || { message: 'LIMIT_EXCEEDED', timeUntil: response.rate_limited_until });
       } else {
@@ -85,9 +85,9 @@ function likePerson(client, id) {
   });
 }
 
-function passPerson(client, id) {
+function passPerson(client, id, hash) {
   return new Promise((resolve, reject) => {
-    client.pass(id, (error, response) => {
+    client.pass(id, hash, (error, response) => {
       if (error) {
         reject(error);
       } else {
@@ -97,9 +97,9 @@ function passPerson(client, id) {
   });
 }
 
-function superLikePerson(client, id) {
+function superLikePerson(client, id, hash) {
   return new Promise((resolve, reject) => {
-    client.superLike(id, (error, response) => {
+    client.superLike(id, hash, (error, response) => {
       if (error || response.limit_exceeded) {
         reject(error || 'LIMIT_EXCEEDED');
       } else {
@@ -134,7 +134,39 @@ function sendMessage(client, id, message) {
 }
 
 function setPhotoOrder(newOrder, client) {
+  return new Promise((resolve, reject) => {
+    client.updatePhotoOrder(newOrder, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
 
+function setProfile(newProfileObject, client) {
+  return new Promise((resolve, reject) => {
+    client.updatePreferences(newProfileObject, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
+function setLocation({ lat, lon }, client) {
+  return new Promise((resolve, reject) => {
+    client.setLocation(lon, lat, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
 }
 
 
@@ -151,4 +183,7 @@ module.exports = {
   getMeta,
   setBio,
   sendMessage,
+  setPhotoOrder,
+  setLocation,
+  setProfile,
 };

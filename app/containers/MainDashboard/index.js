@@ -5,7 +5,7 @@ import { Motion, spring } from 'react-motion';
 import { SortablePane, Pane } from 'react-sortable-pane';
 import Rheostat from 'rheostat';
 
-import { editingBio, reorderPhotos, selectingLocation } from './actions';
+import { editingBio, reorderPhotos, selectingLocation, setAgeFilter } from './actions';
 import { fetchTinderData } from 'containers/Dashboard/actions';
 
 import { selectUserObject } from 'containers/Dashboard/selectors';
@@ -36,7 +36,6 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
           width={400}
           style={{ backgroundImage: `url(${photos[iter] ? photos[iter].processedFiles[0].url : ''})` }}
           className={styles.photoItem}
-          disableEffect
           isResizable={{ x: false, y: false, xy: false }}
         />
       );
@@ -49,6 +48,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
       <SortablePane
         className={styles.mainDashboardSettingsPictureRow}
         onOrderChange={(oldOrder, newOrder) => { this.props.reorderPhotos(newOrder); }}
+        disableEffect
         zIndex={1}
       >
         {this.renderPhotoItems(photos)}
@@ -121,17 +121,36 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
             <div className={styles.mainDashboardSettingsMain}>
               <Text type="dashboardSettingsHeader">Your Photos<Text type="matchRecentMessage">Rearrange your images</Text></Text>
               {this.renderPhotos(photos)}
-              <Text type="dashboardSettingsHeader">Age and distance options<Text type="matchRecentMessage">Adjust your  settings here</Text></Text>
+              <Text type="dashboardSettingsHeader">Age, Gender and distance options<Text type="matchRecentMessage">Adjust your  settings here</Text></Text>
               <div className={styles.mainDashboardSliders}>
                 <div className={styles.mainDashboardSlider}>
                   <Rheostat
-                    min={1}
-                    max={100}
-                    values={[1, 100]}
+                    min={18}
+                    snap
+                    onValuesUpdated={(newValues) => this.props.setAgeFilter(newValues.values)}
+                    max={55}
+                    values={[userObject.age_filter_min, userObject.age_filter_max > 55 ? 55 : userObject.age_filter_max]}
+                    className={styles.styledSlider}
                   />
+                  <div className={styles.sliderText}>
+                    <Text type="bio" style={{ flex: 1 }}>{userObject.age_filter_min}</Text>
+                    <Text type="matchRecentMessage" style={{ flex: 1, textAlign: 'center' }}>Age Preference</Text>
+                    <Text type="bio" style={{ flex: 1, textAlign: 'right' }}>{userObject.age_filter_max > 55 ? '55+' : userObject.age_filter_max}</Text>
+                  </div>
                 </div>
                 <div className={styles.mainDashboardSlider}>
-                  <p>Hello</p>
+                  <Rheostat
+                    min={3.2}
+                    snap
+                    max={160}
+                    values={[Number(userObject.distance_filter)]}
+                    className={styles.styledSlider}
+                  />
+                  <div className={styles.sliderText}>
+                    <Text type="bio" style={{ flex: 1 }}>1 km</Text>
+                    <Text type="matchRecentMessage" style={{ flex: 1, textAlign: 'center' }}>Distance Filter</Text>
+                    <Text type="bio" style={{ flex: 1, textAlign: 'right' }}>{(userObject.distance_filter * 1.6).toFixed(0)} km</Text>
+                  </div>
                 </div>
               </div>
               <div className={styles.mainDashboardSliders}>
@@ -152,6 +171,7 @@ MainDashboard.propTypes = {
   reorderPhotos: PropTypes.func,
   selectLocation: PropTypes.func,
   isSelectingLocation: PropTypes.bool,
+  setAgeFilter: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -161,6 +181,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    setAgeFilter: (newData) => dispatch(setAgeFilter(newData)),
     fetchInitialData: () => dispatch(fetchTinderData()),
     editingBio: (e) => dispatch(editingBio(e.target.value)),
     reorderPhotos: (photoOrder) => dispatch(reorderPhotos(photoOrder.map((each) => each.id))),

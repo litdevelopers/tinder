@@ -47,7 +47,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                 <Infinite
                   displayBottomUpwards
                   className={styles.messagesPanel}
-                  containerHeight={500}
+                  containerHeight={600}
                   elementHeight={45}
                   itemsPerRow={1}
                 >

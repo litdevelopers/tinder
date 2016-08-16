@@ -22,6 +22,7 @@ import {
 
 import {
   EDITING_BIO,
+  SET_AGE_FILTER,
 } from 'containers/MainDashboard/constants';
 
 
@@ -79,6 +80,10 @@ function dashboardReducer(state = initialState, action) {
         .set('isFetching', false);
     case EDITING_BIO:
       return state.setIn(['user', 'bio'], action.payload);
+    case SET_AGE_FILTER:
+      return state
+        .setIn(['user', 'age_filter_max'], action.payload.age_filter_max)
+        .setIn(['user', 'age_filter_min'], action.payload.age_filter_min);
     case FETCH_UPDATES_END:
       return state
         .set('isFetching', false);

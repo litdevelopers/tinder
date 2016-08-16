@@ -33,7 +33,7 @@ export function* actionPerson(action, type) {
   const postURL = `${AUTH_URL}/tinder/${type}`;
 
   try {
-    const data = yield call(postRequest, postURL, { userToken, userID: action.id });
+    const data = yield call(postRequest, postURL, { userToken, userID: action.id, hash: action.hash });
     if (data.status === 200) {
       yield put(removeMatch(action.id));
       yield put(detailPerson(''));
