@@ -212,6 +212,7 @@
     "reselect": "2.5.3",
     "rheostat": "git+https://github.com/litdevelopers/rheostat.git",
     "sanitize.css": "4.1.0",
+    "tinder": "git+https://github.com/litdevelopers/tinderjs.git",
     "warning": "^3.0.0"
   },
   "devDependencies": {
