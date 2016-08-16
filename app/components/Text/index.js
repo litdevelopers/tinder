@@ -4,7 +4,7 @@ import styles from './styles.css';
 function Text(props) {
   if (!props.children) {
     return null;
-  } 
+  }
   return (<span {...props} className={styles[props.type]}>{props.children}</span>);
 }
 

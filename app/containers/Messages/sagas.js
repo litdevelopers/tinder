@@ -24,7 +24,6 @@ export function* sendMessageData(payload) {
   const userToken = yield select(selectAuthToken());
   const { id, message } = payload;
   const postURL = `${AUTH_URL}/tinder/message/${id}`;
-
   try {
     const result = yield call(postRequest, postURL, { userToken, message });
     if (result.status === 200) {

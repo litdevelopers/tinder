@@ -26,6 +26,15 @@ const selectPersonId = () => createSelector(
   (messages) => messages.currentPerson,
 );
 
+const selectCurrentMessage = () => createSelector(
+  selectMessages(),
+  (messages) => messages.currentMessage,
+);
+
+const selectOptimisticUI = () => createSelector(
+  selectMessages(),
+  (messages) => messages.optimisticUI,
+);
 const selectMatchesSelector = () => createSelector(
   selectDashboardHistory(),
   (state) => state.matches.slice().sort((a, b) => messagesSortByRecent(a, b)),
@@ -82,7 +91,10 @@ const selectMatchMessages = () => createSelector(
 export {
   selectMessagesDomain,
   selectPersonSelector,
+  selectPersonId,
   selectMatchesSelector,
   selectMatchDetailImages,
   selectMatchMessages,
+  selectCurrentMessage,
+  selectOptimisticUI,
 };

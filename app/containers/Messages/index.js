@@ -11,11 +11,12 @@ import {
   selectMatchesSelector,
   selectMatchDetailImages,
   selectMatchMessages,
+  selectOptimisticUI,
 } from './selectors';
 import styles from './styles.css';
 import { selectDashboardHistory } from 'containers/Dashboard/selectors';
 import { createStructuredSelector } from 'reselect';
-import { selectPersonAction } from './actions';
+import { selectPersonAction, changeMessage, sendMessage } from './actions';
 
 import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
@@ -29,16 +30,22 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   mapMessages() {
-    return this.props.matchMessages && this.props.matchMessages.map((each) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>);
+    return this.props.matchMessages && this.props.matchMessages.map((each) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>)
+      .concat(this.props.selectOptimistic.map((every) => <MessageBubble key={every} from="me">{every}</MessageBubble>));
   }
 
   render() {
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
-          <div className={styles.messagePanelContainenr}>
+          <Infinite
+            className={styles.messagePanelContainer}
+            containerHeight={600}
+            elementHeight={100}
+            itemsPerRow={1}
+          >
             {this.props.userHistory.matches && this.mapMatches()}
-          </div>
+          </Infinite>
         </div>
         <div className={styles.messengerPanel}>
           <div className={styles.messengerPanelContainer}>
@@ -47,14 +54,14 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                 <Infinite
                   displayBottomUpwards
                   className={styles.messagesPanel}
-                  containerHeight={600}
-                  elementHeight={45}
+                  containerHeight={700}
+                  elementHeight={50}
                   itemsPerRow={1}
                 >
                     {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
                 </Infinite>
                 <div className={styles.chatBoxPanel} >
-                  <MessengerInput />
+                  <MessengerInput sendTo={this.props.currentPerson && this.props.currentPerson.id} sendMessage={this.props.onSendMessage} onChange={this.props.onChangeMessage}/>
                 </div>
               </div>
               <div className={styles.profileBioPanel} >
@@ -75,6 +82,8 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
 function mapDispatchToProps(dispatch) {
   return {
     selectPerson: (id) => dispatch(selectPersonAction(id)),
+    onChangeMessage: (event) => dispatch(changeMessage(event.target.value)),
+    onSendMessage: (id, message) => dispatch(sendMessage(id, message)),
   };
 }
 
@@ -84,6 +93,7 @@ const mapStateToProps = createStructuredSelector({
   selectMatches: selectMatchesSelector(),
   matchDetailImages: selectMatchDetailImages(),
   matchMessages: selectMatchMessages(),
+  selectOptimistic: selectOptimisticUI(),
 });
 
 Messages.propTypes = {
@@ -93,6 +103,9 @@ Messages.propTypes = {
   currentPerson: PropTypes.object,
   selectMatches: PropTypes.array,
   matchDetailImages: PropTypes.array,
+  onSendMessage: PropTypes.func,
+  onChangeMessage: PropTypes.func,
+  selectOptimisticUI: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

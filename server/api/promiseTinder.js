@@ -124,7 +124,7 @@ function setBio(client, newBio) {
 function sendMessage(client, id, message) {
   return new Promise((resolve, reject) => {
     client.sendMessage(id, message, (error, response) => {
-      if (error || !response.likes_remaining) {
+      if (error) {
         reject(error);
       } else {
         resolve(response);

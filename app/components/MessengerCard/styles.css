@@ -26,5 +26,8 @@
 
 .matchDetails {
   flex: 2;
+  display: inline-block;
+  overflow:hidden;
   padding: 20px;
+  text-overflow: ellipsis;
 }
