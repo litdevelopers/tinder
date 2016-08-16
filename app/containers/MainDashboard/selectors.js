@@ -21,7 +21,13 @@ const selectIsSettingLocation = () => createSelector(
   (substate) => substate.settingLocation
 );
 
+const selectMarkerLocation = () => createSelector(
+  selectUserDashboard(),
+  (substate) => substate.mapPinLocation
+);
+
 export {
   selectUserDashboard,
   selectIsSettingLocation,
+  selectMarkerLocation,
 };

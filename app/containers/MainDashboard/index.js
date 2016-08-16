@@ -5,11 +5,11 @@ import { Motion, spring } from 'react-motion';
 import { SortablePane, Pane } from 'react-sortable-pane';
 import Rheostat from 'rheostat';
 
-import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter } from './actions';
+import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, selectLocation } from './actions';
 import { fetchTinderData } from 'containers/Dashboard/actions';
 
 import { selectUserObject } from 'containers/Dashboard/selectors';
-import { selectIsSettingLocation } from './selectors';
+import { selectIsSettingLocation, selectMarkerLocation } from './selectors';
 
 import { getFacebookUrl } from 'utils/facebook';
 import { getAge } from 'utils/operations';
@@ -64,11 +64,16 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
         <div className={styles.mainDashboard}>
           <div className={styles.mainDashboardProfile}>
             <div className={styles.mainDashboardHeader}>
-              <MapView onClick={this.props.selectLocation} open={this.props.isSelectingLocation} lat={-34.397} lng={150.644} />
+              <MapView
+                onClick={this.props.selectLocation}
+                open={this.props.isSelectingLocation}
+                markerLocation={this.props.markerLocation}
+                onSelectMarker={this.props.selectMarkerLocation}
+              />
             </div>
             <Motion
               defaultStyle={{
-                flex: this.props.isSelectingLocation ? spring(0.1, [0, 0]) : 0,
+                flex: this.props.isSelectingLocation ? 0.1 : 0,
                 width: this.props.isSelectingLocation ? 150 : 50,
                 minHeight: this.props.isSelectingLocation ? 150 : 50,
               }}
@@ -120,8 +125,8 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
           </div>
           <div className={styles.mainDashboardSettings}>
             <div className={styles.mainDashboardSettingsMain}>
-              <Text type="dashboardSettingsHeader">Your Photos<Text type="matchRecentMessage">Rearrange your images</Text></Text>
-              <Text type="dashboardSettingsHeader">Age, Gender and distance options<Text type="matchRecentMessage">Adjust your  settings here</Text></Text>
+              <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Your Photos<Text type="matchRecentMessage" style={{ fontSize: 12 }}>Rearrange your images</Text></Text>
+              <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Age, Gender and distance options<Text type="matchRecentMessage" style={{ fontSize: 12 }}>Adjust your settings here</Text></Text>
               <div className={styles.mainDashboardSliders}>
                 <div className={styles.mainDashboardSlider}>
                   <Rheostat
@@ -169,28 +174,32 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
 
 MainDashboard.propTypes = {
   fetchInitialData: PropTypes.func.isRequired,
-  userObject: PropTypes.object,
+  selectMarkerLocation: PropTypes.func,
   editingBio: PropTypes.func,
   reorderPhotos: PropTypes.func,
   selectLocation: PropTypes.func,
-  isSelectingLocation: PropTypes.bool,
   setAgeFilter: PropTypes.func,
   setDistanceFilter: PropTypes.func,
+  userObject: PropTypes.object,
+  markerLocation: PropTypes.object,
+  isSelectingLocation: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   userObject: selectUserObject(),
+  markerLocation: selectMarkerLocation(),
   isSelectingLocation: selectIsSettingLocation(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    selectLocation: () => dispatch(selectingLocation()),
     setDistanceFilter: (newData) => dispatch(setDistanceFilter(newData)),
+    selectMarkerLocation: (lat, lng) => dispatch(selectLocation(lat, lng)),
     setAgeFilter: (newData) => dispatch(setAgeFilter(newData)),
     fetchInitialData: () => dispatch(fetchTinderData()),
     editingBio: (e) => dispatch(editingBio(e.target.value)),
     reorderPhotos: (photoOrder) => dispatch(reorderPhotos(photoOrder.map((each) => each.id))),
-    selectLocation: () => dispatch(selectingLocation()),
   };
 }
 

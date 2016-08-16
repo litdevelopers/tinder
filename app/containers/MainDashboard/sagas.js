@@ -8,7 +8,9 @@ import {
   REORDER_PHOTOS,
   SET_AGE_FILTER,
   SET_DISTANCE_FILTER,
+  SELECTING_LOCATION,
 } from './constants';
+import { selectMarkerLocation } from './selectors';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { newError, newErrorAdded } from 'containers/Notification/actions';
@@ -47,6 +49,18 @@ function* profileUpdateAction(newObject) {
 
   try {
     yield call(postRequest, postURL, { authToken, profile: newObject });
+  } catch (error) {
+    yield put((newError(error)));
+    yield put(newErrorAdded());
+  }
+}
+
+function* locationUpdateAction(locationData) {
+  const authToken = yield select(selectAuthToken());
+  const postURL = `${AUTH_URL}/tinder/update/location`;
+
+  try {
+    yield call(postRequest, postURL, { authToken, location: locationData });
   } catch (error) {
     yield put((newError(error)));
     yield put(newErrorAdded());
@@ -93,16 +107,26 @@ function* profileUpdateWatcherFunction() {
   }
 }
 
+function* locationUpdateWatcherFunction() {
+  while (yield take(SELECTING_LOCATION)) {
+    const currentLocationData = yield select(selectMarkerLocation());
+    if (currentLocationData.lat && currentLocationData.lng) {
+      yield fork(locationUpdateAction, currentLocationData);
+    }
+  }
+}
+
 export function* mainDashboardSaga() {
   const bioWatcher = yield fork(getBioUpdatesWatcher);
   const photoOrderWatcher = yield fork(getPhotoUpdateOrderWatcher);
   const profileUpdateWatcher = yield fork(profileUpdateWatcherFunction);
-
+  const locationUpdateWatcher = yield fork(locationUpdateWatcherFunction);
 
   yield take(LOCATION_CHANGE);
   yield cancel(bioWatcher);
   yield cancel(photoOrderWatcher);
   yield cancel(profileUpdateWatcher);
+  yield cancel(locationUpdateWatcher);
 }
 // All sagas to be loaded
 export default [

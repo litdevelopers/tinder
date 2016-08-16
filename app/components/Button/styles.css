@@ -6,6 +6,15 @@
   margin:5px;
   }
 
+.locationToggle {
+  composes: button;
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  border-color: white;
+  color: white;
+}
+
 .commonInterest {
   composes: button;
   font-size: 12px;

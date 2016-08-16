@@ -4,11 +4,22 @@ import {
   SET_AGE_FILTER,
   SET_DISTANCE_FILTER,
   SELECTING_LOCATION,
+  SELECT_LOCATION,
 } from './constants';
 
 export function selectingLocation() {
   return {
     type: SELECTING_LOCATION,
+  };
+}
+
+export function selectLocation(lat, lng) {
+  return {
+    type: SELECT_LOCATION,
+    payload: {
+      lat,
+      lng,
+    },
   };
 }
 
@@ -44,3 +55,4 @@ export function setDistanceFilter(newFilter) {
     },
   };
 }
+

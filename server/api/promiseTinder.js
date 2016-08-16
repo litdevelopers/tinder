@@ -157,9 +157,9 @@ function setProfile(newProfileObject, client) {
   });
 }
 
-function setLocation({ lat, lon }, client) {
+function setLocation({ lat, lng }, client) {
   return new Promise((resolve, reject) => {
-    client.setLocation(lon, lat, (error, response) => {
+    client.updatePosition(lng, lat, (error, response) => {
       if (error) {
         reject(error);
       } else {
