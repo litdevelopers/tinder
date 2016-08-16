@@ -64,7 +64,13 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                     {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
                 </Infinite>
                 <div className={styles.chatBoxPanel} >
-                  <MessengerInput sendTo={this.props.currentPerson && this.props.currentPerson.id} sendMessage={this.props.onSendMessage} onChange={this.props.onChangeMessage}/>
+                  {this.props.currentPerson ?
+                    <MessengerInput
+                      sendTo={this.props.currentPerson && this.props.currentPerson.id}
+                      sendMessage={this.props.onSendMessage}
+                      onChange={this.props.onChangeMessage}
+                    /> :
+                    <h1>Test</h1>}
                 </div>
               </div>
               <div className={styles.profileBioPanel} >
@@ -72,7 +78,8 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                   <DetailView
                     data={this.props.currentPerson.person}
                     imageData={this.props.matchDetailImages}
-                  /> : <h1>Test</h1>}
+                  /> :
+                  <h1>Test</h1>}
               </div>
             </div>
           </div>

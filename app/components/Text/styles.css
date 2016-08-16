@@ -99,6 +99,7 @@
 .matchName {
   display: inline-block;
   font-weight: 400;
+  font-size: 14px;
 }
 
 .matchRecentMessage {
@@ -109,9 +110,9 @@
 }
 
 .matchActivity {
-  float: right;
+  text-align: center;
   color: #aaa;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .dashboardSettingsHeader {

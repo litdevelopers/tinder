@@ -31,3 +31,9 @@
   padding: 20px;
   text-overflow: ellipsis;
 }
+
+.flexName {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}

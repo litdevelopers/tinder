@@ -28,8 +28,10 @@ function MessengerCard(props) {
           />
         </div>
         <div className={styles.matchDetails}>
-          <Text type="matchName">{person && person.name}</Text>
-          <Text type="matchActivity">{recentActivity}</Text>
+          <div className={styles.flexName}>
+            <Text type="matchName">{person && person.name}</Text>
+            <Text type="matchActivity">{recentActivity}</Text>
+          </div>
           <Text type="matchRecentMessage">{recentMessage}</Text>
         </div>
       </div>
