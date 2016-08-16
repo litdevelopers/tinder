@@ -27,10 +27,9 @@ function messagesReducer(state = initialState, action) {
     case CHANGE_MESSAGE:
       return state.set('currentMessage', action.payload);
     case SEND_MESSAGE:
-      console.log(action);
       return state
         .set('isSending', true)
-        .set('optimisticUI', fromJS(state.get('optimisticUI')).concat(action.payload.message))
+        .set('optimisticUI', fromJS(state.get('optimisticUI')).push(fromJS(action.payload)))
         .set('currentMessage', '');
     case SEND_MESSAGE_ERROR:
       return state.set('isSending', false);

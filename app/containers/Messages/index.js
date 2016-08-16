@@ -31,9 +31,12 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
 
   mapMessages() {
     return this.props.matchMessages && this.props.matchMessages.map((each) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>)
-      .concat(this.props.selectOptimistic.map((every) => <MessageBubble key={every} from="me">{every}</MessageBubble>));
+    .concat(this.props.selectOptimistic.map((every) => {
+      if (every.id === this.props.currentPerson.id) {
+        return <MessageBubble key={every.message} from="me">{every.message}</MessageBubble>
+      }
+    }));
   }
-
   render() {
     return (
       <div className={styles.messagesContainer}>
@@ -106,6 +109,7 @@ Messages.propTypes = {
   onSendMessage: PropTypes.func,
   onChangeMessage: PropTypes.func,
   selectOptimisticUI: PropTypes.func,
+  selectOptimistic: PropTypes.array,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);
