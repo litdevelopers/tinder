@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Motion, spring } from 'react-motion';
-import { SortablePane, Pane } from 'react-sortable-pane';
 import Rheostat from 'rheostat';
+import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
 import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, selectLocation } from './actions';
 import { fetchTinderData } from 'containers/Dashboard/actions';
@@ -18,42 +18,28 @@ import Text from 'components/Text';
 import MapView from 'components/MapView';
 import styles from './styles.css';
 
+const PhotoList = SortableContainer(({ items }) => { // eslint-disable-line
+  const photoList = [];
+  for (let iter = 0; iter < 6; iter++) {
+    photoList.push(<PhotoItem hideSortableGhost key={`photo-${iter}`} index={iter} photo={items[iter]} disabled={!items[iter]} />);
+  }
+  return (
+    <div className={styles.mainDashboardSettingsPictureRow}>
+      {photoList}
+    </div>
+  );
+});
+
+const PhotoItem = SortableElement(({ photo }) => <div className={styles.photoItem} style={{ backgroundImage: `url(${photo ? photo.processedFiles[0].url : ''})` }} />); // eslint-disable-line
+
 
 export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     this.props.fetchInitialData();
   }
 
-  renderPhotoItems(photos) {
-    const photoList = [];
-    for (let iter = 0; iter < 6; iter++) {
-      photoList.push(
-        <Pane
-          id={photos[iter] ? photos[iter].id : `photo-${iter}`}
-          key={photos[iter] ? photos[iter].id : `photo-${iter}`}
-          height={200}
-          width={400}
-          style={{ backgroundImage: `url(${photos[iter] ? photos[iter].processedFiles[0].url : ''})` }}
-          className={styles.photoItem}
-          isResizable={{ x: false, y: false, xy: false }}
-        />
-      );
-    }
-    return photoList;
-  }
-
   renderPhotos(photos) {
-    return (
-      <SortablePane
-        className={styles.mainDashboardSettingsPictureRow}
-        onOrderChange={(oldOrder, newOrder) => { this.props.reorderPhotos(newOrder); }}
-        disableEffect
-        zIndex={1}
-      >
-        {this.renderPhotoItems(photos)}
-      </SortablePane>
-
-     );
+    return <PhotoList axis="x" items={photos} onSortEnd={({ oldIndex, newIndex }) => { this.props.reorderPhotos(arrayMove(photos, oldIndex, newIndex)); }} />;
   }
 
   render() {
@@ -126,6 +112,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
           <div className={styles.mainDashboardSettings}>
             <div className={styles.mainDashboardSettingsMain}>
               <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Your Photos<Text type="matchRecentMessage" style={{ fontSize: 12 }}>Rearrange your images</Text></Text>
+              {this.renderPhotos(photos)}
               <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Age, Gender and distance options<Text type="matchRecentMessage" style={{ fontSize: 12 }}>Adjust your settings here</Text></Text>
               <div className={styles.mainDashboardSliders}>
                 <div className={styles.mainDashboardSlider}>
@@ -199,7 +186,7 @@ function mapDispatchToProps(dispatch) {
     setAgeFilter: (newData) => dispatch(setAgeFilter(newData)),
     fetchInitialData: () => dispatch(fetchTinderData()),
     editingBio: (e) => dispatch(editingBio(e.target.value)),
-    reorderPhotos: (photoOrder) => dispatch(reorderPhotos(photoOrder.map((each) => each.id))),
+    reorderPhotos: (photoOrder) => dispatch(reorderPhotos(photoOrder)),
   };
 }
 

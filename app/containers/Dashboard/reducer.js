@@ -24,6 +24,7 @@ import {
   EDITING_BIO,
   SET_AGE_FILTER,
   SET_DISTANCE_FILTER,
+  REORDER_PHOTOS,
 } from 'containers/MainDashboard/constants';
 
 
@@ -87,6 +88,8 @@ function dashboardReducer(state = initialState, action) {
         .setIn(['user', 'age_filter_min'], action.payload.age_filter_min);
     case SET_DISTANCE_FILTER:
       return state.setIn(['user', 'distance_filter'], action.payload.distance_filter);
+    case REORDER_PHOTOS:
+      return state.setIn(['user', 'photos'], action.payload);
     case FETCH_UPDATES_END:
       return state
         .set('isFetching', false);
