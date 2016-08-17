@@ -13,6 +13,8 @@ import {
   SEND_MESSAGE_SUCCESS,
 } from './constants';
 
+import { LOCATION_CHANGE } from 'react-router-redux';
+
 const initialState = fromJS({
   currentPerson: '',
   currentMessage: '',
@@ -35,6 +37,8 @@ function messagesReducer(state = initialState, action) {
       return state.set('isSending', false);
     case SEND_MESSAGE_SUCCESS:
       return state.set('isSending', false);
+    case LOCATION_CHANGE:
+      return state.set('optimisticUI', fromJS([]));
     default:
       return state;
   }
