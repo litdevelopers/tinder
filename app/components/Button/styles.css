@@ -11,8 +11,12 @@
   position: absolute;
   z-index: 3;
   right: 0;
-  border-color: white;
-  color: white;
+  border-color: #DB4C2C;
+  color: #DB4C2C;
+}
+
+.locationToggle:focus {
+  outline: 0;
 }
 
 .commonInterest {

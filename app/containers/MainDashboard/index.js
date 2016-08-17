@@ -5,8 +5,8 @@ import { Motion, spring } from 'react-motion';
 import Rheostat from 'rheostat';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
-import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, selectLocation } from './actions';
-import { fetchTinderData } from 'containers/Dashboard/actions';
+import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, setGenderFilter, selectLocation, setGender } from './actions';
+import { fetchData } from 'containers/Dashboard/actions';
 
 import { selectUserObject } from 'containers/Dashboard/selectors';
 import { selectIsSettingLocation, selectMarkerLocation } from './selectors';
@@ -148,8 +148,41 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                   </div>
                 </div>
               </div>
-              <div className={styles.mainDashboardSliders}>
+              <div className={styles.mainDashboardToggles}>
+                <div className={styles.mainDashboardTogglesContainer}>
+                  <div className={styles.mainDashboardTogglesSection}>
+                    <Text type="matchRecentMessage">I am a...</Text>
+                    <select
+                      className={styles.mainDashboardDropdown}
+                      value={userObject.gender}
+                      onChange={(e) => this.props.setGender(e.target.value)}
+                    >
+                      <option value={0}>Male</option>
+                      <option value={1}>Female</option>
+                    </select>
+                  </div>
+                  <div className={styles.mainDashboardTogglesSection}>
+                    <Text type="matchRecentMessage">Show me...</Text>
+                    <select
+                      className={styles.mainDashboardDropdown}
+                      value={userObject.gender_filter}
+                      onChange={(e) => this.props.setGenderFilter(e.target.value)}
+                    >
+                      <option value={0}>Males</option>
+                      <option value={1}>Females</option>
+                      <option value={-1}>Both</option>
+                    </select>
+                  </div>
+                  <div className={styles.mainDashboardTogglesSection}>
 
+                    <Text type="matchRecentMessage">Show me</Text>
+                  </div>
+                  <div className={styles.mainDashboardTogglesSection}>
+
+                    <Text type="matchRecentMessage">Show me</Text>
+                    
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -167,6 +200,8 @@ MainDashboard.propTypes = {
   selectLocation: PropTypes.func,
   setAgeFilter: PropTypes.func,
   setDistanceFilter: PropTypes.func,
+  setGenderFilter: PropTypes.func,
+  setGender: PropTypes.func,
   userObject: PropTypes.object,
   markerLocation: PropTypes.object,
   isSelectingLocation: PropTypes.bool,
@@ -180,11 +215,13 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    setGender: (newValue) => dispatch(setGender(Number(newValue))),
+    setGenderFilter: (newValue) => dispatch(setGenderFilter(Number(newValue))),
     selectLocation: () => dispatch(selectingLocation()),
     setDistanceFilter: (newData) => dispatch(setDistanceFilter(newData)),
     selectMarkerLocation: (lat, lng) => dispatch(selectLocation(lat, lng)),
     setAgeFilter: (newData) => dispatch(setAgeFilter(newData)),
-    fetchInitialData: () => dispatch(fetchTinderData()),
+    fetchInitialData: () => dispatch(fetchData('USER_DATA')),
     editingBio: (e) => dispatch(editingBio(e.target.value)),
     reorderPhotos: (photoOrder) => dispatch(reorderPhotos(photoOrder)),
   };

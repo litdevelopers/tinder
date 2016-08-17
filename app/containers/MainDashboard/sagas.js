@@ -9,8 +9,10 @@ import {
   SET_AGE_FILTER,
   SET_DISTANCE_FILTER,
   SELECTING_LOCATION,
+  SET_GENDER_FILTER,
+  SET_GENDER,
 } from './constants';
-import { selectMarkerLocation } from './selectors';
+import { selectMarkerLocation, selectIsSettingLocation } from './selectors';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { newError, newErrorAdded } from 'containers/Notification/actions';
@@ -55,6 +57,20 @@ function* profileUpdateAction(newObject) {
   }
 }
 
+function* genderUpdateAction(newObject) {
+  yield call(delay, 100);
+  const authToken = yield select(selectAuthToken());
+  const postURL = `${AUTH_URL}/tinder/update/profile/gender`;
+
+  try {
+    yield call(postRequest, postURL, { authToken, gender: newObject });
+  } catch (error) {
+    yield put((newError(error)));
+    yield put(newErrorAdded());
+  }
+}
+
+
 function* locationUpdateAction(locationData) {
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/update/location`;
@@ -92,20 +108,24 @@ function* profileUpdateWatcherFunction() {
   let currentUpdate;
 
   while (yield ([SET_AGE_FILTER, SET_DISTANCE_FILTER])) {
-    const { payload } = yield take([SET_AGE_FILTER, SET_DISTANCE_FILTER]);
-
+    const { payload } = yield take([SET_AGE_FILTER, SET_DISTANCE_FILTER, SET_GENDER_FILTER, SET_GENDER]);
     if (currentUpdate) {
       yield cancel(currentUpdate);
     }
 
-    currentUpdate = yield fork(profileUpdateAction, payload);
+    if (Object.keys(payload).indexOf('gender')) {
+      currentUpdate = yield fork(genderUpdateAction, payload);
+    } else {
+      currentUpdate = yield fork(profileUpdateAction, payload);
+    }
   }
 }
 
 function* locationUpdateWatcherFunction() {
   while (yield take(SELECTING_LOCATION)) {
     const currentLocationData = yield select(selectMarkerLocation());
-    if (currentLocationData.lat && currentLocationData.lng) {
+    const wasMapOpen = yield select(selectIsSettingLocation());
+    if (currentLocationData.lat && currentLocationData.lng && !wasMapOpen) {
       yield fork(locationUpdateAction, currentLocationData);
     }
   }

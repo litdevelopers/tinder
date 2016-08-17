@@ -2,7 +2,7 @@ import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
 import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { LOGIN_FACEBOOK, LOGIN_LOCAL } from './constants';
-import { loginFacebookSuccess, loginFacebookError, setGlobals } from './actions';
+import { loginFacebookSuccess, loginFacebookError } from './actions';
 import { postRequest } from 'utils/request';
 import { storeToken, getToken } from 'utils/operations';
 import { AUTH_URL } from 'global_constants';
@@ -34,11 +34,11 @@ function* loginLocalSaga() {
 
   try {
     const authenticationData = yield call(postRequest, `${AUTH_URL}/tinder/checkAuth`, { authToken });
-    if(authenticationData.data){
-      yield put(loginFacebookSuccess({ authToken }))
+    if (authenticationData.data) {
+      yield put(loginFacebookSuccess({ authToken }));
       yield put(push('/dashboard/home'));
     }
-  } catch(err) {
+  } catch (err) {
     console.log('Could not login locally with stored auth token. Fall back to fresh login.');
   }
 

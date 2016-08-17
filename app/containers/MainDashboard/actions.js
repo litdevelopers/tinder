@@ -2,10 +2,30 @@ import {
   EDITING_BIO,
   REORDER_PHOTOS,
   SET_AGE_FILTER,
+  SET_GENDER_FILTER,
   SET_DISTANCE_FILTER,
+  SET_GENDER,
   SELECTING_LOCATION,
   SELECT_LOCATION,
 } from './constants';
+
+export function setGender(newValue) {
+  return {
+    type: SET_GENDER,
+    payload: {
+      gender: newValue,
+    },
+  };
+}
+
+export function setGenderFilter(newValue) {
+  return {
+    type: SET_GENDER_FILTER,
+    payload: {
+      gender_filter: newValue,
+    },
+  };
+}
 
 export function selectingLocation() {
   return {

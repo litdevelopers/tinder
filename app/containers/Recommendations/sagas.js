@@ -56,10 +56,6 @@ export function* cancelSaga(channels) {
 }
 
 export function* matchesSaga() {
-  // const watcher = [
-  //   yield fork(takeLatest, FETCH_MATCHES, fetchMatchesAction),
-  // ];
-
   const actionWatch = yield actionChannel([LIKE_PERSON, SUPERLIKE_PERSON, PASS_PERSON, LOCATION_CHANGE]);
   while (true) { // eslint-disable-line
     const action = yield take(actionWatch);

@@ -1,4 +1,4 @@
-const MAX_REC_SIZE = 40;
+const MAX_REC_SIZE = 15;
 
 function getHistory(client) {
   return new Promise((resolve, reject) => {
@@ -169,6 +169,18 @@ function setLocation({ lat, lng }, client) {
   });
 }
 
+function setGender(newValue, client) {
+  return new Promise((resolve, reject) => {
+    client.setGender(newValue, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
 
 module.exports = {
   getHistory,
@@ -186,4 +198,5 @@ module.exports = {
   setPhotoOrder,
   setLocation,
   setProfile,
+  setGender,
 };

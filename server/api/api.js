@@ -35,15 +35,41 @@ router.post('/auth/facebook', (req, res) => {
   });
 });
 
-router.post('/tinder/data', (req, res) => {
+// router.post('/tinder/data', (req, res) => {
+//   const { authToken } = req.body;
+//   const client = new tinder.TinderClient();
+//   client.setAuthToken(authToken);
+//   Promise.all([
+//     tinderPromise.getMeta(client),
+//     tinderPromise.getHistory(client),
+//     tinderPromise.getRecommendations(client),
+//   ])
+//   .then((data) => {
+//     res.status(200).json(data);
+//   })
+//   .catch((err) => {
+//     res.status(400).json(err);
+//   });
+// });
+
+router.post('/tinder/user', (req, res) => {
   const { authToken } = req.body;
   const client = new tinder.TinderClient();
   client.setAuthToken(authToken);
-  Promise.all([
-    tinderPromise.getMeta(client),
-    tinderPromise.getHistory(client),
-    tinderPromise.getRecommendations(client),
-  ])
+  tinderPromise.getMeta(client)
+  .then((data) => {
+    res.status(200).json(data);
+  })
+  .catch((err) => {
+    res.status(400).json(err);
+  });
+});
+
+router.post('/tinder/history', (req, res) => {
+  const { authToken } = req.body;
+  const client = new tinder.TinderClient();
+  client.setAuthToken(authToken);
+  tinderPromise.getHistory(client)
   .then((data) => {
     res.status(200).json(data);
   })
@@ -100,7 +126,7 @@ router.post('/tinder/superlike', (req, res) => {
   });
 });
 
-router.post('/tinder/matches', (req, res) => {
+router.post('/tinder/recommendations', (req, res) => {
   const xAuth = req.body.authToken;
   const client = new tinder.TinderClient();
 
@@ -177,6 +203,16 @@ router.post('/tinder/update/profile', (req, res) => {
 
   client.setAuthToken(authToken);
   tinderPromise.setProfile(profile, client)
+  .then(() => res.status(200).end())
+  .catch((error) => res.status(400).json(error));
+});
+
+router.post('/tinder/update/profile/gender', (req, res) => {
+  const client = new tinder.TinderClient();
+  const { gender, authToken } = req.body;
+
+  client.setAuthToken(authToken);
+  tinderPromise.setProfile(gender, client)
   .then(() => res.status(200).end())
   .catch((error) => res.status(400).json(error));
 });

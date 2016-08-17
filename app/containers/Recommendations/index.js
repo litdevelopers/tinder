@@ -2,11 +2,12 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { fetchMatches, sortMatches } from 'containers/Dashboard/actions';
+import { sortMatches, fetchData } from 'containers/Dashboard/actions';
 import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
 
 import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
 import { selectTargetGender, selectFetching } from 'containers/Dashboard/selectors';
+
 
 import DetailView from 'components/DetailView';
 import MatchCard from 'components/MatchCard';
@@ -17,6 +18,10 @@ import styles from './styles.css';
 
 
 class DashboardRecommendations extends React.Component { // eslint-disable-line
+  componentWillMount() {
+    if (!this.props.matches) this.props.fetchMatches();
+  }
+
   mapMatches() {
     return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
   }
@@ -49,17 +54,18 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             }
             </div>
           </div>
-          <Infinite
-            className={styles.dashboardMatchesCardsContainer}
-            onInfiniteLoad={() => this.handleFetch()}
-            containerHeight={1200}
-            elementHeight={350}
-            infiniteLoadBeginEdgeOffset={200}
-            itemsPerRow={3}
-            isInfiniteLoading={this.props.isFetching}
-          >
-            {matches}
-          </Infinite>
+          {matches ?
+            <Infinite
+              className={styles.dashboardMatchesCardsContainer}
+              onInfiniteLoad={() => this.handleFetch()}
+              containerHeight={1200}
+              elementHeight={350}
+              infiniteLoadBeginEdgeOffset={200}
+              itemsPerRow={3}
+              isInfiniteLoading={this.props.isFetching}
+            >
+              {matches}
+            </Infinite> : <div className={styles.dashboardMatchesCardsContainer}/> }
         </div>
         <div className={styles.dashboardMatchesDetails}>
         {this.props.matchDetail && this.props.matchDetailImages ?
@@ -77,7 +83,7 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
 
 DashboardRecommendations.propTypes = {
   matches: PropTypes.oneOfType([
-    PropTypes.string,
+    PropTypes.bool,
     PropTypes.array,
   ]),
   matchDetail: PropTypes.oneOfType([
@@ -104,7 +110,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchMatches: () => dispatch(fetchMatches()),
+    fetchMatches: () => dispatch(fetchData('RECOMMENDATIONS_DATA')),
     onFilter: (sortType) => dispatch(sortMatches(sortType)),
     onMultiple: (matches, type) => {
       const currentMatches = matches;

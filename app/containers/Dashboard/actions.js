@@ -5,10 +5,9 @@
  */
 
 import {
-  FETCH_TINDER_DATA,
-  FETCH_TINDER_DATA_ERROR,
-  FETCH_TINDER_DATA_SUCCESS,
-  FETCH_TINDER_DATA_SUBSEQUENT,
+  FETCH_DATA,
+  FETCH_DATA_ERROR,
+  FETCH_DATA_SUCCESS,
   FETCH_MATCHES,
   FETCH_MATCHES_SUCCESS,
   FETCH_MATCHES_ERROR,
@@ -19,6 +18,30 @@ import {
   FETCH_UPDATES_END,
   SORT_MATCHES,
 } from './constants';
+
+export function fetchData(dataType) {
+  return {
+    type: FETCH_DATA,
+    payload: dataType,
+  };
+}
+
+export function fetchDataError(error) {
+  return {
+    type: FETCH_DATA_ERROR,
+    payload: error,
+  };
+}
+
+export function fetchDataSuccess(dataType, data) {
+  return {
+    type: FETCH_DATA_SUCCESS,
+    payload: {
+      dataType,
+      data,
+    },
+  };
+}
 
 export function fetchUpdates() {
   return {
@@ -80,25 +103,4 @@ export function fetchMatchesError(errors) {
   };
 }
 
-export function fetchTinderData() {
-  return {
-    type: FETCH_TINDER_DATA,
-  };
-}
 
-export function fetchTinderDataSuccess(data) {
-  return {
-    type: FETCH_TINDER_DATA_SUCCESS,
-    user: data[0].user,
-    rating: data[0].rating,
-    history: data[1],
-    recommendations: typeof (data[2]) === 'string' ? null : data[2],
-    xAuthToken: data[3],
-  };
-}
-
-export function fetchTinderDataError() {
-  return {
-    type: FETCH_TINDER_DATA_ERROR,
-  };
-}

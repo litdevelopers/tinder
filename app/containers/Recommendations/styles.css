@@ -32,13 +32,14 @@
   max-width: 100vw;
   padding-top: 20px;
 }
+
+
 .dashboardMatchesCardsContainer > div{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   flex: 15;
 }
-
 
 .dashboardMatchesNavigation {
   background-color: white;

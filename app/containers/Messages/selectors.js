@@ -37,7 +37,10 @@ const selectOptimisticUI = () => createSelector(
 );
 const selectMatchesSelector = () => createSelector(
   selectDashboardHistory(),
-  (state) => state.matches.slice().sort((a, b) => messagesSortByRecent(a, b)),
+  (state) => {
+    if (!state) return undefined;
+    return state.matches.slice().sort((a, b) => messagesSortByRecent(a, b))
+  },
 );
 
 const selectPersonSelector = () => createSelector(

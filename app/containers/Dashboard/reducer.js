@@ -6,9 +6,6 @@
 
 import { fromJS } from 'immutable';
 import {
-  FETCH_TINDER_DATA,
-  FETCH_TINDER_DATA_ERROR,
-  FETCH_TINDER_DATA_SUCCESS,
   FETCH_MATCHES,
   FETCH_MATCHES_SUCCESS,
   FETCH_MATCHES_ERROR,
@@ -16,6 +13,9 @@ import {
   FETCH_UPDATES_SUCCESS,
   FETCH_UPDATES_END,
   FETCH_UPDATES_ERROR,
+  FETCH_DATA,
+  FETCH_DATA_ERROR,
+  FETCH_DATA_SUCCESS,
   REMOVE_MATCH,
   SORT_MATCHES,
 } from './constants';
@@ -24,6 +24,8 @@ import {
   EDITING_BIO,
   SET_AGE_FILTER,
   SET_DISTANCE_FILTER,
+  SET_GENDER,
+  SET_GENDER_FILTER,
   REORDER_PHOTOS,
 } from 'containers/MainDashboard/constants';
 
@@ -37,11 +39,11 @@ import {
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const initialState = fromJS({
-  user: '',
-  rating: '',
-  history: '',
-  recommendations: '',
-  lastError: '',
+  user: false,
+  rating: false,
+  history: false,
+  recommendations: false,
+  lastError: false,
   updates: [],
   isFetching: false,
 });
@@ -55,28 +57,33 @@ const sortMapping = {
 
 function dashboardReducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_TINDER_DATA:
+    // case FETCH_TINDER_DATA:
     case FETCH_MATCHES:
     case FETCH_UPDATES:
+    case FETCH_DATA:
       return state
         .set('isFetching', true);
     case FETCH_MATCHES_SUCCESS:
       return state
         .set('isFetching', false)
         .set('recommendations', fromJS(action.payload));
-    case FETCH_TINDER_DATA_SUCCESS:
+    case FETCH_DATA_SUCCESS:
       return state
-        .set('isFetching', false)
-        .set('user', fromJS(action.user))
-        .set('rating', fromJS(action.rating))
-        .set('history', fromJS(action.history))
-        .set('recommendations', action.recommendations ? fromJS(action.recommendations) : fromJS(state.get('recommendations')));
+        .set(action.payload.dataType, fromJS(action.payload.data));
+    // case FETCH_TINDER_DATA_SUCCESS:
+    //   return state
+    //     .set('isFetching', false)
+    //     .set('user', fromJS(action.user))
+    //     .set('rating', fromJS(action.rating))
+    //     .set('history', fromJS(action.history))
+    //     .set('recommendations', action.recommendations ? fromJS(action.recommendations) : fromJS(state.get('recommendations')));
     case FETCH_UPDATES_SUCCESS:
       return state
         .set('updates', (state.get('updates').length > 20) ? state.get('updates').splice(1, 20).concat([action.payload]) : state.get('updates').concat([action.payload]));
-    case FETCH_TINDER_DATA_ERROR:
+    // case FETCH_TINDER_DATA_ERROR:
     case FETCH_MATCHES_ERROR:
     case FETCH_UPDATES_ERROR:
+    case FETCH_DATA_ERROR:
       return state
         .set('lastError', action.payload)
         .set('isFetching', false);
@@ -88,6 +95,10 @@ function dashboardReducer(state = initialState, action) {
         .setIn(['user', 'age_filter_min'], action.payload.age_filter_min);
     case SET_DISTANCE_FILTER:
       return state.setIn(['user', 'distance_filter'], action.payload.distance_filter);
+    case SET_GENDER_FILTER:
+      return state.setIn(['user', 'gender_filter'], action.payload.gender_filter);
+    case SET_GENDER:
+      return state.setIn(['user', 'gender'], action.payload.gender);
     case REORDER_PHOTOS:
       return state.setIn(['user', 'photos'], action.payload);
     case FETCH_UPDATES_END:
