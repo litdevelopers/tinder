@@ -22,18 +22,15 @@ router.post('/auth/facebook', (req, res) => {
     .end()
     .then((cookies) => {
       const cookieArray = cookies.map((each) => `${each.name}=${each.value};`);
-      const requiredID = cookies.filter((each) => each.name === 'c_user')[0].value;
-      getFBToken(cookieArray.join(' '), fbdtsg, requiredID, (error, statusCode, headers, body) => {
-        if (error) {
-          res.status(400).json(error);
-        } else {
-          const client = new tinder.TinderClient();
-          const facebookToken = body.match(/access_token=(.+)&/)[0].split(/=|&/)[1];
-          client.authorize(facebookToken, 0, () => {
-            res.status(200).json({ authToken: client.getAuthToken(), fbToken: facebookToken });
-          });
-        }
-      });
+      getFBToken(cookieArray.join(' '), fbdtsg)
+      .then((nonparsed) => {
+        const client = new tinder.TinderClient();
+        const facebookToken = nonparsed.match(/access_token=(.+)&/)[0].split(/=|&/)[1];
+        client.authorize(facebookToken, 0, () => {
+          res.status(200).json({ authToken: client.getAuthToken(), fbToken: facebookToken });
+        });
+      })
+      .catch((err) => res.status(401).json(err));
     });
   });
 });
