@@ -272,6 +272,7 @@
     "lodash": "4.15.0",
     "minimist": "1.2.0",
     "mocha": "2.5.3",
+    "moment": "^2.14.1",
     "ngrok": "2.2.2",
     "nightmare": "^2.6.1",
     "null-loader": "0.1.1",

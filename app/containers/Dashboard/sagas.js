@@ -20,33 +20,19 @@ import {
   fetchUpdatesSuccess,
   fetchUpdatesError,
   fetchUpdatesEnd,
+  fetchDataSuccessWithConcat,
 } from './actions';
 
+import { updatePointer, allDataFetched } from 'containers/Messages/actions';
 import { newError, newErrorAdded } from 'containers/Notification/actions';
 
+import { selectMatchesLength } from './selectors';
+import { selectPointer } from 'containers/Messages/selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
+import { messagesSortByRecent } from 'utils/operations';
 
-// function* getTinderData() {
-//   const authToken = yield select(selectAuthToken());
-//   const postURL = `${AUTH_URL}/tinder/data`;
-//   yield call(delay, 1000);
-//   try {
-//     const data = yield call(postRequest, postURL, { authToken });
-//     if (data.status === 200 && typeof (data.data[2]) === 'object') {
-//       yield put(fetchTinderDataSuccess((data.data)));
-//     } else if (data.status === 200 && typeof (data.data[2]) === 'string') {
-//       yield put(fetchTinderDataSuccess(data.data));
-//       yield put(newError("We're having a little trouble retrieving your matches."));
-//       yield put(newErrorAdded());
-//     }
-//   } catch (error) {
-//     yield put(fetchTinderDataError(error));
-//     yield put((newError(error)));
-//     yield put(newErrorAdded());
-//   }
-// }
 
 function* getUserData() {
   const authToken = yield select(selectAuthToken());
@@ -66,11 +52,19 @@ function* getUserData() {
 
 function* fetchHistoryData() {
   const authToken = yield select(selectAuthToken());
-  const postURL = `${AUTH_URL}/tinder/history`;
+  const postURL = `${AUTH_URL}/tinder/historynew`;
+  const pointer = yield select(selectPointer());
   try {
-    const data = yield call(postRequest, postURL, { authToken });
+    const data = yield call(postRequest, postURL, { authToken, pointer });
     if (data.status === 200) {
-      yield put(fetchDataSuccess('history', data.data));
+      const { matches, final, ...rest } = data.data;
+      yield put(fetchDataSuccess('history', rest));
+      yield put(fetchDataSuccessWithConcat('matches', matches.slice().sort((a, b) => messagesSortByRecent(a, b))));
+      if (final) {
+        yield put(allDataFetched());
+      } else {
+        yield put(updatePointer());
+      }
     }
   } catch (error) {
     yield put(fetchDataError(error));

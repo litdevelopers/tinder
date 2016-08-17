@@ -10,8 +10,15 @@ import {
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_ERROR,
   CHANGE_MESSAGE,
+  ALL_DATA_FETCHED,
+  UPDATE_POINTER,
 } from './constants';
 
+export function allDataFetched() {
+  return {
+    type: ALL_DATA_FETCHED,
+  };
+}
 
 export function changeMessage(message) {
   return {
@@ -46,5 +53,11 @@ export function sendMessageError(error) {
   return {
     type: SEND_MESSAGE_ERROR,
     payload: error,
+  };
+}
+
+export function updatePointer() {
+  return {
+    type: UPDATE_POINTER,
   };
 }

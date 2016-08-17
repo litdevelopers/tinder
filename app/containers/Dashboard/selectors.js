@@ -44,6 +44,11 @@ const selectDashboardHistory = () => createSelector(
     (dashboard) => dashboard.history
 );
 
+const selectMatchesHistory = () => createSelector(
+  selectDashboard(),
+  (dashboard) => dashboard.matches
+);
+
 export default selectDashboard;
 export {
   selectDashboard,
@@ -53,4 +58,5 @@ export {
   selectFetching,
   selectUserObject,
   selectDashboardHistory,
+  selectMatchesHistory,
 };

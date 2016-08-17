@@ -5,14 +5,14 @@
 */
 
 import React, { PropTypes } from 'react';
-import { convertActivityTime } from 'utils/operations';
+import { parsePingTime } from 'utils/operations';
 
 import Text from 'components/Text';
 import styles from './styles.css';
 
 function MessengerCard(props) {
   const person = props.data.person;
-  const recentActivity = convertActivityTime(props.data.last_activity_date);
+  const recentActivity = parsePingTime(props.data.last_activity_date);
   const messages = props.data.messages;
   const recentMessage = messages && messages[messages.length - 1] && messages[messages.length - 1].message;
 

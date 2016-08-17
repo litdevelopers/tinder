@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
-import { selectDashboardHistory } from 'containers/Dashboard/selectors';
+import { selectMatchesHistory } from 'containers/Dashboard/selectors';
 
-import { messagesSortByRecent } from 'utils/operations';
 /**
  * Direct selector to the messages state domain
  */
@@ -35,22 +34,23 @@ const selectOptimisticUI = () => createSelector(
   selectMessages(),
   (messages) => messages.optimisticUI,
 );
+
 const selectMatchesSelector = () => createSelector(
-  selectDashboardHistory(),
+  selectMatchesHistory(),
   (state) => {
     if (!state) return undefined;
-    return state.matches.slice().sort((a, b) => messagesSortByRecent(a, b))
+    return state;
   },
 );
 
 const selectPersonSelector = () => createSelector(
-  selectDashboardHistory(),
+  selectMatchesHistory(),
   selectPersonId(),
   (state, id) => {
     if (!id || id === '' || !state) {
       return undefined;
     }
-    return state.matches.slice().filter((each) => {
+    return state.slice().filter((each) => {
       if (!each.person) return false;
       return each.person._id === id;
     })[0];
@@ -91,6 +91,16 @@ const selectMatchMessages = () => createSelector(
   }
 );
 
+const selectPointer = () => createSelector(
+  selectMessages(),
+  (substate) => substate.pointer
+);
+
+const selectIsAllFetched = () => createSelector(
+  selectMessages(),
+  (substate) => substate.allMessagesFetched
+);
+
 export {
   selectMessagesDomain,
   selectPersonSelector,
@@ -100,4 +110,6 @@ export {
   selectMatchMessages,
   selectCurrentMessage,
   selectOptimisticUI,
+  selectPointer,
+  selectIsAllFetched,
 };

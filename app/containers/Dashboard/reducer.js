@@ -18,6 +18,7 @@ import {
   FETCH_DATA_SUCCESS,
   REMOVE_MATCH,
   SORT_MATCHES,
+  FETCH_DATA_SUCCESS_WITH_CONCAT,
 } from './constants';
 
 import {
@@ -41,6 +42,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 const initialState = fromJS({
   user: false,
   rating: false,
+  matches: [],
   history: false,
   recommendations: false,
   lastError: false,
@@ -57,7 +59,6 @@ const sortMapping = {
 
 function dashboardReducer(state = initialState, action) {
   switch (action.type) {
-    // case FETCH_TINDER_DATA:
     case FETCH_MATCHES:
     case FETCH_UPDATES:
     case FETCH_DATA:
@@ -70,17 +71,11 @@ function dashboardReducer(state = initialState, action) {
     case FETCH_DATA_SUCCESS:
       return state
         .set(action.payload.dataType, fromJS(action.payload.data));
-    // case FETCH_TINDER_DATA_SUCCESS:
-    //   return state
-    //     .set('isFetching', false)
-    //     .set('user', fromJS(action.user))
-    //     .set('rating', fromJS(action.rating))
-    //     .set('history', fromJS(action.history))
-    //     .set('recommendations', action.recommendations ? fromJS(action.recommendations) : fromJS(state.get('recommendations')));
     case FETCH_UPDATES_SUCCESS:
       return state
         .set('updates', (state.get('updates').length > 20) ? state.get('updates').splice(1, 20).concat([action.payload]) : state.get('updates').concat([action.payload]));
-    // case FETCH_TINDER_DATA_ERROR:
+    case FETCH_DATA_SUCCESS_WITH_CONCAT:
+      return state.set(action.payload.dataType, state.get(action.payload.dataType).concat(action.payload.data));
     case FETCH_MATCHES_ERROR:
     case FETCH_UPDATES_ERROR:
     case FETCH_DATA_ERROR:

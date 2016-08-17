@@ -12,6 +12,18 @@ function getHistory(client) {
   });
 }
 
+function getHistoryNew(client, ISOString) {
+  return new Promise((resolve, reject) => {
+    client.getHistoryWithDate(ISOString, (error, data) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+}
+
 function getDefaults(client) {
   return new Promise((resolve) => {
     const defaultData = client.getDefaults();
@@ -184,6 +196,7 @@ function setGender(newValue, client) {
 
 module.exports = {
   getHistory,
+  getHistoryNew,
   getDefaults,
   getRecommendations,
   getAuthToken,

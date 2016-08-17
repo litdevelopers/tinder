@@ -12,6 +12,7 @@ import {
   selectMatchDetailImages,
   selectMatchMessages,
   selectOptimisticUI,
+  selectIsAllFetched,
 } from './selectors';
 import styles from './styles.css';
 import { fetchData } from 'containers/Dashboard/actions';
@@ -27,7 +28,7 @@ import Infinite from 'react-infinite';
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    if (!this.props.userHistory) this.props.fetchHistory();
+    // if (!this.props.userHistory) this.props.fetchHistory();
   }
 
   mapMatches() {
@@ -44,54 +45,58 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   render() {
-      return (
-        <div className={styles.messagesContainer}>
-          <div className={styles.messagePanel}>
-            <Infinite
-              className={styles.messagePanelContainer}
-              containerHeight={800}
-              elementHeight={100}
-              itemsPerRow={1}
-            >
-            {this.props.userHistory.matches && this.mapMatches()}
-            </Infinite>
-          </div>
-          <div className={styles.messengerPanel}>
-            <div className={styles.messengerPanelContainer}>
-              <div className={styles.horizontalMessengerPanel}>
-                <div className={styles.columnMessengerPanel}>
-                  <Infinite
-                    displayBottomUpwards
-                    className={styles.messagesPanel}
-                    containerHeight={700}
-                    elementHeight={50}
-                    itemsPerRow={1}
-                  >
-                      {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
-                  </Infinite>
-                  <div className={styles.chatBoxPanel} >
-                    {this.props.currentPerson ?
-                      <MessengerInput
-                        sendTo={this.props.currentPerson && this.props.currentPerson.id}
-                        sendMessage={this.props.onSendMessage}
-                        onChange={this.props.onChangeMessage}
-                      /> :
-                      <h1>Test</h1>}
-                  </div>
-                </div>
-                <div className={styles.profileBioPanel} >
-                  {this.props.currentPerson && this.props.matchDetailImages ?
-                    <DetailView
-                      data={this.props.currentPerson.person}
-                      imageData={this.props.matchDetailImages}
+    return (
+      <div className={styles.messagesContainer}>
+        <div className={styles.messagePanel}>
+          <Infinite
+            className={styles.messagePanelContainer}
+            containerHeight={800}
+            elementHeight={100}
+            itemsPerRow={1}
+            infiniteLoadBeginEdgeOffset={200}
+            onInfiniteLoad={() => {
+              if (!this.props.isAllDataFetched) this.props.fetchHistory();
+            }}
+          >
+          {this.props.selectMatches && this.mapMatches()}
+          </Infinite>
+        </div>
+        <div className={styles.messengerPanel}>
+          <div className={styles.messengerPanelContainer}>
+            <div className={styles.horizontalMessengerPanel}>
+              <div className={styles.columnMessengerPanel}>
+                <Infinite
+                  displayBottomUpwards
+                  className={styles.messagesPanel}
+                  containerHeight={700}
+                  elementHeight={50}
+                  itemsPerRow={1}
+                >
+                    {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
+                </Infinite>
+                <div className={styles.chatBoxPanel} >
+                  {this.props.currentPerson ?
+                    <MessengerInput
+                      sendTo={this.props.currentPerson && this.props.currentPerson.id}
+                      sendMessage={this.props.onSendMessage}
+                      onChange={this.props.onChangeMessage}
                     /> :
                     <h1>Test</h1>}
                 </div>
               </div>
+              <div className={styles.profileBioPanel} >
+                {this.props.currentPerson && this.props.matchDetailImages ?
+                  <DetailView
+                    data={this.props.currentPerson.person}
+                    imageData={this.props.matchDetailImages}
+                  /> :
+                  <h1>Test</h1>}
+              </div>
             </div>
           </div>
         </div>
-      );
+      </div>
+    );
   }
 }
 
@@ -111,6 +116,7 @@ const mapStateToProps = createStructuredSelector({
   matchDetailImages: selectMatchDetailImages(),
   matchMessages: selectMatchMessages(),
   selectOptimistic: selectOptimisticUI(),
+  isAllDataFetched: selectIsAllFetched(),
 });
 
 Messages.propTypes = {
@@ -128,6 +134,7 @@ Messages.propTypes = {
   fetchHistory: PropTypes.func,
   selectOptimisticUI: PropTypes.func,
   selectOptimistic: PropTypes.array,
+  isAllDataFetched: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

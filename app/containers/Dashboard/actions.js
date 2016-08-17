@@ -8,6 +8,7 @@ import {
   FETCH_DATA,
   FETCH_DATA_ERROR,
   FETCH_DATA_SUCCESS,
+  FETCH_DATA_SUCCESS_WITH_CONCAT,
   FETCH_MATCHES,
   FETCH_MATCHES_SUCCESS,
   FETCH_MATCHES_ERROR,
@@ -18,6 +19,16 @@ import {
   FETCH_UPDATES_END,
   SORT_MATCHES,
 } from './constants';
+
+export function fetchDataSuccessWithConcat(dataType, data) {
+  return {
+    type: FETCH_DATA_SUCCESS_WITH_CONCAT,
+    payload: {
+      dataType,
+      data,
+    },
+  };
+}
 
 export function fetchData(dataType) {
   return {
