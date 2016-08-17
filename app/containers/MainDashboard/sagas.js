@@ -35,7 +35,7 @@ function* updatePhotoOrderAction(newOrder) {
   const postURL = `${AUTH_URL}/tinder/update/photoOrder`;
 
   try {
-    yield call(postRequest, postURL, { authToken, order: newOrder.filter((each) => each.indexOf('photo') === -1) });
+    yield call(postRequest, postURL, { authToken, order: newOrder.map((each) => each.id) });
   } catch (error) {
     yield put((newError(error)));
     yield put(newErrorAdded());
@@ -81,15 +81,10 @@ function* getBioUpdatesWatcher() {
 }
 
 function* getPhotoUpdateOrderWatcher() {
-  let currentUpdate;
-  while (yield take(REORDER_PHOTOS)) {
+  while (true) {
     const { payload } = yield take(REORDER_PHOTOS);
 
-    if (currentUpdate) {
-      yield cancel(currentUpdate);
-    }
-
-    currentUpdate = yield fork(updatePhotoOrderAction, payload);
+    yield fork(updatePhotoOrderAction, payload);
   }
 }
 
