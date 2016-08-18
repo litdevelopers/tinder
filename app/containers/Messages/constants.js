@@ -17,5 +17,6 @@ export const FETCH_MATCHES_DATA_ERROR = 'FETCH_MATCHES_DATA_ERROR';
 
 // Experimental
 export const DUMP_ALL = 'DUMP_ALL';
+export const DUMP_ALL_INIT = 'DUMP_ALL_INIT';
 export const DUMP_ALL_SUCCESS = 'DUMP_ALL_SUCCESS';
 export const FETCH_MATCHES_LOCALLY = 'FETCH_MATCHES_LOCALLY';

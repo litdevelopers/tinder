@@ -18,7 +18,7 @@ import {
 } from './selectors';
 import styles from './styles.css';
 import { createStructuredSelector } from 'reselect';
-import { selectPersonAction, changeMessage, sendMessage, fetchMatchData, fetchMatchDataLocally } from './actions';
+import { selectPersonAction, changeMessage, sendMessage, fetchMatchData, fetchMatchDataLocally, dumpAllInit } from './actions';
 
 import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
@@ -34,6 +34,10 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
+  }
+
+  componentWillUnmount() {
+    this.props.dumpAll();
   }
 
   mapMatches() {
@@ -108,6 +112,7 @@ function mapDispatchToProps(dispatch) {
     onSendMessage: (id, message) => dispatch(sendMessage(id, message)),
     fetchHistory: () => dispatch(fetchMatchData()),
     fetchHistoryLocally: () => dispatch(fetchMatchDataLocally()),
+    dumpAll: () => dispatch(dumpAllInit()),
   };
 }
 
@@ -138,6 +143,7 @@ Messages.propTypes = {
   isAllDataFetched: PropTypes.bool,
   isDataFetching: PropTypes.bool,
   fetchHistoryLocally: PropTypes.func,
+  dumpAll: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

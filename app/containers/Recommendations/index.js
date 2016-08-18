@@ -65,7 +65,7 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
               isInfiniteLoading={this.props.isFetching}
             >
               {matches}
-            </Infinite> : <div className={styles.dashboardMatchesCardsContainer}/> }
+            </Infinite> : <div className={styles.dashboardMatchesCardsContainer} /> }
         </div>
         <div className={styles.dashboardMatchesDetails}>
         {this.props.matchDetail && this.props.matchDetailImages ?
