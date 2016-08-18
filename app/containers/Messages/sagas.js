@@ -10,6 +10,7 @@ import {
   FETCH_MATCHES_DATA,
   FETCH_MATCHES_LOCALLY,
   DUMP_ALL_SUCCESS,
+  DUMP_ALL_INIT,
 } from './constants';
 import { selectPointer, selectMatches, selectIsAllFetched } from './selectors';
 
@@ -109,7 +110,7 @@ function* dataWatcher() {
 }
 
 function* dumpDataWatcher() {
-  while (yield take(LOCATION_CHANGE)) {
+  while (yield take(DUMP_ALL_INIT)) {
     yield call(dumpDataAction);
   }
 }

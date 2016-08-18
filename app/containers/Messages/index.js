@@ -18,7 +18,7 @@ import {
 } from './selectors';
 import styles from './styles.css';
 import { createStructuredSelector } from 'reselect';
-import { selectPersonAction, changeMessage, sendMessage, fetchMatchData, fetchMatchDataLocally } from './actions';
+import { selectPersonAction, changeMessage, sendMessage, fetchMatchData, fetchMatchDataLocally, dumpAllInit } from './actions';
 
 import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
@@ -36,12 +36,16 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
     return shallowCompare(this, nextProps, nextState);
   }
 
+  componentWillUnmount() {
+    this.props.dumpAll();
+  }
+
   mapMatches() {
     return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} />);
   }
 
   mapMessages() {
-    return this.props.matchMessages && this.props.matchMessages.map((each) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>)
+    return this.props.matchMessages && this.props.matchMessages.map((each, index, messages) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>)
     .concat(this.props.selectOptimistic.map((every) => {
       if (every.id === this.props.currentPerson.id) {
         return <MessageBubble key={every.message} from="you">{every.message}</MessageBubble>;
@@ -50,7 +54,6 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
@@ -109,6 +112,7 @@ function mapDispatchToProps(dispatch) {
     onSendMessage: (id, message) => dispatch(sendMessage(id, message)),
     fetchHistory: () => dispatch(fetchMatchData()),
     fetchHistoryLocally: () => dispatch(fetchMatchDataLocally()),
+    dumpAll: () => dispatch(dumpAllInit()),
   };
 }
 
@@ -139,6 +143,7 @@ Messages.propTypes = {
   isAllDataFetched: PropTypes.bool,
   isDataFetching: PropTypes.bool,
   fetchHistoryLocally: PropTypes.func,
+  dumpAll: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

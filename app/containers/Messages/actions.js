@@ -18,7 +18,7 @@ import {
   FETCH_MATCHES_LOCALLY,
   DUMP_ALL,
   DUMP_ALL_SUCCESS,
-  CONCAT_LOCAL_MATCH,
+  DUMP_ALL_INIT,
 } from './constants';
 
 export function fetchMatchData() {
@@ -99,6 +99,12 @@ export function dumpAll() {
 export function dumpAllSuccess() {
   return {
     type: DUMP_ALL_SUCCESS,
+  };
+}
+
+export function dumpAllInit() {
+  return {
+    type: DUMP_ALL_INIT,
   };
 }
 

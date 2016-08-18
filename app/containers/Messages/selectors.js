@@ -29,11 +29,6 @@ const selectPersonId = () => createSelector(
   (messages) => messages.currentPerson,
 );
 
-const selectCurrentMessage = () => createSelector(
-  selectMessages(),
-  (messages) => messages.currentMessage,
-);
-
 const selectOptimisticUI = () => createSelector(
   selectMessages(),
   (messages) => messages.optimisticUI,
