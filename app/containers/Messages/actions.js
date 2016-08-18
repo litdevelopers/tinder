@@ -12,7 +12,30 @@ import {
   CHANGE_MESSAGE,
   ALL_DATA_FETCHED,
   UPDATE_POINTER,
+  FETCH_MATCHES_DATA,
+  FETCH_MATCHES_DATA_ERROR,
+  FETCH_MATCHES_DATA_SUCCESS,
 } from './constants';
+
+export function fetchMatchData() {
+  return {
+    type: FETCH_MATCHES_DATA,
+  };
+}
+
+export function fetchMatchDataSuccess(data) {
+  return {
+    type: FETCH_MATCHES_DATA_SUCCESS,
+    payload: data,
+  };
+}
+
+export function fetchMatchDataError(error) {
+  return {
+    type: FETCH_MATCHES_DATA_ERROR,
+    payload: error,
+  };
+}
 
 export function allDataFetched() {
   return {

@@ -42,9 +42,9 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 const initialState = fromJS({
   user: false,
   rating: false,
-  matches: [],
   history: false,
   recommendations: false,
+  shouldUpdateRecommendations: false,
   lastError: false,
   updates: [],
   isFetching: false,
@@ -73,9 +73,12 @@ function dashboardReducer(state = initialState, action) {
         .set(action.payload.dataType, fromJS(action.payload.data));
     case FETCH_UPDATES_SUCCESS:
       return state
+        .set('isFetching', false)
         .set('updates', (state.get('updates').length > 20) ? state.get('updates').splice(1, 20).concat([action.payload]) : state.get('updates').concat([action.payload]));
     case FETCH_DATA_SUCCESS_WITH_CONCAT:
-      return state.set(action.payload.dataType, state.get(action.payload.dataType).concat(action.payload.data));
+      return state
+        .set('isFetching', false)
+        .set(action.payload.dataType, state.get(action.payload.dataType).concat(action.payload.data));
     case FETCH_MATCHES_ERROR:
     case FETCH_UPDATES_ERROR:
     case FETCH_DATA_ERROR:
@@ -86,14 +89,21 @@ function dashboardReducer(state = initialState, action) {
       return state.setIn(['user', 'bio'], action.payload);
     case SET_AGE_FILTER:
       return state
-        .setIn(['user', 'age_filter_max'], action.payload.age_filter_max)
-        .setIn(['user', 'age_filter_min'], action.payload.age_filter_min);
+      .set('recommendations', false)
+      .setIn(['user', 'age_filter_max'], action.payload.age_filter_max)
+      .setIn(['user', 'age_filter_min'], action.payload.age_filter_min);
     case SET_DISTANCE_FILTER:
-      return state.setIn(['user', 'distance_filter'], action.payload.distance_filter);
+      return state
+      .set('recommendations', false)
+      .setIn(['user', 'distance_filter'], action.payload.distance_filter);
     case SET_GENDER_FILTER:
-      return state.setIn(['user', 'gender_filter'], action.payload.gender_filter);
+      return state
+      .set('recommendations', false)
+      .setIn(['user', 'gender_filter'], action.payload.gender_filter);
     case SET_GENDER:
-      return state.setIn(['user', 'gender'], action.payload.gender);
+      return state
+      .set('recommendations', false)
+      .setIn(['user', 'gender'], action.payload.gender);
     case REORDER_PHOTOS:
       return state.setIn(['user', 'photos'], action.payload);
     case FETCH_UPDATES_END:

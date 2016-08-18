@@ -5,6 +5,7 @@
  */
 
 import React, { PropTypes } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import { connect } from 'react-redux';
 import {
   selectPersonSelector,
@@ -13,12 +14,11 @@ import {
   selectMatchMessages,
   selectOptimisticUI,
   selectIsAllFetched,
+  selectIsFetching,
 } from './selectors';
 import styles from './styles.css';
-import { fetchData } from 'containers/Dashboard/actions';
-import { selectDashboardHistory } from 'containers/Dashboard/selectors';
 import { createStructuredSelector } from 'reselect';
-import { selectPersonAction, changeMessage, sendMessage } from './actions';
+import { selectPersonAction, changeMessage, sendMessage, fetchMatchData } from './actions';
 
 import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
@@ -28,7 +28,12 @@ import Infinite from 'react-infinite';
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    // if (!this.props.userHistory) this.props.fetchHistory();
+    console.log(!this.props.selectMatches && !this.props.isDataFetching);
+    if (!this.props.selectMatches && !this.props.isDataFetching) this.props.fetchHistory();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   mapMatches() {
@@ -53,10 +58,6 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
             containerHeight={800}
             elementHeight={100}
             itemsPerRow={1}
-            infiniteLoadBeginEdgeOffset={200}
-            onInfiniteLoad={() => {
-              if (!this.props.isAllDataFetched) this.props.fetchHistory();
-            }}
           >
           {this.props.selectMatches && this.mapMatches()}
           </Infinite>
@@ -105,29 +106,28 @@ function mapDispatchToProps(dispatch) {
     selectPerson: (id) => dispatch(selectPersonAction(id)),
     onChangeMessage: (event) => dispatch(changeMessage(event.target.value)),
     onSendMessage: (id, message) => dispatch(sendMessage(id, message)),
-    fetchHistory: () => dispatch(fetchData('HISTORY_DATA')),
+    fetchHistory: () => dispatch(fetchMatchData()),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  userHistory: selectDashboardHistory(),
   currentPerson: selectPersonSelector(),
   selectMatches: selectMatchesSelector(),
   matchDetailImages: selectMatchDetailImages(),
   matchMessages: selectMatchMessages(),
   selectOptimistic: selectOptimisticUI(),
   isAllDataFetched: selectIsAllFetched(),
+  isDataFetching: selectIsFetching(),
 });
 
 Messages.propTypes = {
-  matchMessages: PropTypes.array,
-  userHistory: PropTypes.oneOfType([
-    PropTypes.object,
+  selectMatches: PropTypes.oneOfType([
     PropTypes.bool,
+    PropTypes.array,
   ]),
   selectPerson: PropTypes.func,
   currentPerson: PropTypes.object,
-  selectMatches: PropTypes.array,
+  matchMessages: PropTypes.array,
   matchDetailImages: PropTypes.array,
   onSendMessage: PropTypes.func,
   onChangeMessage: PropTypes.func,
@@ -135,6 +135,7 @@ Messages.propTypes = {
   selectOptimisticUI: PropTypes.func,
   selectOptimistic: PropTypes.array,
   isAllDataFetched: PropTypes.bool,
+  isDataFetching: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { selectMatchesHistory } from 'containers/Dashboard/selectors';
 
 /**
  * Direct selector to the messages state domain
@@ -20,6 +19,11 @@ const selectMessages = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const selectMatches = () => createSelector(
+  selectMessages(),
+  (substate) => substate.matches
+);
+
 const selectPersonId = () => createSelector(
   selectMessages(),
   (messages) => messages.currentPerson,
@@ -36,15 +40,12 @@ const selectOptimisticUI = () => createSelector(
 );
 
 const selectMatchesSelector = () => createSelector(
-  selectMatchesHistory(),
-  (state) => {
-    if (!state) return undefined;
-    return state;
-  },
+  selectMatches(),
+  (state) => state
 );
 
 const selectPersonSelector = () => createSelector(
-  selectMatchesHistory(),
+  selectMatches(),
   selectPersonId(),
   (state, id) => {
     if (!id || id === '' || !state) {
@@ -101,6 +102,11 @@ const selectIsAllFetched = () => createSelector(
   (substate) => substate.allMessagesFetched
 );
 
+const selectIsFetching = () => createSelector(
+  selectMessages(),
+  (substate) => substate.isFetching
+);
+
 export {
   selectMessagesDomain,
   selectPersonSelector,
@@ -112,4 +118,5 @@ export {
   selectOptimisticUI,
   selectPointer,
   selectIsAllFetched,
+  selectIsFetching,
 };
