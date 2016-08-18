@@ -32,7 +32,7 @@ function MessengerCard(props) {
             <Text type="matchName">{person && person.name}</Text>
             <Text type="matchActivity">{recentActivity}</Text>
           </div>
-          <Text type="matchRecentMessage">{recentMessage}</Text>
+          <Text type="matchRecentMessage">{recentMessage.slice(0, 50)}</Text>
         </div>
       </div>
     );

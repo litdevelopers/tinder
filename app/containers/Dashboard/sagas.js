@@ -1,15 +1,11 @@
-import { take, call, put, select, fork, cancel, actionChannel } from 'redux-saga/effects';
+import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import {
   FETCH_DATA,
-  FETCH_DATA_ERROR,
-  FETCH_DATA_SUCCESS,
-  FETCH_USER_DATA,
   FETCH_UPDATES,
-  FETCH_MATCHES,
 } from './constants';
 
 import {
@@ -20,18 +16,13 @@ import {
   fetchUpdatesSuccess,
   fetchUpdatesError,
   fetchUpdatesEnd,
-  fetchDataSuccessWithConcat,
 } from './actions';
 
-import { updatePointer, allDataFetched } from 'containers/Messages/actions';
 import { newError, newErrorAdded } from 'containers/Notification/actions';
 
-import { selectMatchesLength } from './selectors';
-import { selectPointer } from 'containers/Messages/selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
-import { messagesSortByRecent } from 'utils/operations';
 
 
 function* getUserData() {
@@ -50,28 +41,6 @@ function* getUserData() {
   }
 }
 
-function* fetchHistoryData() {
-  const authToken = yield select(selectAuthToken());
-  const postURL = `${AUTH_URL}/tinder/historynew`;
-  const pointer = yield select(selectPointer());
-  try {
-    const data = yield call(postRequest, postURL, { authToken, pointer });
-    if (data.status === 200) {
-      const { matches, final, ...rest } = data.data;
-      yield put(fetchDataSuccess('history', rest));
-      yield put(fetchDataSuccessWithConcat('matches', matches.slice().sort((a, b) => messagesSortByRecent(a, b))));
-      if (final) {
-        yield put(allDataFetched());
-      } else {
-        yield put(updatePointer());
-      }
-    }
-  } catch (error) {
-    yield put(fetchDataError(error));
-    yield put((newError(error)));
-    yield put(newErrorAdded());
-  }
-}
 
 function* fetchMatchesAction() {
   const authToken = yield select(selectAuthToken());
@@ -137,9 +106,6 @@ function* getDataFetchWatcher() {
         break;
       case 'RECOMMENDATIONS_DATA':
         yield fork(fetchMatchesAction);
-        break;
-      case 'HISTORY_DATA':
-        yield fork(fetchHistoryData);
         break;
       default:
         return;

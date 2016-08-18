@@ -83,9 +83,9 @@ router.post('/tinder/historynew', (req, res) => {
   client.setAuthToken(authToken);
   tinderPromise.getHistory(client)
   .then((data) => {
-    const returnedArray = data.matches.reverse().splice((pointer - 1) * 10, 10);
+    const returnedArray = data.matches.filter((each) => each.messages.length);
     res.status(200).json({
-      blocks: data.blocks,
+      // blocks: data.blocks,
       squads: data.squads,
       deleted_lists: data.deleted_lists,
       lists: data.lists,
