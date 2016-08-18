@@ -41,7 +41,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   mapMessages() {
-    return this.props.matchMessages && this.props.matchMessages.map((each) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>)
+    return this.props.matchMessages && this.props.matchMessages.map((each, index, messages) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>)
     .concat(this.props.selectOptimistic.map((every) => {
       if (every.id === this.props.currentPerson.id) {
         return <MessageBubble key={every.message} from="you">{every.message}</MessageBubble>;
@@ -50,7 +50,6 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>

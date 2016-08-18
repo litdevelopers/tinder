@@ -23,7 +23,6 @@ const initialState = fromJS({
   pointer: 1,
   allMessagesFetched: false,
   currentPerson: '',
-  currentMessage: '',
   fetchingErrors: '',
   isSending: false,
   matches: false,

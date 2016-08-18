@@ -120,3 +120,11 @@
   font-weight: 500;
   margin: 15px;
 }
+
+.dateMessage {
+  position: absolute;
+  bottom: -23px;
+  left: 14px;
+  color: black;
+  font-size: 12px;
+}
