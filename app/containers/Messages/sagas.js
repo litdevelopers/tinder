@@ -3,13 +3,15 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import { postRequest } from 'utils/request';
-import { messagesSortByRecent } from 'utils/operations';
+import { messagesSortByRecent, storeChunkWithToken, getStoreLength, fetchChunkData, storeToken, getToken } from 'utils/operations';
 
 import {
   SEND_MESSAGE,
   FETCH_MATCHES_DATA,
+  FETCH_MATCHES_LOCALLY,
+  DUMP_ALL_SUCCESS,
 } from './constants';
-import { selectPointer } from './selectors';
+import { selectPointer, selectMatches, selectIsAllFetched } from './selectors';
 
 import {
   sendMessageSuccess,
@@ -18,6 +20,8 @@ import {
   allDataFetched,
   fetchMatchDataError,
   fetchMatchDataSuccess,
+  dumpAll,
+  dumpAllSuccess,
 } from './actions';
 import { newError, newErrorAdded } from 'containers/Notification/actions';
 
@@ -26,9 +30,6 @@ import {
   selectAuthToken,
 } from 'containers/Auth/selectors';
 
-
-
-
 function* fetchHistoryData() {
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/historynew`;
@@ -36,7 +37,7 @@ function* fetchHistoryData() {
   try {
     const data = yield call(postRequest, postURL, { authToken, pointer });
     if (data.status === 200) {
-      const { matches, final, ...rest } = data.data;
+      const { matches, final, ...rest } = data.data; // eslint-disable-line
       // yield put(fetchDataSuccess('history', rest));
       yield put(fetchMatchDataSuccess(matches.slice().sort((a, b) => messagesSortByRecent(a, b))));
       if (final) {
@@ -52,6 +53,14 @@ function* fetchHistoryData() {
   }
 }
 
+// EXPERIMENTAL
+export function* dumpDataAction() {
+  const data = yield select(selectMatches());
+  yield put(dumpAll());
+  const idList = yield storeChunkWithToken(data);
+  yield storeToken('matchesList', idList);
+  yield put(dumpAllSuccess());
+}
 
 
 // Individual exports for testing
@@ -71,6 +80,19 @@ export function* sendMessageData(payload) {
   }
 }
 
+export function* loadLocalData() {
+  const storeLength = yield getStoreLength();
+  const freshBatch = yield select(selectIsAllFetched());
+  if (storeLength > 2 && freshBatch) {
+    console.log('Previous data stored, loading');
+    const matchesList = yield getToken('matchesList');
+    const matches = yield fetchChunkData(matchesList);
+    yield put(fetchMatchDataSuccess(matches));
+  } else {
+    console.warn('No Previous data stored.');
+  }
+}
+
 function* sendMessageWatcher() {
   const messageWatch = yield actionChannel(SEND_MESSAGE);
 
@@ -86,13 +108,30 @@ function* dataWatcher() {
   }
 }
 
+function* dumpDataWatcher() {
+  while (yield take(LOCATION_CHANGE)) {
+    yield call(dumpDataAction);
+  }
+}
+
+function* dataLoadLocalWatcher() {
+  while (yield take(FETCH_MATCHES_LOCALLY)) {
+    yield call(loadLocalData);
+  }
+}
+
 export function* messageSaga() {
   const messageWatcher = yield fork(sendMessageWatcher);
   const dataFetchWatcher = yield fork(dataWatcher);
+  const dataDumpWatch = yield fork(dumpDataWatcher);
+  const dataLoadLocalWatch = yield fork(dataLoadLocalWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(messageWatcher);
   yield cancel(dataFetchWatcher);
+  yield cancel(dataLoadLocalWatch);
+  yield take(DUMP_ALL_SUCCESS);
+  yield cancel(dataDumpWatch);
 }
 // All sagas to be loaded
 export default [

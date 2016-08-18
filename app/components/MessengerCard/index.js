@@ -12,7 +12,7 @@ import styles from './styles.css';
 
 function MessengerCard(props) {
   const person = props.data.person;
-  const recentActivity = parsePingTime(props.data.last_activity_date);
+  const recentActivity = parsePingTime(props.data.last_activity_date, false);
   const messages = props.data.messages;
   const recentMessage = messages && messages[messages.length - 1] && messages[messages.length - 1].message;
 

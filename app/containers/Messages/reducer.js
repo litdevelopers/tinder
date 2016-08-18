@@ -16,34 +16,35 @@ import {
   FETCH_MATCHES_DATA,
   FETCH_MATCHES_DATA_ERROR,
   FETCH_MATCHES_DATA_SUCCESS,
+  DUMP_ALL,
 } from './constants';
-
-import { LOCATION_CHANGE } from 'react-router-redux';
 
 const initialState = fromJS({
   pointer: 1,
   allMessagesFetched: false,
   currentPerson: '',
   currentMessage: '',
+  fetchingErrors: '',
   isSending: false,
   matches: false,
   isFetching: false,
-  fetchingErrors: '',
   optimisticUI: [],
 });
 
 function messagesReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_MATCHES_DATA:
-      return state.set('isFetching', true);
+      return state
+        .set('optimisticUI', [])
+        .set('isFetching', true);
     case FETCH_MATCHES_DATA_ERROR:
       return state
-      .set('fetchingErrors', action.payload)
-      .set('isFetching', false);
+        .set('fetchingErrors', action.payload)
+        .set('isFetching', false);
     case FETCH_MATCHES_DATA_SUCCESS:
       return state
-      .set('matches', Seq(action.payload))
-      .set('isFetching', false);
+        .set('matches', new Seq(action.payload))
+        .set('isFetching', false);
     case SELECT_PERSON:
       return state.set('currentPerson', action.payload);
     case CHANGE_MESSAGE:
@@ -61,8 +62,8 @@ function messagesReducer(state = initialState, action) {
       return state.set('pointer', state.get('pointer') + 1);
     case ALL_DATA_FETCHED:
       return state.set('allMessagesFetched', true);
-    // case LOCATION_CHANGE:
-    //   return state.set('optimisticUI', fromJS([]));
+    case DUMP_ALL:
+      return state.set('matches', []);
     default:
       return state;
   }

@@ -9,7 +9,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import { connect } from 'react-redux';
 import {
   selectPersonSelector,
-  selectMatchesSelector,
+  selectMatches,
   selectMatchDetailImages,
   selectMatchMessages,
   selectOptimisticUI,
@@ -18,7 +18,7 @@ import {
 } from './selectors';
 import styles from './styles.css';
 import { createStructuredSelector } from 'reselect';
-import { selectPersonAction, changeMessage, sendMessage, fetchMatchData } from './actions';
+import { selectPersonAction, changeMessage, sendMessage, fetchMatchData, fetchMatchDataLocally } from './actions';
 
 import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
@@ -28,8 +28,8 @@ import Infinite from 'react-infinite';
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    console.log(!this.props.selectMatches && !this.props.isDataFetching);
-    if (!this.props.selectMatches && !this.props.isDataFetching) this.props.fetchHistory();
+    this.props.fetchHistoryLocally();
+    if (!this.props.selectMatches && !this.props.isDataFetching && !this.props.isAllDataFetched) this.props.fetchHistory();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -50,6 +50,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className={styles.messagesContainer}>
         <div className={styles.messagePanel}>
@@ -107,12 +108,13 @@ function mapDispatchToProps(dispatch) {
     onChangeMessage: (event) => dispatch(changeMessage(event.target.value)),
     onSendMessage: (id, message) => dispatch(sendMessage(id, message)),
     fetchHistory: () => dispatch(fetchMatchData()),
+    fetchHistoryLocally: () => dispatch(fetchMatchDataLocally()),
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   currentPerson: selectPersonSelector(),
-  selectMatches: selectMatchesSelector(),
+  selectMatches: selectMatches(),
   matchDetailImages: selectMatchDetailImages(),
   matchMessages: selectMatchMessages(),
   selectOptimistic: selectOptimisticUI(),
@@ -136,6 +138,7 @@ Messages.propTypes = {
   selectOptimistic: PropTypes.array,
   isAllDataFetched: PropTypes.bool,
   isDataFetching: PropTypes.bool,
+  fetchHistoryLocally: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

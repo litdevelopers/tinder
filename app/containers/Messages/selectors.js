@@ -39,11 +39,6 @@ const selectOptimisticUI = () => createSelector(
   (messages) => messages.optimisticUI,
 );
 
-const selectMatchesSelector = () => createSelector(
-  selectMatches(),
-  (state) => state
-);
-
 const selectPersonSelector = () => createSelector(
   selectMatches(),
   selectPersonId(),
@@ -108,7 +103,6 @@ export {
   selectMessagesDomain,
   selectPersonSelector,
   selectPersonId,
-  selectMatchesSelector,
   selectMatchDetailImages,
   selectMatchMessages,
   selectCurrentMessage,
@@ -116,4 +110,5 @@ export {
   selectPointer,
   selectIsAllFetched,
   selectIsFetching,
+  selectMatches,
 };

@@ -15,6 +15,10 @@ import {
   FETCH_MATCHES_DATA,
   FETCH_MATCHES_DATA_ERROR,
   FETCH_MATCHES_DATA_SUCCESS,
+  FETCH_MATCHES_LOCALLY,
+  DUMP_ALL,
+  DUMP_ALL_SUCCESS,
+  CONCAT_LOCAL_MATCH,
 } from './constants';
 
 export function fetchMatchData() {
@@ -82,5 +86,24 @@ export function sendMessageError(error) {
 export function updatePointer() {
   return {
     type: UPDATE_POINTER,
+  };
+}
+
+// Experimental
+export function dumpAll() {
+  return {
+    type: DUMP_ALL,
+  };
+}
+
+export function dumpAllSuccess() {
+  return {
+    type: DUMP_ALL_SUCCESS,
+  };
+}
+
+export function fetchMatchDataLocally() {
+  return {
+    type: FETCH_MATCHES_LOCALLY,
   };
 }

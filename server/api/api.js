@@ -90,7 +90,7 @@ router.post('/tinder/historynew', (req, res) => {
       deleted_lists: data.deleted_lists,
       lists: data.lists,
       matches: returnedArray,
-      final: returnedArray.length < 10,
+      final: true,
     });
   })
   .catch((err) => {
