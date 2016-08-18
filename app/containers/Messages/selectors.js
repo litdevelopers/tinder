@@ -52,7 +52,7 @@ const selectPersonSelector = () => createSelector(
     }
     return state.slice().filter((each) => {
       if (!each.person) return false;
-      return each.person._id === id;
+      return each.person._id === id; // eslint-disable-line no-underscore-dangle
     })[0];
   }
 );
@@ -74,10 +74,7 @@ const selectMatchMessages = () => createSelector(
       return undefined;
     }
     return person.messages.slice().map((each) => {
-      // console.log('from', each.from);
-      // console.log('slice', person._id.slice(0, 24));
-      // console.log('to', each.to);
-      if (person._id.indexOf(each.to)) {
+      if (person.person._id === each.to) {  // eslint-disable-line no-underscore-dangle
         return {
           from: 'you',
           payload: each,
