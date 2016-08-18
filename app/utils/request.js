@@ -6,7 +6,7 @@ export function postRequest(url, body) {
       url,
       method: 'POST',
       data: body,
-      timeout: 10000,
+      timeout: 20000,
     })
     .then((result) => {
       resolve(result);
