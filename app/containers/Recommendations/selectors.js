@@ -8,14 +8,19 @@ const selectRecommendations = () => createSelector(
   (substate) => substate.toJS()
 );
 
-const selectMatches = () => createSelector(
-    selectDashboard(),
+const selectRecommendationsList = () => createSelector(
+    selectRecommendations(),
     (dashboardState) => dashboardState.recommendations
 );
 
-const selectCurrentMatch = () => createSelector(
+const selectLimitedRecommendationsList = () => createSelector(
   selectRecommendations(),
-  selectMatches(),
+  (substate) => substate.recommendations.slice(0, 20)
+);
+
+const selectCurrentRecommendation = () => createSelector(
+  selectRecommendations(),
+  selectRecommendationsList(),
   (recommendationsState, matches) => {
     if (!matches) return undefined; // eslint-disable-line
     // console.log(matches);
@@ -23,8 +28,8 @@ const selectCurrentMatch = () => createSelector(
   }
 );
 
-const selectCurrentMatchLinks = () => createSelector(
-  selectCurrentMatch(),
+const selectCurrentRecommendationsLinks = () => createSelector(
+  selectCurrentRecommendation(),
   (currentMatchState) => {
     if (!currentMatchState || currentMatchState === '') {
       return undefined;
@@ -35,9 +40,22 @@ const selectCurrentMatchLinks = () => createSelector(
   }
 );
 
+const selectIsFetching = () => createSelector(
+  selectRecommendations(),
+  (substate) => substate.isFetching
+);
+
+const selectShouldUpdate = () => createSelector(
+  selectDashboard(),
+  (substate) => substate.shouldUpdateRecommendations
+);
+
 export {
   selectRecommendationsDomain,
-  selectMatches,
-  selectCurrentMatch,
-  selectCurrentMatchLinks,
+  selectRecommendationsList,
+  selectLimitedRecommendationsList,
+  selectCurrentRecommendation,
+  selectCurrentRecommendationsLinks,
+  selectIsFetching,
+  selectShouldUpdate,
 };

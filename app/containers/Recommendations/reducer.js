@@ -10,8 +10,27 @@ import {
   PASS_PERSON_SUCCESS,
   PASS_PERSON_ERROR,
   DETAIL_PERSON,
+  SORT_RECOMMENDATIONS,
+  FETCH_RECOMMENDATIONS,
+  FETCH_RECOMMENDATIONS_ERROR,
+  FETCH_RECOMMENDATIONS_SUCCESS,
+  REMOVE_RECOMMENDATION,
+  DUMP_ALL_RECOMMENDATIONS,
 } from './constants';
 
+import {
+  matchesSortByDistance,
+  matchesSortByLastActive,
+  matchesSortByYoungest,
+  matchesSortByOldest,
+} from 'utils/operations';
+
+const sortMapping = {
+  distance: matchesSortByDistance,
+  lastActive: matchesSortByLastActive,
+  youngest: matchesSortByYoungest,
+  oldest: matchesSortByOldest,
+};
 
 const initialState = fromJS({
   currentDetailView: {
@@ -20,10 +39,11 @@ const initialState = fromJS({
   },
   lastError: '',
   isFetching: false,
+  recommendations: false,
   lastAction: '',
 });
 
-export default function matchesReducer(state = initialState, action) {
+export default function recommendationsReducer(state = initialState, action) {
   switch (action.type) {
     case DETAIL_PERSON:
       return state
@@ -44,6 +64,22 @@ export default function matchesReducer(state = initialState, action) {
       return state
         .set('lastError', action.payload)
         .set('isFetching', false);
+    case FETCH_RECOMMENDATIONS:
+      return state.set('isFetching', true);
+    case FETCH_RECOMMENDATIONS_SUCCESS:
+      return state
+        .set('recommendations', action.payload)
+        .set('isFetching', false);
+    case FETCH_RECOMMENDATIONS_ERROR:
+      return state
+      .set('isFetching', false)
+      .set('lastError', action.payload);
+    case SORT_RECOMMENDATIONS:
+      return state.set('recommendations', action.payload === 'normal' ? state.get('recommendations') : state.get('recommendations').splice(0).sort(sortMapping[action.payload]));
+    case REMOVE_RECOMMENDATION:
+      return state.set('recommendations', state.get('recommendations').filter((each) => each._id !== action.payload));
+    case DUMP_ALL_RECOMMENDATIONS:
+      return state.set('recommendations', false);
     default:
       return state;
   }

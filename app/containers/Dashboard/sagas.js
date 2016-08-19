@@ -6,13 +6,12 @@ import { AUTH_URL } from 'global_constants';
 import {
   FETCH_DATA,
   FETCH_UPDATES,
+  FETCHED_RECOMMENDATIONS_WITH_PREFS,
 } from './constants';
 
 import {
   fetchDataSuccess,
   fetchDataError,
-  fetchMatchesSuccess,
-  fetchMatchesError,
   fetchUpdatesSuccess,
   fetchUpdatesError,
   fetchUpdatesEnd,
@@ -21,8 +20,8 @@ import {
 import { newError, newErrorAdded } from 'containers/Notification/actions';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
-import { selectMatches } from 'containers/Recommendations/selectors';
 import { postRequest } from 'utils/request';
+
 
 
 function* getUserData() {
@@ -41,48 +40,12 @@ function* getUserData() {
   }
 }
 
-
-function* fetchMatchesAction() {
-  const authToken = yield select(selectAuthToken());
-  const postURL = `${AUTH_URL}/tinder/recommendations`;
-  try {
-    const data = yield call(postRequest, postURL, { authToken });
-    if (data.status === 200 && data.data.length !== 0 && typeof (data.data) === 'object') {
-      const currentMatches = yield select(selectMatches());
-      if (!currentMatches) {
-        yield put(fetchMatchesSuccess(data.data));
-      } else {
-        const filteredNewMatches = data.data.filter((each) => {
-          let flag = true;
-          let counter = 0;
-          for (; counter < currentMatches.length; counter++) {
-            if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
-              console.log(each.name);
-              flag = false;
-            }
-          }
-          return flag;
-        });
-        yield put(fetchMatchesSuccess(currentMatches.concat(filteredNewMatches)));
-      }
-    } else {
-      yield put(newError("We're having a little trouble retrieving your matches."));
-      yield put(newErrorAdded());
-    }
-  } catch (error) {
-    yield put(fetchMatchesError(error));
-    yield put((newError(error)));
-    yield put(newErrorAdded());
-  }
-}
-
-
 export function* tinderBackgroundSync() {
   try {
     while (true) { // eslint-disable-line
       const authToken = yield select(selectAuthToken());
       const postURL = `${AUTH_URL}/tinder/updates`;
-      yield call(delay, 15000);
+      yield call(delay, 5000);
       try {
         const data = yield call(postRequest, postURL, { authToken });
         yield put(fetchUpdatesSuccess(data.data));
@@ -104,9 +67,6 @@ function* getDataFetchWatcher() {
       case 'USER_DATA':
         yield fork(getUserData);
         break;
-      case 'RECOMMENDATIONS_DATA':
-        yield fork(fetchMatchesAction);
-        break;
       default:
         return;
     }
@@ -119,6 +79,8 @@ function* getUpdatesWatcher() {
     yield fork(tinderBackgroundSync);
   }
 }
+
+
 
 // Individual exports for testing
 export function* dashboardSaga() {
