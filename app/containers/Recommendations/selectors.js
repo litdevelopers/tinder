@@ -15,7 +15,7 @@ const selectRecommendationsList = () => createSelector(
 
 const selectLimitedRecommendationsList = () => createSelector(
   selectRecommendations(),
-  (substate) => substate.recommendations.slice(0, 20)
+  (substate) => substate.recommendations ? substate.recommendations.slice(0, 20) : null
 );
 
 const selectCurrentRecommendation = () => createSelector(

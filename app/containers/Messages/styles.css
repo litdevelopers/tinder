@@ -56,3 +56,11 @@
   padding: 20px;
   align-items: center;
 }
+
+.matchBlock {
+  display: flex;
+  flex: 1;
+  max-height: 100px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
