@@ -1,5 +1,15 @@
 import React, { PropTypes } from 'react';
 import styles from './styles.css';
+import Icon from 'components/Icon';
+
+const styleMapping = {
+  superlike: {
+    marginBottom: 3,
+  },
+  pass: {
+    marginLeft: 2,
+  },
+};
 
 function Button(props) {
   return (
@@ -9,7 +19,7 @@ function Button(props) {
         props.onClick(props.id, props.hash, props.type);
       }}
     >
-      {props.children}
+      {props.children ? props.children : <Icon type={props.type} style={styleMapping[props.type]} />}
     </button>);
 }
 
@@ -25,3 +35,5 @@ Button.propTypes = {
 };
 
 export default Button;
+
+
