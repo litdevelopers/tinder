@@ -12,7 +12,7 @@ import {
   DUMP_ALL_SUCCESS,
   DUMP_ALL_INIT,
 } from './constants';
-import { selectPointer, selectMatches, selectIsAllFetched } from './selectors';
+import { selectPointer, selectMatches } from './selectors';
 
 import {
   sendMessageSuccess,
@@ -63,6 +63,17 @@ export function* dumpDataAction() {
   yield put(dumpAllSuccess());
 }
 
+export function* loadLocalData() {
+  const matchesList = yield getToken('matchesList');
+  if (matchesList) {
+    console.log('Previous data stored, loading');
+    const matches = yield fetchChunkData(matchesList);
+    yield put(fetchMatchDataSuccess(matches));
+  } else {
+    console.warn('No data found, fetching new chunk');
+    yield call(fetchHistoryData);
+  }
+}
 
 // Individual exports for testing
 export function* sendMessageData(payload) {
@@ -81,18 +92,6 @@ export function* sendMessageData(payload) {
   }
 }
 
-export function* loadLocalData() {
-  const storeLength = yield getStoreLength();
-  const freshBatch = yield select(selectIsAllFetched());
-  if (storeLength > 2 && freshBatch) {
-    console.log('Previous data stored, loading');
-    const matchesList = yield getToken('matchesList');
-    const matches = yield fetchChunkData(matchesList);
-    yield put(fetchMatchDataSuccess(matches));
-  } else {
-    console.warn('No Previous data stored.');
-  }
-}
 
 function* sendMessageWatcher() {
   const messageWatch = yield actionChannel(SEND_MESSAGE);

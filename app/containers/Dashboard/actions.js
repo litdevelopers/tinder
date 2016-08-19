@@ -9,15 +9,11 @@ import {
   FETCH_DATA_ERROR,
   FETCH_DATA_SUCCESS,
   FETCH_DATA_SUCCESS_WITH_CONCAT,
-  FETCH_MATCHES,
-  FETCH_MATCHES_SUCCESS,
-  FETCH_MATCHES_ERROR,
-  REMOVE_MATCH,
   FETCH_UPDATES,
   FETCH_UPDATES_SUCCESS,
   FETCH_UPDATES_ERROR,
   FETCH_UPDATES_END,
-  SORT_MATCHES,
+  FETCHED_RECOMMENDATIONS_WITH_PREFS,
 } from './constants';
 
 export function fetchDataSuccessWithConcat(dataType, data) {
@@ -60,13 +56,6 @@ export function fetchUpdates() {
   };
 }
 
-export function sortMatches(sortType) {
-  return {
-    type: SORT_MATCHES,
-    payload: sortType,
-  };
-}
-
 export function fetchUpdatesSuccess(data) {
   return {
     type: FETCH_UPDATES_SUCCESS,
@@ -87,31 +76,8 @@ export function fetchUpdatesEnd() {
   };
 }
 
-export function removeMatch(id) {
+export function fetchedRecommendationsWithPrefs() {
   return {
-    type: REMOVE_MATCH,
-    id,
+    type: FETCHED_RECOMMENDATIONS_WITH_PREFS,
   };
 }
-
-export function fetchMatches() {
-  return {
-    type: FETCH_MATCHES,
-  };
-}
-
-export function fetchMatchesSuccess(data) {
-  return {
-    type: FETCH_MATCHES_SUCCESS,
-    payload: data,
-  };
-}
-
-export function fetchMatchesError(errors) {
-  return {
-    type: FETCH_MATCHES_ERROR,
-    payload: errors,
-  };
-}
-
-

@@ -2,11 +2,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { sortMatches, fetchData } from 'containers/Dashboard/actions';
-import { detailPerson, superLikePerson, likePerson, passPerson } from './actions';
+import { detailPerson, superLikePerson, likePerson, passPerson, fetchRecommendations, sortRecommendations, dumpAllRecommendationsStart, fetchRecommendationsLocally } from './actions';
 
-import { selectMatches, selectCurrentMatch, selectCurrentMatchLinks } from './selectors';
-import { selectTargetGender, selectFetching } from 'containers/Dashboard/selectors';
+import { selectRecommendationsList, selectCurrentRecommendation, selectCurrentRecommendationsLinks, selectIsFetching } from './selectors';
+import { selectTargetGender } from 'containers/Dashboard/selectors';
 
 
 import DetailView from 'components/DetailView';
@@ -19,19 +18,23 @@ import styles from './styles.css';
 
 class DashboardRecommendations extends React.Component { // eslint-disable-line
   componentWillMount() {
-    if (!this.props.matches) this.props.fetchMatches();
+    this.props.fetchRecommendationsLocally();
   }
 
-  mapMatches() {
-    return this.props.matches && this.props.matches.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
+  componentWillUnmount() {
+    this.props.dumpAllRecommendations();
+  }
+
+  mapRecommendations() {
+    return this.props.recommendations.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
   }
 
   handleFetch() {
-    if (!this.props.isFetching) this.props.fetchMatches();
+    if (!this.props.isFetching) this.props.fetchRecommendations();
   }
 
   render() {
-    const matches = (this.props && this.props.matches) ? this.mapMatches() : null;
+    const recommendations = (this.props && this.props.recommendations) ? this.mapRecommendations() : null;
     return (
       <div className={styles.dashboardMatchesContainer}>
         <div className={styles.dashboardMatchesCards}>
@@ -54,7 +57,7 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             }
             </div>
           </div>
-          {matches ?
+          {recommendations ?
             <Infinite
               className={styles.dashboardMatchesCardsContainer}
               onInfiniteLoad={() => this.handleFetch()}
@@ -64,17 +67,17 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
               itemsPerRow={3}
               isInfiniteLoading={this.props.isFetching}
             >
-              {matches}
+              {recommendations}
             </Infinite> : <div className={styles.dashboardMatchesCardsContainer} /> }
         </div>
         <div className={styles.dashboardMatchesDetails}>
-        {this.props.matchDetail && this.props.matchDetailImages ?
+        {this.props.recommendationDetail && this.props.recommendationImages ?
           <DetailView
-            data={this.props.matchDetail}
-            imageData={this.props.matchDetailImages}
+            data={this.props.recommendationDetail}
+            imageData={this.props.recommendationImages}
             onClickButton={this.props.onClickButton}
             targetGender={this.props.targetGender}
-          /> : <Panel type="matchDetailPlaceholder" targetGender={this.props.targetGender} hasMatches={!!this.props.matches} />}
+          /> : <Panel type="matchDetailPlaceholder" targetGender={this.props.targetGender} hasMatches={!!this.props.recommendations} />}
         </div>
       </div>
     );
@@ -82,39 +85,42 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
 }
 
 DashboardRecommendations.propTypes = {
-  matches: PropTypes.oneOfType([
+  recommendations: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.array,
   ]),
-  matchDetail: PropTypes.oneOfType([
+  recommendationDetail: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.node,
   ]),
-  matchDetailImages: PropTypes.array,
+  recommendationImages: PropTypes.array,
   onClickCard: PropTypes.func.isRequired,
   onClickButton: PropTypes.func.isRequired,
   onMultiple: PropTypes.func.isRequired,
   onFilter: PropTypes.func.isRequired,
-  fetchMatches: PropTypes.func.isRequired,
+  fetchRecommendations: PropTypes.func.isRequired,
   targetGender: PropTypes.number.isRequired,
   isFetching: PropTypes.bool,
+  dumpAllRecommendations: PropTypes.func,
+  fetchRecommendationsLocally: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  matches: selectMatches(),
-  matchDetail: selectCurrentMatch(),
-  matchDetailImages: selectCurrentMatchLinks(),
+  recommendations: selectRecommendationsList(),
+  recommendationDetail: selectCurrentRecommendation(),
+  recommendationImages: selectCurrentRecommendationsLinks(),
   targetGender: selectTargetGender(),
-  isFetching: selectFetching(),
+  isFetching: selectIsFetching(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchMatches: () => dispatch(fetchData('RECOMMENDATIONS_DATA')),
-    onFilter: (sortType) => dispatch(sortMatches(sortType)),
-    onMultiple: (matches, type) => {
-      const currentMatches = matches;
-      currentMatches.map((each) => {
+    fetchRecommendationsLocally: () => dispatch(fetchRecommendationsLocally()),
+    fetchRecommendations: () => dispatch(fetchRecommendations()),
+    onFilter: (sortType) => dispatch(sortRecommendations(sortType)),
+    onMultiple: (recommendations, type) => {
+      const currentRecommendations = recommendations;
+      currentRecommendations.map((each) => {
         if (type === 'like') return dispatch(likePerson(each._id, each.content_hash));
         if (type === 'pass') return dispatch(passPerson(each._id, each.content_hash));
         return null;
@@ -128,6 +134,7 @@ function mapDispatchToProps(dispatch) {
       if (type === 'pass') dispatch(passPerson(id, hash));
       if (type === 'superlike') dispatch(superLikePerson(id, hash));
     },
+    dumpAllRecommendations: () => dispatch(dumpAllRecommendationsStart()),
   };
 }
 

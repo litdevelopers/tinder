@@ -29,7 +29,6 @@ import Infinite from 'react-infinite';
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     this.props.fetchHistoryLocally();
-    if (!this.props.selectMatches && !this.props.isDataFetching && !this.props.isAllDataFetched) this.props.fetchHistory();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
