@@ -8,6 +8,7 @@ const styleMapping = {
   },
   pass: {
     marginLeft: 2,
+    fill: '#e95f5c'
   },
 };
 
