@@ -43,9 +43,9 @@ function MatchCard(props) {
     >
       <div className={styles.matchCardContainer}>
         <div className={styles.matchCardButtons}>
-          <Button type="like" onClick={props.onClickButton} id={data._id} hash={data.content_hash}><object data={likeSvg} type="image/svg+xml" /></Button>
-          <Button type="superlike" onClick={props.onClickButton} id={data._id} hash={data.content_hash}><object data={superlikeSvg} type="image/svg+xml" /></Button>
           <Button type="pass" onClick={props.onClickButton} id={data._id} hash={data.content_hash}><object data={passSvg} type="image/svg+xml" /></Button>
+          <Button type="superlike" onClick={props.onClickButton} id={data._id} hash={data.content_hash}><object data={superlikeSvg} type="image/svg+xml" /></Button>
+          <Button type="like" onClick={props.onClickButton} id={data._id} hash={data.content_hash}><object data={likeSvg} type="image/svg+xml" /></Button>
         </div>
         <div
           className={styles.matchCardContainer_wrapper}
