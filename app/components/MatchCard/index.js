@@ -5,9 +5,6 @@ import styles from './styles.css';
 import Text from 'components/Text';
 import Button from 'components/Button';
 
-import likeSvg from 'static/like.svg';
-import passSvg from 'static/pass.svg';
-import superlikeSvg from 'static/superlike.svg';
 
 function MatchCard(props) {
   const { data } = props;
@@ -43,9 +40,9 @@ function MatchCard(props) {
     >
       <div className={styles.matchCardContainer}>
         <div className={styles.matchCardButtons}>
-          <Button type="pass" onClick={props.onClickButton} id={data._id} hash={data.content_hash}><object data={passSvg} type="image/svg+xml" /></Button>
-          <Button type="superlike" onClick={props.onClickButton} id={data._id} hash={data.content_hash}><object data={superlikeSvg} type="image/svg+xml" /></Button>
-          <Button type="like" onClick={props.onClickButton} id={data._id} hash={data.content_hash}><object data={likeSvg} type="image/svg+xml" /></Button>
+          <Button type="pass" onClick={props.onClickButton} id={data._id} hash={data.content_hash}></Button>
+          <Button type="superlike" onClick={props.onClickButton} id={data._id} hash={data.content_hash}></Button>
+          <Button type="like" onClick={props.onClickButton} id={data._id} hash={data.content_hash}></Button>
         </div>
         <div
           className={styles.matchCardContainer_wrapper}
