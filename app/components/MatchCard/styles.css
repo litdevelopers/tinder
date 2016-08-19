@@ -68,6 +68,13 @@
   justify-content: space-around;
 }
 
+.matchCardButtons > button > object {
+  position: relative;
+  height: 50%;
+  width: 50%;
+  pointer-events: none;
+}
+
 .matchCardContainer_bio {
   flex-basis: 10%;
   color: #FFF;
