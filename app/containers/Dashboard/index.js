@@ -16,6 +16,10 @@ export class Dashboard extends React.Component { // eslint-disable-line react/pr
     // this.props.startBackgroundSync();
   }
 
+  componentWillUnmount() {
+    console.log('Dashboard Unmounting, storing last activity date');
+  }
+
   render() {
     return (
       <div className={styles.dashboard}>

@@ -8,21 +8,17 @@ import {
   FETCH_DATA,
   FETCH_DATA_ERROR,
   FETCH_DATA_SUCCESS,
-  FETCH_DATA_SUCCESS_WITH_CONCAT,
   FETCH_UPDATES,
   FETCH_UPDATES_SUCCESS,
   FETCH_UPDATES_ERROR,
   FETCH_UPDATES_END,
   FETCHED_RECOMMENDATIONS_WITH_PREFS,
+  STORE_META_DATA_SUCCESS,
 } from './constants';
 
-export function fetchDataSuccessWithConcat(dataType, data) {
+export function storeMetadataSuccess() {
   return {
-    type: FETCH_DATA_SUCCESS_WITH_CONCAT,
-    payload: {
-      dataType,
-      data,
-    },
+    type: STORE_META_DATA_SUCCESS,
   };
 }
 
