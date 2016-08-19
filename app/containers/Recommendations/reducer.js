@@ -16,6 +16,7 @@ import {
   FETCH_RECOMMENDATIONS_SUCCESS,
   REMOVE_RECOMMENDATION,
   DUMP_ALL_RECOMMENDATIONS,
+  PUSH_POTENTIAL_MATCH,
 } from './constants';
 
 import {
@@ -41,6 +42,7 @@ const initialState = fromJS({
   isFetching: false,
   recommendations: false,
   lastAction: '',
+  potentialMatches: [],
 });
 
 export default function recommendationsReducer(state = initialState, action) {
@@ -80,6 +82,9 @@ export default function recommendationsReducer(state = initialState, action) {
       return state.set('recommendations', state.get('recommendations').filter((each) => each._id !== action.payload));
     case DUMP_ALL_RECOMMENDATIONS:
       return state.set('recommendations', false);
+    case PUSH_POTENTIAL_MATCH:
+      console.log(state.get('potentialMatches'));
+      return state.get('potentialMatches')
     default:
       return state;
   }

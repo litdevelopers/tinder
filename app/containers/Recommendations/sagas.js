@@ -29,6 +29,7 @@ import {
   removeRecommendation,
   dumpAllRecommendations,
   dumpAllRecommendationsSuccess,
+  pushPotentialMatch,
 } from './actions';
 
 import { fetchedRecommendationsWithPrefs } from 'containers/Dashboard/actions';
@@ -53,12 +54,21 @@ function* fetchRecommendationsAction() {
       if (!currentMatches) {
         yield put(fetchRecommendationsSuccess(data.data));
       } else {
+        const potentialMatches = data.data.filter((each) => {
+          let flag = false;
+          let counter = 0;
+          for (; counter < currentMatches.length; counter++) {
+            if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
+              flag = true;
+            }
+          }
+          return flag;
+        });
         const filteredNewMatches = data.data.filter((each) => {
           let flag = true;
           let counter = 0;
           for (; counter < currentMatches.length; counter++) {
             if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
-              console.log(each.name);
               flag = false;
             }
           }

@@ -18,6 +18,7 @@ import {
   DUMP_ALL_RECOMMENDATIONS,
   DUMP_ALL_RECOMMENDATIONS_START,
   DUMP_ALL_RECOMMENDATIONS_SUCCESS,
+  PUSH_POTENTIAL_MATCH,
 } from './constants';
 
 export function superLikePerson(id, hash) {
@@ -151,4 +152,14 @@ export function dumpAllRecommendationsSuccess() {
     type: DUMP_ALL_RECOMMENDATIONS_SUCCESS,
   };
 }
+
+export function pushPotentialMatch(id) {
+  return {
+    type: PUSH_POTENTIAL_MATCH,
+    payload: id,
+  };
+}
+
+
+
 
