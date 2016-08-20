@@ -94,16 +94,21 @@ const selectIsFetching = () => createSelector(
   (substate) => substate.isFetching
 );
 
+const selectNewNotifications = () => createSelector(
+  selectMessages(),
+  (substate) => substate.newMatches
+);
+
 export {
   selectMessagesDomain,
   selectPersonSelector,
   selectPersonId,
   selectMatchDetailImages,
   selectMatchMessages,
-  selectCurrentMessage,
   selectOptimisticUI,
   selectPointer,
   selectIsAllFetched,
   selectIsFetching,
   selectMatches,
+  selectNewNotifications,
 };

@@ -74,9 +74,13 @@ export function* dumpDataAction(emptyReducer = true) {
   if (!preIdList) {
     const data = yield select(selectMatches());
     if (emptyReducer) yield put(dumpAll());
-    const idList = yield storeChunkWithToken(data);
-    yield storeToken('matchesList', idList);
-    yield put(dumpAllSuccess());
+    try {
+      const idList = yield storeChunkWithToken(data);
+      yield storeToken('matchesList', idList);
+      yield put(dumpAllSuccess());
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

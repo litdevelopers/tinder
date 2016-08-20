@@ -27,6 +27,7 @@ import {
 
 import {
   shouldReloadData,
+  pushNewNotification,
 } from 'containers/Messages/actions';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
@@ -68,6 +69,7 @@ export function* tinderBackgroundSync() {
            */
           const messageUpdates = data.data.matches.filter((each) => each.is_new_message);
           const matchUpdates = data.data.matches.filter((each) => !each.is_new_message);
+          const notifications = [];
           if (messageUpdates.length !== 0) {
             console.log('New message Updates');
             const idList = messageUpdates.map((each) => each._id);
@@ -79,13 +81,14 @@ export function* tinderBackgroundSync() {
             for (;iterator < idList.length; iterator++) {
               let inneriter = 0;
               for (;inneriter < messageUpdates[iterator].messages.length; inneriter++) {
+                if (messageUpdates[iterator].messages[inneriter].match_id.split(messageUpdates[iterator].messages[inneriter].from).pop() !== '') notifications.push(messageUpdates[iterator]._id);
                 dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
               }
               dataToBeMutated[iterator].last_activity_date = new Date().toISOString();
             }
             // We should probably update the matches list too. I think new messages then new matches.
-            const newMessagesList = yield storeChunkWithToken(dataToBeMutated);
-            yield storeToken('matchesList', newMessagesList.concat(currentMatchesList.filter((each) => newMessagesList.indexOf(each) === -1)));
+            yield storeChunkWithToken(dataToBeMutated);
+            yield storeToken('matchesList', idList.concat(currentMatchesList.filter((each) => idList.indexOf(each) === -1)));
           }
 
           if (matchUpdates.length !== 0) {
@@ -99,6 +102,7 @@ export function* tinderBackgroundSync() {
               yield storeToken('matchesList', newMatchesList.concat(currentMatchesList));
             }
           }
+          yield put(pushNewNotification(notifications));
           yield put(shouldReloadData());
         }
         yield put(fetchUpdatesSuccess(data.data));

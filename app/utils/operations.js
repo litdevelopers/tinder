@@ -52,8 +52,9 @@ export function getToken(key) {
 
 export function storeChunkWithToken(arrayData) {
   console.log(arrayData, 'operations');
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const arrayId = [];
+    if (!arrayData) reject(new Error('Array Data Missing'));
     for (let iter = 0; iter < arrayData.length; iter++) {
       localForage.setItem(arrayData[iter]._id, (arrayData[iter])); // eslint-disable-line
       arrayId.push(arrayData[iter]._id); // eslint-disable-line

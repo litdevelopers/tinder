@@ -37,3 +37,12 @@
   align-items: baseline;
   justify-content: space-between;
 }
+
+.newDot {
+  height: 10px;
+  width: 10px;
+  border-radius: 10px;
+  flex: 1;
+  background-color: #5cc3e8;
+  margin-left: 5px;
+}

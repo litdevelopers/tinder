@@ -22,7 +22,23 @@ import {
   DUMP_ALL_INIT,
   SHOULD_RELOAD_DATA,
   RELOAD_DATA_PLEASE,
+  PUSH_NEW_NOTIFICATION,
+  READ_NEW_NOTIFICATION,
 } from './constants';
+
+export function pushNewNotification(id) {
+  return {
+    type: PUSH_NEW_NOTIFICATION,
+    payload: id,
+  };
+}
+
+export function readNewNotification(id) {
+  return {
+    type: READ_NEW_NOTIFICATION,
+    payload: id,
+  };
+}
 
 export function reloadDataPlease() {
   return {

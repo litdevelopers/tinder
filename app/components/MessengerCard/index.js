@@ -29,7 +29,7 @@ function MessengerCard(props) {
         </div>
         <div className={styles.matchDetails}>
           <div className={styles.flexName}>
-            <Text type="matchName">{person && person.name}</Text>
+            <Text type="matchName">{person && person.name} {props.isNew ? <div className={styles.newDot} /> : null} </Text>
             <Text type="matchActivity">{recentActivity}</Text>
           </div>
           {recentMessage ? <Text type="matchRecentMessage">{recentMessage.slice(0, 50)}</Text> : null}
@@ -43,6 +43,7 @@ function MessengerCard(props) {
 MessengerCard.propTypes = {
   data: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
+  isNew: PropTypes.bool.isRequired,
 };
 
 export default MessengerCard;

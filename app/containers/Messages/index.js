@@ -15,6 +15,7 @@ import {
   selectOptimisticUI,
   selectIsAllFetched,
   selectIsFetching,
+  selectNewNotifications,
 } from './selectors';
 import styles from './styles.css';
 import { createStructuredSelector } from 'reselect';
@@ -41,7 +42,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   mapMatches() {
-    return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} />);
+    return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} isNew={this.props.newMatches.indexOf(each._id) !== -1} />);
   }
 
   mapMessages() {
@@ -124,6 +125,7 @@ const mapStateToProps = createStructuredSelector({
   selectOptimistic: selectOptimisticUI(),
   isAllDataFetched: selectIsAllFetched(),
   isDataFetching: selectIsFetching(),
+  newMatches: selectNewNotifications(),
 });
 
 Messages.propTypes = {
@@ -144,6 +146,7 @@ Messages.propTypes = {
   isDataFetching: PropTypes.bool,
   fetchHistoryLocally: PropTypes.func,
   dumpAll: PropTypes.func,
+  newMatches: PropTypes.array,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

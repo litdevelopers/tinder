@@ -18,8 +18,8 @@ import {
   FETCH_MATCHES_DATA_SUCCESS,
   FETCH_MATCHES_DATA_NEW,
   DUMP_ALL,
-  SHOULD_RELOAD_DATA,
   RELOAD_DATA_PLEASE,
+  PUSH_NEW_NOTIFICATION,
 } from './constants';
 
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -33,6 +33,7 @@ const initialState = fromJS({
   matches: false,
   isFetching: false,
   optimisticUI: [],
+  newMatches: [],
 });
 
 function messagesReducer(state = initialState, action) {
@@ -52,7 +53,10 @@ function messagesReducer(state = initialState, action) {
     case FETCH_MATCHES_DATA_NEW:
       return state.set('matches', state.get('matches').unshift(action.payload));
     case SELECT_PERSON:
-      return state.set('currentPerson', action.payload);
+      console.log(state.get('newMatches').toJS());
+      return state
+      .set('currentPerson', action.payload);
+      // .set('newMatches', state.get('newMatches').toJS().filter((each) => each !== action.payload.id));
     case CHANGE_MESSAGE:
       return state.set('currentMessage', action.payload);
     case SEND_MESSAGE:
@@ -75,6 +79,8 @@ function messagesReducer(state = initialState, action) {
     case LOCATION_CHANGE:
     case RELOAD_DATA_PLEASE:
       return state.set('optimisticUI', []);
+    case PUSH_NEW_NOTIFICATION:
+      return state.set('newMatches', state.get('newMatches').concat(action.payload.filter((each) => each !== state.get('currentPerson').id)));
     default:
       return state;
   }
