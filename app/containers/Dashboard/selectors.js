@@ -39,6 +39,11 @@ const selectUserObject = () => createSelector(
   (dashboardState) => dashboardState.user || null
 );
 
+const selectUserID = () => createSelector(
+  selectUserObject(),
+  (substate) => substate._id
+);
+
 const selectDashboardHistory = () => createSelector(
     selectDashboard(),
     (dashboard) => dashboard.history
@@ -57,6 +62,7 @@ export {
   selectGlobalErrors,
   selectFetching,
   selectUserObject,
+  selectUserID,
   selectDashboardHistory,
   selectMatchesHistory,
 };

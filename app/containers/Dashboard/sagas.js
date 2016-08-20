@@ -17,7 +17,6 @@ import {
   fetchUpdatesEnd,
   storeMetadataSuccess,
   newMatches,
-  newMessageThread,
 } from './actions';
 
 import {
@@ -30,6 +29,7 @@ import {
   pushNewNotification,
 } from 'containers/Messages/actions';
 
+import { selectUserID } from './selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { postRequest } from 'utils/request';
 import { storeToken, getToken, storeChunkWithToken, fetchChunkData } from 'utils/operations';
@@ -75,13 +75,15 @@ export function* tinderBackgroundSync() {
             const idList = messageUpdates.map((each) => each._id);
             const dataToBeMutated = yield fetchChunkData(idList);
             const currentMatchesList = yield getToken('matchesList');
+            const selfID = yield select(selectUserID());
             if (!dataToBeMutated) return;
 
             let iterator = 0;
             for (;iterator < idList.length; iterator++) {
               let inneriter = 0;
               for (;inneriter < messageUpdates[iterator].messages.length; inneriter++) {
-                if (messageUpdates[iterator].messages[inneriter].match_id.split(messageUpdates[iterator].messages[inneriter].from).pop() !== '') notifications.push(messageUpdates[iterator]._id);
+                const messageFromID = messageUpdates[iterator].messages[inneriter].from;
+                if (messageFromID !== selfID) notifications.push(messageUpdates[iterator].messages[inneriter].from);
                 dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
               }
               dataToBeMutated[iterator].last_activity_date = new Date().toISOString();

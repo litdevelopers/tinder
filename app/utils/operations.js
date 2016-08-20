@@ -51,7 +51,6 @@ export function getToken(key) {
 }
 
 export function storeChunkWithToken(arrayData) {
-  console.log(arrayData, 'operations');
   return new Promise((resolve, reject) => {
     const arrayId = [];
     if (!arrayData) reject(new Error('Array Data Missing'));

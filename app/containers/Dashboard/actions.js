@@ -15,19 +15,11 @@ import {
   FETCHED_RECOMMENDATIONS_WITH_PREFS,
   STORE_META_DATA_SUCCESS,
   NEW_MATCHES,
-  NEW_MESSAGE_THREAD,
 } from './constants';
 
 export function newMatches(payload) {
   return {
     type: NEW_MATCHES,
-    payload,
-  };
-}
-
-export function newMessageThread(payload) {
-  return {
-    type: NEW_MESSAGE_THREAD,
     payload,
   };
 }

@@ -87,10 +87,8 @@ export function* dumpDataAction(emptyReducer = true) {
 export function* loadLocalData(additionalFunction = false) {
   const matchesList = yield getToken('matchesList');
   if (matchesList) {
-    console.log(matchesList.length);
     console.log('Previous data stored, loading');
     const matches = yield fetchChunkData(matchesList);
-    console.log(matches.length);
     yield put(fetchMatchDataSuccess(matches));
     if (additionalFunction) yield put(additionalFunction());
     /*

@@ -51,12 +51,12 @@ function messagesReducer(state = initialState, action) {
         .set('matches', new List(action.payload))
         .set('isFetching', false);
     case FETCH_MATCHES_DATA_NEW:
-      return state.set('matches', state.get('matches').unshift(action.payload));
+      return state.set('matches', action.payload.concat(state.get('matches')));
     case SELECT_PERSON:
-      console.log(state.get('newMatches').toJS());
+      console.log(action.payload);
       return state
       .set('currentPerson', action.payload)
-      .set('newMatches', state.get('newMatches').filter((each) => each !== action.payload.id));
+      .set('newMatches', state.get('newMatches').filter((each) => each !== action.payload));
     case CHANGE_MESSAGE:
       return state.set('currentMessage', action.payload);
     case SEND_MESSAGE:
@@ -80,7 +80,8 @@ function messagesReducer(state = initialState, action) {
     case RELOAD_DATA_PLEASE:
       return state.set('optimisticUI', []);
     case PUSH_NEW_NOTIFICATION:
-      return state.set('newMatches', state.get('newMatches').concat(action.payload.filter((each) => each !== state.get('currentPerson').id)));
+      console.log(state.get('newMatches'), action.payload, state.get('currentPerson'), action.payload.filter((each) => each !== state.get('currentPerson')));
+      return state.set('newMatches', state.get('newMatches').concat(action.payload.filter((each) => each !== state.get('currentPerson'))));
     default:
       return state;
   }
