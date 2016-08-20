@@ -16,6 +16,7 @@ import {
   FETCH_MATCHES_DATA_ERROR,
   FETCH_MATCHES_DATA_SUCCESS,
   FETCH_MATCHES_LOCALLY,
+  FETCH_MATCHES_DATA_NEW,
   DUMP_ALL,
   DUMP_ALL_SUCCESS,
   DUMP_ALL_INIT,
@@ -111,5 +112,12 @@ export function dumpAllInit() {
 export function fetchMatchDataLocally() {
   return {
     type: FETCH_MATCHES_LOCALLY,
+  };
+}
+
+export function fetchMatchDataUpdate(matches) {
+  return {
+    type: FETCH_MATCHES_DATA_NEW,
+    payload: matches,
   };
 }

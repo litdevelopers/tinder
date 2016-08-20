@@ -16,13 +16,15 @@ import {
   fetchUpdatesError,
   fetchUpdatesEnd,
   storeMetadataSuccess,
+  newMatches,
+  newMessageThread,
 } from './actions';
 
 import { newError, newErrorAdded } from 'containers/Notification/actions';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { postRequest } from 'utils/request';
-import { storeToken } from 'utils/operations';
+import { storeToken, getToken, storeChunkWithToken, fetchChunkData } from 'utils/operations';
 
 
 
@@ -46,10 +48,52 @@ export function* tinderBackgroundSync() {
   try {
     while (true) { // eslint-disable-line
       const authToken = yield select(selectAuthToken());
-      const postURL = `${AUTH_URL}/tinder/updates`;
+      const postURL = `${AUTH_URL}/tinder/updatesnew`;
       yield call(delay, 5000);
       try {
         const data = yield call(postRequest, postURL, { authToken });
+        // TODO: Support more than matches
+        if (data.data.matches.length !== 0) { // eslint-disable-line
+          /*
+           *One is that the user is on the matches page, and we push to reducer with saga watcher
+           *Two is the user is not on the matches page, and we push to indexdb for fetch
+           *Cases for new Messages and likes on messages too
+           *Flush messages first
+           */
+          const messageUpdates = data.data.matches.filter((each) => each.is_new_message);
+          const matchUpdates = data.data.matches.filter((each) => !each.is_new_message);
+          if (messageUpdates.length !== 0) {
+            console.log('New message Updates');
+            const idList = messageUpdates.map((each) => each._id);
+            console.log(idList, messageUpdates);
+            const dataToBeMutated = yield fetchChunkData(idList);
+            console.log(dataToBeMutated);
+            if (!dataToBeMutated) return;
+
+            let iterator = 0;
+            for (;iterator < idList.length; iterator++) {
+              let inneriter = 0;
+              for (;inneriter < messageUpdates[iterator].messages.length; inneriter++) {
+                dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
+                console.log(dataToBeMutated);
+            }
+            }
+            console.log(dataToBeMutated);
+            yield storeChunkWithToken(dataToBeMutated);
+          }
+
+          if (matchUpdates.length !== 0) {
+            console.warn('New Match in incoming action');
+            yield put(newMatches(matchUpdates));
+            console.log('Attempted flush to reducer');
+            const currentMatchesList = yield getToken('matchesList');
+            if (currentMatchesList) { // If the user didn't start storing data locally yet, don't flush to indexD
+              console.log('User has stored data, flushing to indexdb');
+              const newMatchesList = yield storeChunkWithToken(matchUpdates);
+              yield storeToken('matchesList', newMatchesList.concat(currentMatchesList));
+            }
+          }
+        }
         yield put(fetchUpdatesSuccess(data.data));
       } catch (error) {
         yield put(fetchUpdatesError(error));

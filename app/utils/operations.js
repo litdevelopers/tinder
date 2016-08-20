@@ -51,6 +51,7 @@ export function getToken(key) {
 }
 
 export function storeChunkWithToken(arrayData) {
+  console.log(arrayData, 'operations');
   return new Promise((resolve) => {
     const arrayId = [];
     for (let iter = 0; iter < arrayData.length; iter++) {

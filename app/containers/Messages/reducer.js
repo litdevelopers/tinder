@@ -4,7 +4,7 @@
  *
  */
 
-import { fromJS, Seq } from 'immutable';
+import { fromJS, List } from 'immutable';
 import {
   SELECT_PERSON,
   CHANGE_MESSAGE,
@@ -16,8 +16,11 @@ import {
   FETCH_MATCHES_DATA,
   FETCH_MATCHES_DATA_ERROR,
   FETCH_MATCHES_DATA_SUCCESS,
+  FETCH_MATCHES_DATA_NEW,
   DUMP_ALL,
 } from './constants';
+
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 const initialState = fromJS({
   pointer: 1,
@@ -42,8 +45,10 @@ function messagesReducer(state = initialState, action) {
         .set('isFetching', false);
     case FETCH_MATCHES_DATA_SUCCESS:
       return state
-        .set('matches', new Seq(action.payload))
+        .set('matches', new List(action.payload))
         .set('isFetching', false);
+    case FETCH_MATCHES_DATA_NEW:
+      return state.set('matches', state.get('matches').unshift(action.payload));
     case SELECT_PERSON:
       return state.set('currentPerson', action.payload);
     case CHANGE_MESSAGE:
@@ -51,7 +56,7 @@ function messagesReducer(state = initialState, action) {
     case SEND_MESSAGE:
       return state
         .set('isSending', true)
-        .set('optimisticUI', fromJS(state.get('optimisticUI')).push(fromJS(action.payload)))
+        .set('optimisticUI', state.get('optimisticUI').concat(action.payload))
         .set('currentMessage', '');
     case SEND_MESSAGE_ERROR:
       return state.set('isSending', false);
@@ -62,7 +67,11 @@ function messagesReducer(state = initialState, action) {
     case ALL_DATA_FETCHED:
       return state.set('allMessagesFetched', true);
     case DUMP_ALL:
-      return state.set('matches', []);
+      return state
+      .set('optimisticUI', [])
+      .set('matches', []);
+    case LOCATION_CHANGE:
+      return state.set('optimisticUI', []);
     default:
       return state;
   }

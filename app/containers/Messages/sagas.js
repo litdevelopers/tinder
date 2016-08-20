@@ -6,6 +6,11 @@ import { postRequest } from 'utils/request';
 import { messagesSortByRecent, storeChunkWithToken, getStoreLength, fetchChunkData, storeToken, getToken } from 'utils/operations';
 
 import {
+  NEW_MATCHES,
+} from 'containers/Dashboard/constants';
+
+
+import {
   SEND_MESSAGE,
   FETCH_MATCHES_DATA,
   FETCH_MATCHES_LOCALLY,
@@ -21,6 +26,7 @@ import {
   allDataFetched,
   fetchMatchDataError,
   fetchMatchDataSuccess,
+  fetchMatchDataUpdate,
   dumpAll,
   dumpAllSuccess,
 } from './actions';
@@ -30,6 +36,11 @@ import { newError, newErrorAdded } from 'containers/Notification/actions';
 import {
   selectAuthToken,
 } from 'containers/Auth/selectors';
+
+
+function* newMatchesAction(matches) {
+  yield put(fetchMatchDataUpdate(matches));
+}
 
 function* fetchHistoryData() {
   const authToken = yield select(selectAuthToken());
@@ -56,18 +67,23 @@ function* fetchHistoryData() {
 
 // EXPERIMENTAL
 export function* dumpDataAction() {
-  const data = yield select(selectMatches());
-  yield put(dumpAll());
-  const idList = yield storeChunkWithToken(data);
-  yield storeToken('matchesList', idList);
-  yield put(dumpAllSuccess());
+  const preIdList = yield getToken('matchesList');
+  if (!preIdList) {
+    const data = yield select(selectMatches());
+    yield put(dumpAll());
+    const idList = yield storeChunkWithToken(data);
+    yield storeToken('matchesList', idList);
+    yield put(dumpAllSuccess());
+  }
 }
 
 export function* loadLocalData() {
   const matchesList = yield getToken('matchesList');
   if (matchesList) {
+    console.log(matchesList.length);
     console.log('Previous data stored, loading');
     const matches = yield fetchChunkData(matchesList);
+    console.log(matches.length);
     yield put(fetchMatchDataSuccess(matches));
   } else {
     console.warn('No data found, fetching new chunk');
@@ -120,13 +136,25 @@ function* dataLoadLocalWatcher() {
   }
 }
 
+export function* newMatchesWatcher() {
+  while (true) {
+    const { payload } = yield take(NEW_MATCHES);
+    console.log(payload);
+    yield call(newMatchesAction, payload);
+  }
+}
+
+
+
 export function* messageSaga() {
   const messageWatcher = yield fork(sendMessageWatcher);
   const dataFetchWatcher = yield fork(dataWatcher);
+  const newMatchesWatch = yield fork(newMatchesWatcher);
   const dataDumpWatch = yield fork(dumpDataWatcher);
   const dataLoadLocalWatch = yield fork(dataLoadLocalWatcher);
 
   yield take(LOCATION_CHANGE);
+  yield cancel(newMatchesWatch);
   yield cancel(messageWatcher);
   yield cancel(dataFetchWatcher);
   yield cancel(dataLoadLocalWatch);

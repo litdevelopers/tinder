@@ -13,7 +13,7 @@ import styles from './styles.css';
 
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    // this.props.startBackgroundSync();
+    this.props.startBackgroundSync();
   }
 
   componentWillUnmount() {

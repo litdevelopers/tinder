@@ -42,7 +42,6 @@ import { selectRecommendationsList, selectLimitedRecommendationsList, selectShou
 import { postRequest } from 'utils/request';
 
 
-
 function* fetchRecommendationsAction() {
   const authToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/recommendations`;
@@ -153,6 +152,7 @@ export function* dataLoadLocalWatcher() {
     yield call(loadLocalData);
   }
 }
+
 
 
 export function* matchesSaga() {

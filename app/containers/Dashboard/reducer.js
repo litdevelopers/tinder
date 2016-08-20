@@ -32,7 +32,7 @@ const initialState = fromJS({
   rating: false,
   history: false,
   recommendations: false,
-  shouldUpdateRecommendations: false,
+  shouldUpdateRecommendations: true,
   lastError: false,
   updates: [],
   isFetching: false,

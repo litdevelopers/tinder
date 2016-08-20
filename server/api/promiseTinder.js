@@ -81,6 +81,18 @@ function getUserUpdates(client) {
   });
 }
 
+function getUserUpdatesNew(client) {
+  return new Promise((resolve, reject) => {
+    client.fetchUpdates(5, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
 function getAuthToken(client) {
   return new Promise((resolve) => resolve(client.getAuthToken()));
 }
@@ -201,6 +213,7 @@ module.exports = {
   getRecommendations,
   getAuthToken,
   getUserUpdates,
+  getUserUpdatesNew,
   likePerson,
   passPerson,
   superLikePerson,

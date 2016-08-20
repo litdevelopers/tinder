@@ -9,6 +9,7 @@ import tinderCardMale from 'static/tinder_male.png';
 const placeholderMapping = {
   1: tinderCardFemale,
   0: tinderCardMale,
+  '-1': tinderCardMale,
 };
 
 export default function Panels(props) {
