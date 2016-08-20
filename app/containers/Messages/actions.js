@@ -20,7 +20,21 @@ import {
   DUMP_ALL,
   DUMP_ALL_SUCCESS,
   DUMP_ALL_INIT,
+  SHOULD_RELOAD_DATA,
+  RELOAD_DATA_PLEASE,
 } from './constants';
+
+export function reloadDataPlease() {
+  return {
+    type: RELOAD_DATA_PLEASE,
+  };
+}
+
+export function shouldReloadData() {
+  return {
+    type: SHOULD_RELOAD_DATA,
+  };
+}
 
 export function fetchMatchData() {
   return {

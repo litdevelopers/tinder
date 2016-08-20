@@ -20,12 +20,18 @@ import {
   newMessageThread,
 } from './actions';
 
-import { newError, newErrorAdded } from 'containers/Notification/actions';
+import {
+  newError,
+  newErrorAdded,
+} from 'containers/Notification/actions';
+
+import {
+  shouldReloadData,
+} from 'containers/Messages/actions';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { postRequest } from 'utils/request';
 import { storeToken, getToken, storeChunkWithToken, fetchChunkData } from 'utils/operations';
-
 
 
 function* getUserData() {
@@ -65,9 +71,8 @@ export function* tinderBackgroundSync() {
           if (messageUpdates.length !== 0) {
             console.log('New message Updates');
             const idList = messageUpdates.map((each) => each._id);
-            console.log(idList, messageUpdates);
             const dataToBeMutated = yield fetchChunkData(idList);
-            console.log(dataToBeMutated);
+            const currentMatchesList = yield getToken('matchesList');
             if (!dataToBeMutated) return;
 
             let iterator = 0;
@@ -75,11 +80,12 @@ export function* tinderBackgroundSync() {
               let inneriter = 0;
               for (;inneriter < messageUpdates[iterator].messages.length; inneriter++) {
                 dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
-                console.log(dataToBeMutated);
+              }
+              dataToBeMutated[iterator].last_activity_date = new Date().toISOString();
             }
-            }
-            console.log(dataToBeMutated);
-            yield storeChunkWithToken(dataToBeMutated);
+            // We should probably update the matches list too. I think new messages then new matches.
+            const newMessagesList = yield storeChunkWithToken(dataToBeMutated);
+            yield storeToken('matchesList', newMessagesList.concat(currentMatchesList.filter((each) => newMessagesList.indexOf(each) === -1)));
           }
 
           if (matchUpdates.length !== 0) {
@@ -93,6 +99,7 @@ export function* tinderBackgroundSync() {
               yield storeToken('matchesList', newMatchesList.concat(currentMatchesList));
             }
           }
+          yield put(shouldReloadData());
         }
         yield put(fetchUpdatesSuccess(data.data));
       } catch (error) {

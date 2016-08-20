@@ -18,6 +18,8 @@ import {
   FETCH_MATCHES_DATA_SUCCESS,
   FETCH_MATCHES_DATA_NEW,
   DUMP_ALL,
+  SHOULD_RELOAD_DATA,
+  RELOAD_DATA_PLEASE,
 } from './constants';
 
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -71,6 +73,7 @@ function messagesReducer(state = initialState, action) {
       .set('optimisticUI', [])
       .set('matches', []);
     case LOCATION_CHANGE:
+    case RELOAD_DATA_PLEASE:
       return state.set('optimisticUI', []);
     default:
       return state;

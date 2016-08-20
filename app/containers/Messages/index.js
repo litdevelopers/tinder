@@ -36,7 +36,8 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   componentWillUnmount() {
-    this.props.dumpAll();
+    // this.props.dumpAll();
+    // No need anymore, we dump when we get it.
   }
 
   mapMatches() {

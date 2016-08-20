@@ -21,3 +21,5 @@ export const DUMP_ALL_INIT = 'DUMP_ALL_INIT';
 export const DUMP_ALL_SUCCESS = 'DUMP_ALL_SUCCESS';
 export const FETCH_MATCHES_LOCALLY = 'FETCH_MATCHES_LOCALLY';
 export const FETCH_MATCHES_DATA_NEW = 'FETCH_MATCHES_DATA_NEW';
+export const SHOULD_RELOAD_DATA = 'SHOULD_RELOAD_DATA';
+export const RELOAD_DATA_PLEASE = 'RELOAD_DATA_PLEASE'; // this is for when the data has been appended and is being removed.
