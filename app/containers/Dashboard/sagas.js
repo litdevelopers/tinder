@@ -56,7 +56,7 @@ export function* tinderBackgroundSync() {
     while (true) { // eslint-disable-line
       const authToken = yield select(selectAuthToken());
       const postURL = `${AUTH_URL}/tinder/updatesnew`;
-      yield call(delay, 5000);
+      yield call(delay, 6000);
       try {
         const data = yield call(postRequest, postURL, { authToken });
         // TODO: Support more than matches

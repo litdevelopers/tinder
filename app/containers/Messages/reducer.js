@@ -55,8 +55,8 @@ function messagesReducer(state = initialState, action) {
     case SELECT_PERSON:
       console.log(state.get('newMatches').toJS());
       return state
-      .set('currentPerson', action.payload);
-      // .set('newMatches', state.get('newMatches').toJS().filter((each) => each !== action.payload.id));
+      .set('currentPerson', action.payload)
+      .set('newMatches', state.get('newMatches').filter((each) => each !== action.payload.id));
     case CHANGE_MESSAGE:
       return state.set('currentMessage', action.payload);
     case SEND_MESSAGE:
