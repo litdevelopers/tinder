@@ -83,6 +83,7 @@ export function* dumpDataAction(emptyReducer = true) {
   } else {
     console.warn('Dumping Reducer');
     yield put(dumpAll());
+    yield put(dumpAllSuccess());
   }
 }
 
@@ -174,7 +175,7 @@ export function* messageSaga() {
   yield cancel(dataFetchWatcher);
   yield cancel(dataLoadLocalWatch);
   yield take(DUMP_ALL_SUCCESS);
-  yield cancel(dataDumpWatch, dumpDataAction);
+  yield cancel(dataDumpWatch);
 }
 // All sagas to be loaded
 export default [

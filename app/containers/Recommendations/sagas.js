@@ -37,10 +37,15 @@ import {
 } from 'containers/Dashboard/actions';
 
 import {
+  pushNewNotification
+} from 'containers/Messages/actions';
+
+import {
   selectAuthToken,
 } from 'containers/Auth/selectors';
+
 import {
-  selectUserID
+  selectUserID,
 } from 'containers/Dashboard/selectors';
 
 import { selectRecommendationsList, selectLimitedRecommendationsList, selectShouldUpdate } from './selectors';
@@ -109,6 +114,7 @@ export function* actionPerson(action, type) {
           match.person = userData.data.results;
           yield storeToken(match._id, match);
           yield storeToken('matchesList', [match._id].concat(currentMatchesList));
+          yield put(pushNewNotification([userData.data.results._id]));
         }
       }
     }
@@ -123,10 +129,12 @@ export function* actionPerson(action, type) {
 
 function* dataDumpAction() {
   const data = yield select(selectLimitedRecommendationsList());
-  yield put(dumpAllRecommendations());
-  const idList = yield storeChunkWithToken(data);
-  yield storeToken('recommendationsList', idList);
-  yield put(dumpAllRecommendationsSuccess());
+  if (data !== null && data.length !== 0) {
+    yield put(dumpAllRecommendations());
+    const idList = yield storeChunkWithToken(data);
+    yield storeToken('recommendationsList', idList);
+    yield put(dumpAllRecommendationsSuccess());
+  }
 }
 
 export function* loadLocalData() {

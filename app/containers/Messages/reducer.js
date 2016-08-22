@@ -52,7 +52,6 @@ function messagesReducer(state = initialState, action) {
     case FETCH_MATCHES_DATA_NEW:
       return state.set('matches', action.payload.concat(state.get('matches')));
     case SELECT_PERSON:
-      console.log(action.payload);
       return state
       .set('currentPerson', action.payload)
       .set('newMatches', state.get('newMatches').filter((each) => each !== action.payload));
@@ -75,7 +74,8 @@ function messagesReducer(state = initialState, action) {
     case LOCATION_CHANGE:
     case RELOAD_DATA_PLEASE:
       return state
-      .set('optimisticUI', []);
+      .set('optimisticUI', [])
+      .set('currentPerson', '');
     case PUSH_NEW_NOTIFICATION:
       return state.set('newMatches', state.get('newMatches').concat(action.payload.filter((each) => each !== state.get('currentPerson'))));
     default:

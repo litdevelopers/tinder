@@ -81,9 +81,9 @@ function getUserUpdates(client) {
   });
 }
 
-function getUserUpdatesNew(client) {
+function getUserUpdatesNew(client, lastActivityDate = 10) {
   return new Promise((resolve, reject) => {
-    client.fetchUpdates(10, (error, response) => {
+    client.fetchUpdates(lastActivityDate, (error, response) => {
       if (error) {
         reject(error);
       } else {

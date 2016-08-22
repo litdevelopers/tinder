@@ -13,8 +13,28 @@ import {
   FETCH_UPDATES_END,
   FETCHED_RECOMMENDATIONS_WITH_PREFS,
   STORE_META_DATA_SUCCESS,
+  REHYDRATE_MATCHES,
+  REHYDRATE_MATCHES_SUCCESS,
+  REHYDRATE_MATCHES_ERROR,
 } from './constants';
 
+export function rehydrateMatches() {
+  return {
+    type: REHYDRATE_MATCHES,
+  };
+}
+
+export function rehydrateMatchesSuccess() {
+  return {
+    type: REHYDRATE_MATCHES_SUCCESS,
+  };
+}
+
+export function rehydrateMatchesError() {
+  return {
+    type: REHYDRATE_MATCHES_ERROR,
+  };
+}
 
 export function storeMetadataSuccess() {
   return {
