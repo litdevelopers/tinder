@@ -13,8 +13,8 @@ import {
 } from './constants';
 
 import {
-  newError,
-  newErrorAdded,
+  newNotification,
+  newNotificationAdded,
 } from 'containers/Notification/actions';
 
 import {
@@ -37,7 +37,7 @@ import {
 } from 'containers/Dashboard/actions';
 
 import {
-  pushNewNotification
+  pushNewNotification,
 } from 'containers/Messages/actions';
 
 import {
@@ -51,7 +51,6 @@ import {
 import { selectRecommendationsList, selectLimitedRecommendationsList, selectShouldUpdate } from './selectors';
 import { postRequest } from 'utils/request';
 import { storeChunkWithToken, fetchChunkData, storeToken, getToken } from 'utils/operations';
-
 
 
 function* fetchRecommendationsAction() {
@@ -78,16 +77,15 @@ function* fetchRecommendationsAction() {
         yield put(fetchRecommendationsSuccess(currentMatches.concat(filteredNewMatches)));
       }
     } else {
-      yield put(newError("We're having a little trouble retrieving your matches."));
-      yield put(newErrorAdded());
+      yield put(newNotification("We're having a little trouble retrieving your matches."));
+      yield put(newNotificationAdded());
     }
   } catch (error) {
     yield put(fetchRecommendationsError(error));
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
-
 
 
 export function* actionPerson(action, type) {
@@ -122,8 +120,8 @@ export function* actionPerson(action, type) {
     if (type === 'like') yield put(likePersonError(error));
     if (type === 'superlike') yield put(superLikePersonError(error));
     if (type === 'pass') yield put(passPersonError(error));
-    yield put(newError(error));
-    yield put(newErrorAdded());
+    yield put(newNotification(error));
+    yield put(newNotificationAdded());
   }
 }
 
@@ -181,7 +179,6 @@ export function* dataLoadLocalWatcher() {
     yield call(loadLocalData);
   }
 }
-
 
 
 export function* matchesSaga() {

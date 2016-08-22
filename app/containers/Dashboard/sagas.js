@@ -21,8 +21,8 @@ import {
 } from './actions';
 
 import {
-  newError,
-  newErrorAdded,
+  newNotification,
+  newNotificationAdded,
 } from 'containers/Notification/actions';
 
 import {
@@ -47,8 +47,8 @@ function* getUserData() {
     }
   } catch (error) {
     yield put(fetchDataError(error));
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 
@@ -118,8 +118,8 @@ export function* tinderBackgroundSync() {
         yield call(parseSyncData, data);
       } catch (error) {
         yield put(fetchUpdatesError(error));
-        yield put((newError(error)));
-        yield put(newErrorAdded());
+        yield put((newNotification(error)));
+        yield put(newNotificationAdded());
       }
     }
   } finally {
@@ -143,8 +143,8 @@ function* rehydrateMatchesAction() {
     yield put(rehydrateMatchesSuccess());
   } catch (error) {
     yield put(rehydrateMatchesError(error));
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 

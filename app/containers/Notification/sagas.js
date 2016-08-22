@@ -3,23 +3,23 @@ import { take, call, put, actionChannel, fork, race, cancel } from 'redux-saga/e
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 
-import { pushError, handledError } from './actions';
+import { pushNotification, handledNotification } from './actions';
 import {
-  GLOBAL_ERROR_RECEIVED,
-  ERROR_MANUAL_REMOVE,
+  GLOBAL_NOTIFICATION_RECEIVED,
+  NOTIFICATION_MANUAL_REMOVE,
 } from './constants';
 
 function* notificationHandler(errorData) {
-  yield put(pushError(errorData));
+  yield put(pushNotification(errorData));
   yield race({
-    cancel: take(ERROR_MANUAL_REMOVE),
+    cancel: take(NOTIFICATION_MANUAL_REMOVE),
     timeOut: call(delay, 4000),
   });
-  yield put(handledError());
+  yield put(handledNotification());
 }
 
 function* notificationWatcher() {
-  const notificationsChannel = yield actionChannel(GLOBAL_ERROR_RECEIVED);
+  const notificationsChannel = yield actionChannel(GLOBAL_NOTIFICATION_RECEIVED);
   while (true) {
     const { payload } = yield take(notificationsChannel);
     yield call(notificationHandler, payload);

@@ -72,10 +72,12 @@ function messagesReducer(state = initialState, action) {
       .set('optimisticUI', [])
       .set('matches', []);
     case LOCATION_CHANGE:
-    case RELOAD_DATA_PLEASE:
       return state
       .set('optimisticUI', [])
       .set('currentPerson', '');
+    case RELOAD_DATA_PLEASE:
+      return state
+      .set('optimisticUI', []);
     case PUSH_NEW_NOTIFICATION:
       return state.set('newMatches', state.get('newMatches').concat(action.payload.filter((each) => each !== state.get('currentPerson'))));
     default:

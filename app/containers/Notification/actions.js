@@ -1,32 +1,32 @@
 import {
-  GLOBAL_ERROR_HANDLED,
-  GLOBAL_ERROR_RECEIVED,
-  GLOBAL_ERROR_PUSHED,
-  GLOBAL_ERROR_ADDED
+  GLOBAL_NOTIFICATION_ADDED,
+  GLOBAL_NOTIFICATION_HANDLED,
+  GLOBAL_NOTIFICATION_PUSHED,
+  GLOBAL_NOTIFICATION_RECEIVED,
 } from './constants';
 
-export function newError(errors) {
+export function newNotification(data) {
   return {
-    type: GLOBAL_ERROR_RECEIVED,
-    payload: errors,
+    type: GLOBAL_NOTIFICATION_ADDED,
+    payload: data,
   };
 }
 
-export function handledError() {
+export function handledNotification() {
   return {
-    type: GLOBAL_ERROR_HANDLED,
+    type: GLOBAL_NOTIFICATION_HANDLED,
   };
 }
 
-export function pushError(error) {
+export function pushNotification(data) {
   return {
-    type: GLOBAL_ERROR_PUSHED,
-    payload: error,
+    type: GLOBAL_NOTIFICATION_PUSHED,
+    payload: data,
   };
 }
 
-export function newErrorAdded() {
+export function newNotificationAdded() {
   return {
-    type: GLOBAL_ERROR_ADDED,
+    type: GLOBAL_NOTIFICATION_RECEIVED,
   };
 }

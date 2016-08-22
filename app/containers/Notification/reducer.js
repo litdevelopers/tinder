@@ -1,29 +1,29 @@
 import {
-  GLOBAL_ERROR_HANDLED,
-  GLOBAL_ERROR_RECEIVED,
-  GLOBAL_ERROR_PUSHED,
-  GLOBAL_ERROR_ADDED,
+  GLOBAL_NOTIFICATION_HANDLED,
+  GLOBAL_NOTIFICATION_RECEIVED,
+  GLOBAL_NOTIFICATION_PUSHED,
+  GLOBAL_NOTIFICATION_ADDED,
 } from './constants';
 import { fromJS } from 'immutable';
 
 // The initial state of the App
 const initialState = fromJS({
-  globalErrors: [],
-  currentError: '',
+  globalNotifications: [],
+  currentMessage: '',
 });
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
-    case GLOBAL_ERROR_RECEIVED:
+    case GLOBAL_NOTIFICATION_RECEIVED:
       return state
-        .set('globalErrors', state.get('globalErrors').concat(action.payload));
-    case GLOBAL_ERROR_HANDLED:
+        .set('globalErrors', state.get('globalNotifications').concat(action.payload));
+    case GLOBAL_NOTIFICATION_HANDLED:
       return state
-        .set('globalErrors', state.get('globalErrors').shift())
-        .set('currentError', '');
-    case GLOBAL_ERROR_PUSHED:
-      return state.set('currentError', action.payload);
-    case GLOBAL_ERROR_ADDED:
+        .set('globalErrors', state.get('globalNotifications').shift())
+        .set('currentMessage', '');
+    case GLOBAL_NOTIFICATION_PUSHED:
+      return state.set('currentMessage', action.payload);
+    case GLOBAL_NOTIFICATION_ADDED:
       return state;
     default:
       return state;

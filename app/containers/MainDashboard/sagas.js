@@ -12,10 +12,17 @@ import {
   SET_GENDER_FILTER,
   SET_GENDER,
 } from './constants';
-import { selectMarkerLocation, selectIsSettingLocation } from './selectors';
+
+import {
+  selectMarkerLocation,
+  selectIsSettingLocation,
+} from './selectors';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
-import { newError, newErrorAdded } from 'containers/Notification/actions';
+import {
+  newNotification,
+  newNotificationAdded
+} from 'containers/Notification/actions';
 
 import { postRequest } from 'utils/request';
 
@@ -27,8 +34,8 @@ function* updateBioAction(newBio) {
   try {
     yield call(postRequest, postURL, { authToken, bio: newBio });
   } catch (error) {
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 
@@ -39,8 +46,8 @@ function* updatePhotoOrderAction(newOrder) {
   try {
     yield call(postRequest, postURL, { authToken, order: newOrder.map((each) => each.id) });
   } catch (error) {
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 
@@ -52,8 +59,8 @@ function* profileUpdateAction(newObject) {
   try {
     yield call(postRequest, postURL, { authToken, profile: newObject });
   } catch (error) {
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 
@@ -65,8 +72,8 @@ function* genderUpdateAction(newObject) {
   try {
     yield call(postRequest, postURL, { authToken, gender: newObject });
   } catch (error) {
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 
@@ -78,8 +85,8 @@ function* locationUpdateAction(locationData) {
   try {
     yield call(postRequest, postURL, { authToken, location: locationData });
   } catch (error) {
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 

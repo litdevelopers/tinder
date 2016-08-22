@@ -32,7 +32,11 @@ import {
   dumpAllSuccess,
   reloadDataPlease,
 } from './actions';
-import { newError, newErrorAdded } from 'containers/Notification/actions';
+
+import {
+  newNotification,
+  newNotificationAdded,
+} from 'containers/Notification/actions';
 
 
 import {
@@ -59,8 +63,8 @@ function* fetchHistoryData() {
     }
   } catch (error) {
     yield put(fetchMatchDataError(error));
-    yield put((newError(error)));
-    yield put(newErrorAdded());
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 
@@ -122,8 +126,8 @@ export function* sendMessageData(payload) {
     }
   } catch (error) {
     yield put(sendMessageError(error));
-    yield put(newError(error));
-    yield put(newErrorAdded());
+    yield put(newNotification(error));
+    yield put(newNotificationAdded());
   }
 }
 
