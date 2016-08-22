@@ -83,7 +83,7 @@ function getUserUpdates(client) {
 
 function getUserUpdatesNew(client) {
   return new Promise((resolve, reject) => {
-    client.fetchUpdates(6, (error, response) => {
+    client.fetchUpdates(10, (error, response) => {
       if (error) {
         reject(error);
       } else {

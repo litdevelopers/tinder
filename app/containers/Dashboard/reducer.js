@@ -7,14 +7,12 @@
 import { fromJS } from 'immutable';
 import {
   FETCH_UPDATES,
-  FETCH_UPDATES_SUCCESS,
   FETCH_UPDATES_END,
   FETCH_UPDATES_ERROR,
   FETCH_DATA,
   FETCH_DATA_ERROR,
   FETCH_DATA_SUCCESS,
   FETCHED_RECOMMENDATIONS_WITH_PREFS,
-  
 } from './constants';
 
 import {
@@ -49,10 +47,6 @@ function dashboardReducer(state = initialState, action) {
     case FETCH_DATA_SUCCESS:
       return state
         .set(action.payload.dataType, fromJS(action.payload.data));
-    case FETCH_UPDATES_SUCCESS:
-      return state
-        .set('isFetching', false)
-        .set('updates', (state.get('updates').length > 20) ? state.get('updates').splice(1, 20).concat([action.payload]) : state.get('updates').concat([action.payload]));
     case FETCH_UPDATES_ERROR:
     case FETCH_DATA_ERROR:
       return state

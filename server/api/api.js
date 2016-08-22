@@ -248,5 +248,14 @@ router.post('/tinder/update/profile/gender', (req, res) => {
   .catch((error) => res.status(400).json(error));
 });
 
+router.post('/tinder/getuser', (req, res) => {
+  const client = new tinder.TinderClient();
+  const { userId, userToken } = req.body;
+
+  client.setAuthToken(userToken);
+  tinderPromise.getUserFromId(client, userId)
+  .then((data) => res.status(200).json(data))
+  .catch((error) => res.status(400).json(error));
+});
 
 module.exports = router;

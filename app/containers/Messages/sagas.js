@@ -1,4 +1,5 @@
 import { take, call, put, select, fork, cancel, actionChannel } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
@@ -27,7 +28,6 @@ import {
   allDataFetched,
   fetchMatchDataError,
   fetchMatchDataSuccess,
-  fetchMatchDataUpdate,
   dumpAll,
   dumpAllSuccess,
   reloadDataPlease,
@@ -39,10 +39,6 @@ import {
   selectAuthToken,
 } from 'containers/Auth/selectors';
 
-
-function* newMatchesAction(matches) {
-  yield put(fetchMatchDataUpdate(matches));
-}
 
 function* fetchHistoryData() {
   const authToken = yield select(selectAuthToken());
@@ -76,11 +72,17 @@ export function* dumpDataAction(emptyReducer = true) {
     if (emptyReducer) yield put(dumpAll());
     try {
       const idList = yield storeChunkWithToken(data);
-      yield storeToken('matchesList', idList);
+      const currentMatchesList = yield getToken('matchesList');
+      if (!currentMatchesList) {
+        yield storeToken('matchesList', idList);
+      }
       yield put(dumpAllSuccess());
     } catch (error) {
       console.log(error);
     }
+  } else {
+    console.warn('Dumping Reducer');
+    yield put(dumpAll());
   }
 }
 
@@ -92,7 +94,7 @@ export function* loadLocalData(additionalFunction = false) {
     yield put(fetchMatchDataSuccess(matches));
     if (additionalFunction) yield put(additionalFunction());
     /*
-    * THE REASON WE DO THIS IS BECAUSE PUT DATA HAS RUN TIME OF O(1) and removing data is seamless, so we wait until data is put and then we remove optimistic UI
+    * THE REASON WE DO THIS IS BECAUSE PUT DATA HAS RUN TIME OF O(n) and removing data is seamless, so we wait until data is put and then we remove optimistic UI
     */
   } else {
     console.warn('No data found, fetching new chunk');
@@ -109,6 +111,13 @@ export function* sendMessageData(payload) {
     const result = yield call(postRequest, postURL, { userToken, message });
     if (result.status === 200) {
       yield put(sendMessageSuccess());
+      const messagedUser = yield getToken(result.data.match_id);
+      const currentMatchesList = yield getToken('matchesList');
+      messagedUser.messages.push(result.data);
+      messagedUser.last_activity_date = new Date().toISOString();
+      yield storeToken(result.data.match_id, messagedUser);
+      yield storeToken('matchesList', [result.data.match_id].concat(currentMatchesList.filter((each) => each !== result.data.match_id)));
+      yield call(loadLocalData, reloadDataPlease);
     }
   } catch (error) {
     yield put(sendMessageError(error));
@@ -145,14 +154,6 @@ function* dataLoadLocalWatcher() {
   }
 }
 
-export function* newMatchesWatcher() {
-  while (true) {
-    const { payload } = yield take(NEW_MATCHES);
-    console.log(payload);
-    yield call(newMatchesAction, payload);
-  }
-}
-
 export function* reloadWatcher() {
   while (yield take(SHOULD_RELOAD_DATA)) {
     yield call(loadLocalData, reloadDataPlease);
@@ -164,18 +165,16 @@ export function* messageSaga() {
   const messageWatcher = yield fork(sendMessageWatcher);
   const dataFetchWatcher = yield fork(dataWatcher);
   const reloadWatch = yield fork(reloadWatcher);
-  const newMatchesWatch = yield fork(newMatchesWatcher);
   const dataDumpWatch = yield fork(dumpDataWatcher);
   const dataLoadLocalWatch = yield fork(dataLoadLocalWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(reloadWatch);
-  yield cancel(newMatchesWatch);
   yield cancel(messageWatcher);
   yield cancel(dataFetchWatcher);
   yield cancel(dataLoadLocalWatch);
   yield take(DUMP_ALL_SUCCESS);
-  yield cancel(dataDumpWatch);
+  yield cancel(dataDumpWatch, dumpDataAction);
 }
 // All sagas to be loaded
 export default [

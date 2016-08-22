@@ -19,7 +19,13 @@ import {
 } from './selectors';
 import styles from './styles.css';
 import { createStructuredSelector } from 'reselect';
-import { selectPersonAction, changeMessage, sendMessage, fetchMatchData, fetchMatchDataLocally, dumpAllInit } from './actions';
+import {
+  selectPersonAction,
+  sendMessage,
+  fetchMatchData,
+  fetchMatchDataLocally,
+  dumpAllInit,
+} from './actions';
 
 import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
@@ -37,12 +43,11 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   componentWillUnmount() {
-    // this.props.dumpAll();
-    // No need anymore, we dump when we get it.
+    this.props.dumpAll();
   }
 
   mapMatches() {
-    return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} isNew={this.props.newMatches.indexOf(each._id) !== -1} />);
+    return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} isNew={this.props.newMatches.indexOf(each.person._id) !== -1} />);
   }
 
   mapMessages() {
@@ -85,7 +90,6 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                     <MessengerInput
                       sendTo={this.props.currentPerson && this.props.currentPerson.id}
                       sendMessage={this.props.onSendMessage}
-                      onChange={this.props.onChangeMessage}
                     /> :
                     <h1>Test</h1>}
                 </div>
@@ -109,7 +113,6 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
 function mapDispatchToProps(dispatch) {
   return {
     selectPerson: (id) => dispatch(selectPersonAction(id)),
-    onChangeMessage: (event) => dispatch(changeMessage(event.target.value)),
     onSendMessage: (id, message) => dispatch(sendMessage(id, message)),
     fetchHistory: () => dispatch(fetchMatchData()),
     fetchHistoryLocally: () => dispatch(fetchMatchDataLocally()),
@@ -138,7 +141,6 @@ Messages.propTypes = {
   matchMessages: PropTypes.array,
   matchDetailImages: PropTypes.array,
   onSendMessage: PropTypes.func,
-  onChangeMessage: PropTypes.func,
   fetchHistory: PropTypes.func,
   selectOptimisticUI: PropTypes.func,
   selectOptimistic: PropTypes.array,

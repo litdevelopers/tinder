@@ -9,20 +9,12 @@ import {
   FETCH_DATA_ERROR,
   FETCH_DATA_SUCCESS,
   FETCH_UPDATES,
-  FETCH_UPDATES_SUCCESS,
   FETCH_UPDATES_ERROR,
   FETCH_UPDATES_END,
   FETCHED_RECOMMENDATIONS_WITH_PREFS,
   STORE_META_DATA_SUCCESS,
-  NEW_MATCHES,
 } from './constants';
 
-export function newMatches(payload) {
-  return {
-    type: NEW_MATCHES,
-    payload,
-  };
-}
 
 export function storeMetadataSuccess() {
   return {
@@ -57,13 +49,6 @@ export function fetchDataSuccess(dataType, data) {
 export function fetchUpdates() {
   return {
     type: FETCH_UPDATES,
-  };
-}
-
-export function fetchUpdatesSuccess(data) {
-  return {
-    type: FETCH_UPDATES_SUCCESS,
-    payload: data,
   };
 }
 

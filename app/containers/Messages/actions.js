@@ -9,7 +9,6 @@ import {
   SEND_MESSAGE,
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_ERROR,
-  CHANGE_MESSAGE,
   ALL_DATA_FETCHED,
   UPDATE_POINTER,
   FETCH_MATCHES_DATA,
@@ -78,12 +77,6 @@ export function allDataFetched() {
   };
 }
 
-export function changeMessage(message) {
-  return {
-    type: CHANGE_MESSAGE,
-    payload: message,
-  };
-}
 export function selectPersonAction(id) {
   return {
     type: SELECT_PERSON,

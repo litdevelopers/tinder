@@ -12,11 +12,9 @@ import {
 import {
   fetchDataSuccess,
   fetchDataError,
-  fetchUpdatesSuccess,
   fetchUpdatesError,
   fetchUpdatesEnd,
   storeMetadataSuccess,
-  newMatches,
 } from './actions';
 
 import {
@@ -56,11 +54,12 @@ export function* tinderBackgroundSync() {
     while (true) { // eslint-disable-line
       const authToken = yield select(selectAuthToken());
       const postURL = `${AUTH_URL}/tinder/updatesnew`;
-      yield call(delay, 6000);
+      yield call(delay, 5000);
       try {
         const data = yield call(postRequest, postURL, { authToken });
         // TODO: Support more than matches
-        if (data.data.matches.length !== 0) { // eslint-disable-line
+        const matchesList = yield getToken('matchesList');
+        if (data.data.matches.length !== 0 && matchesList) { // eslint-disable-line
           /*
            *One is that the user is on the matches page, and we push to reducer with saga watcher
            *Two is the user is not on the matches page, and we push to indexdb for fetch
@@ -71,43 +70,43 @@ export function* tinderBackgroundSync() {
           const matchUpdates = data.data.matches.filter((each) => !each.is_new_message);
           const notifications = [];
           if (messageUpdates.length !== 0) {
-            console.log('New message Updates');
+            console.warn('New message Updates');
             const idList = messageUpdates.map((each) => each._id);
             const dataToBeMutated = yield fetchChunkData(idList);
-            const currentMatchesList = yield getToken('matchesList');
             const selfID = yield select(selectUserID());
             if (!dataToBeMutated) return;
-
             let iterator = 0;
             for (;iterator < idList.length; iterator++) {
               let inneriter = 0;
               for (;inneriter < messageUpdates[iterator].messages.length; inneriter++) {
-                const messageFromID = messageUpdates[iterator].messages[inneriter].from;
-                if (messageFromID !== selfID) notifications.push(messageUpdates[iterator].messages[inneriter].from);
-                dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
+                const { from, _id } = messageUpdates[iterator].messages[inneriter];
+                if (from !== selfID && dataToBeMutated[iterator].messages.map((each) => each._id).indexOf(_id) === -1) {
+                  notifications.push(from);
+                  dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
+                }
               }
+
               dataToBeMutated[iterator].last_activity_date = new Date().toISOString();
             }
+            
             // We should probably update the matches list too. I think new messages then new matches.
             yield storeChunkWithToken(dataToBeMutated);
-            yield storeToken('matchesList', idList.concat(currentMatchesList.filter((each) => idList.indexOf(each) === -1)));
+            yield storeToken('matchesList', idList.concat(matchesList.filter((each) => idList.indexOf(each) === -1)));
           }
-
           if (matchUpdates.length !== 0) {
             console.warn('New Match in incoming action');
-            yield put(newMatches(matchUpdates));
-            console.log('Attempted flush to reducer');
             const currentMatchesList = yield getToken('matchesList');
             if (currentMatchesList) { // If the user didn't start storing data locally yet, don't flush to indexD
-              console.log('User has stored data, flushing to indexdb');
-              const newMatchesList = yield storeChunkWithToken(matchUpdates);
-              yield storeToken('matchesList', newMatchesList.concat(currentMatchesList));
+              const filteredMatchUpdates = matchUpdates.filter((each) => currentMatchesList.indexOf(each.id) === -1);
+              const newFilteredMatchesList = yield storeChunkWithToken(filteredMatchUpdates);
+              yield storeToken('matchesList', newFilteredMatchesList.concat(currentMatchesList));
             }
           }
-          yield put(pushNewNotification(notifications));
-          yield put(shouldReloadData());
+          if (notifications.length !== 0) {
+            yield put(pushNewNotification(notifications));
+            yield put(shouldReloadData());
+          }
         }
-        yield put(fetchUpdatesSuccess(data.data));
       } catch (error) {
         yield put(fetchUpdatesError(error));
         yield put((newError(error)));

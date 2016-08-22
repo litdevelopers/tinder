@@ -35,7 +35,6 @@ class MessengerInput extends React.Component { // eslint-disable-line react/pref
 }
 
 MessengerInput.propTypes = {
-  onChange: PropTypes.func.isRequired,
   sendTo: PropTypes.string,
   sendMessage: PropTypes.func.isRequired,
 };

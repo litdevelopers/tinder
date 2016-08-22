@@ -7,7 +7,6 @@
 import { fromJS, List } from 'immutable';
 import {
   SELECT_PERSON,
-  CHANGE_MESSAGE,
   SEND_MESSAGE,
   SEND_MESSAGE_ERROR,
   SEND_MESSAGE_SUCCESS,
@@ -57,13 +56,10 @@ function messagesReducer(state = initialState, action) {
       return state
       .set('currentPerson', action.payload)
       .set('newMatches', state.get('newMatches').filter((each) => each !== action.payload));
-    case CHANGE_MESSAGE:
-      return state.set('currentMessage', action.payload);
     case SEND_MESSAGE:
       return state
         .set('isSending', true)
-        .set('optimisticUI', state.get('optimisticUI').concat(action.payload))
-        .set('currentMessage', '');
+        .set('optimisticUI', state.get('optimisticUI').concat(action.payload));
     case SEND_MESSAGE_ERROR:
       return state.set('isSending', false);
     case SEND_MESSAGE_SUCCESS:
@@ -78,9 +74,9 @@ function messagesReducer(state = initialState, action) {
       .set('matches', []);
     case LOCATION_CHANGE:
     case RELOAD_DATA_PLEASE:
-      return state.set('optimisticUI', []);
+      return state
+      .set('optimisticUI', []);
     case PUSH_NEW_NOTIFICATION:
-      console.log(state.get('newMatches'), action.payload, state.get('currentPerson'), action.payload.filter((each) => each !== state.get('currentPerson')));
       return state.set('newMatches', state.get('newMatches').concat(action.payload.filter((each) => each !== state.get('currentPerson'))));
     default:
       return state;

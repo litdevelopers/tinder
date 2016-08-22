@@ -1,8 +1,6 @@
 import { take, call, put, select, actionChannel, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
-import { storeChunkWithToken, fetchChunkData, storeToken, getToken } from 'utils/operations';
-
 
 import {
   LIKE_PERSON,
@@ -14,7 +12,10 @@ import {
   DUMP_ALL_RECOMMENDATIONS_SUCCESS,
 } from './constants';
 
-import { newError, newErrorAdded } from 'containers/Notification/actions';
+import {
+  newError,
+  newErrorAdded,
+} from 'containers/Notification/actions';
 
 import {
   likePersonSuccess,
@@ -31,15 +32,21 @@ import {
   dumpAllRecommendationsSuccess,
 } from './actions';
 
-import { fetchedRecommendationsWithPrefs } from 'containers/Dashboard/actions';
+import {
+  fetchedRecommendationsWithPrefs,
+} from 'containers/Dashboard/actions';
 
 import {
   selectAuthToken,
 } from 'containers/Auth/selectors';
+import {
+  selectUserID
+} from 'containers/Dashboard/selectors';
 
 import { selectRecommendationsList, selectLimitedRecommendationsList, selectShouldUpdate } from './selectors';
-
 import { postRequest } from 'utils/request';
+import { storeChunkWithToken, fetchChunkData, storeToken, getToken } from 'utils/operations';
+
 
 
 function* fetchRecommendationsAction() {
@@ -90,6 +97,20 @@ export function* actionPerson(action, type) {
       if (type === 'like') yield put(likePersonSuccess({ id: action.id, action: 'like' }));
       if (type === 'superlike') yield put(superLikePersonSuccess({ id: action.id, action: 'superlike' }));
       if (type === 'pass') yield put(passPersonSuccess({ id: action.id, action: 'pass' }));
+      if ((type === 'like' || type === 'superlike') && data.data.match) {
+        const match = data.data.match;
+        const currentMatchesList = yield getToken('matchesList');
+        if (currentMatchesList) {
+          const selfId = yield select(selectUserID());
+          // console.warn('Matches List exists, will push to storage');
+          // console.log(match._id, match);
+          const fetchUserURL = `${AUTH_URL}/tinder/getuser`;
+          const userData = yield call(postRequest, fetchUserURL, { userToken, userId: match.participants.filter((each) => each !== selfId)[0] });
+          match.person = userData.data.results;
+          yield storeToken(match._id, match);
+          yield storeToken('matchesList', [match._id].concat(currentMatchesList));
+        }
+      }
     }
   } catch (error) {
     if (type === 'like') yield put(likePersonError(error));
