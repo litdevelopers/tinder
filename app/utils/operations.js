@@ -16,6 +16,9 @@ export function parsePingTime(dateString, text=true) {
 
   if (pingTimeDifferenceMinutes < 60) {
     const minutes = pingTimeDifferenceMinutes.toFixed(0);
+    if (Number(minutes) === 0) {
+      return 'Just now';
+    }
     return `${text ? 'active' : ''} ${minutes} minute${Number(minutes) === 1 ? '' : 's'} ago`;
   } else if (pingTimeDifferenceMinutes / 60 < 24) {
     const hours = (pingTimeDifferenceMinutes / 60).toFixed(0);
