@@ -3,7 +3,14 @@ import {
   GLOBAL_NOTIFICATION_HANDLED,
   GLOBAL_NOTIFICATION_PUSHED,
   GLOBAL_NOTIFICATION_RECEIVED,
+  NOTIFICATION_MANUAL_REMOVE,
 } from './constants';
+
+export function dismissNotification() {
+  return {
+    type: NOTIFICATION_MANUAL_REMOVE,
+  };
+}
 
 export function newNotification(data) {
   return {

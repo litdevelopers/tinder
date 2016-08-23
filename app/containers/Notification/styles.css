@@ -3,6 +3,7 @@
   display: flex;
   margin: 10px;
   height: 100%;
+  flex-direction: row;
 }
 
 .errorDropdown {
@@ -15,7 +16,6 @@
   display: block;
   width: 400px;
   z-index: 10;
-  background-color: #e95f5c;
   transition: 0.3s;
   display: flex;
   flex-direction: column;

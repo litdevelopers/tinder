@@ -5,7 +5,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { pushNotification, handledNotification } from './actions';
 import {
-  GLOBAL_NOTIFICATION_RECEIVED,
+  GLOBAL_NOTIFICATION_ADDED,
   NOTIFICATION_MANUAL_REMOVE,
 } from './constants';
 
@@ -19,7 +19,7 @@ function* notificationHandler(errorData) {
 }
 
 function* notificationWatcher() {
-  const notificationsChannel = yield actionChannel(GLOBAL_NOTIFICATION_RECEIVED);
+  const notificationsChannel = yield actionChannel(GLOBAL_NOTIFICATION_ADDED);
   while (true) {
     const { payload } = yield take(notificationsChannel);
     yield call(notificationHandler, payload);

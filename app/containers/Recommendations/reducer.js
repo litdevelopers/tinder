@@ -72,14 +72,16 @@ export default function recommendationsReducer(state = initialState, action) {
         .set('isFetching', false);
     case FETCH_RECOMMENDATIONS_ERROR:
       return state
-      .set('isFetching', false)
-      .set('lastError', action.payload);
+        .set('isFetching', false)
+        .set('lastError', action.payload);
     case SORT_RECOMMENDATIONS:
       return state.set('recommendations', action.payload === 'normal' ? state.get('recommendations') : state.get('recommendations').splice(0).sort(sortMapping[action.payload]));
     case REMOVE_RECOMMENDATION:
       return state.set('recommendations', state.get('recommendations').filter((each) => each._id !== action.payload));
     case DUMP_ALL_RECOMMENDATIONS:
-      return state.set('recommendations', false);
+      return state
+        .set('currentDetailView', fromJS({ id: '', image: '' }))
+        .set('recommendations', false);
     default:
       return state;
   }

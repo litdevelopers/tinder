@@ -1,5 +1,4 @@
 .me {
-  float: left;
   color: #1a1a1a;
   background-color: #eceff1;
   align-self: flex-start;
@@ -11,7 +10,18 @@
   padding: 13px 14px;
   vertical-align: top;
   border-radius: 5px;
-  pointer-events: none;
+  float: left;
+}
+
+
+.you:hover .messageDate{
+  visibility: visible;
+  display: inline;
+}
+
+.me:hover .messageDate{
+  visibility: visible;
+  display: inline;
 }
 
 .me:before {
@@ -40,7 +50,6 @@
   padding: 13px 14px;
   vertical-align: top;
   border-radius: 5px;
-  pointer-events: none;
 }
 .you:before {
   right: -3px;
@@ -53,4 +62,18 @@
   content: '\00a0';
   -webkit-transform: rotate(29deg) skew(-35deg);
           transform: rotate(29deg) skew(-35deg);
+}
+
+.messageDate {
+  color: #aaa;
+  font-size: 12px;
+  left: 0;
+  visibility: hidden;
+  display: none;
+  margin-left: 3px;
+  white-space: nowrap;
+}
+
+.you .messageDate {
+  color: white;
 }

@@ -7,7 +7,7 @@
 
 .dashboardMatchesCards {
   display: flex;
-  flex: 10;
+  flex: 8;
   flex-direction: column;
 }
 
@@ -16,9 +16,8 @@
   border-left:1px solid #eee;
   display: flex;
   flex-direction: column;
-  flex: 4;
+  flex: 2.75;
   max-width: 400px;
-  min-width: 400px;
 }
 
 

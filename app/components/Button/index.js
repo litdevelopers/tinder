@@ -8,7 +8,7 @@ const styleMapping = {
   },
   pass: {
     marginLeft: 2,
-    fill: '#e95f5c'
+    fill: '#DB4C2C',
   },
 };
 
@@ -29,7 +29,7 @@ Button.propTypes = {
     PropTypes.string,
     PropTypes.node,
   ]),
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   id: PropTypes.string,
   hash: PropTypes.string,
   onClick: PropTypes.func.isRequired,

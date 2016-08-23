@@ -175,11 +175,9 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                   </div>
                   <div className={styles.mainDashboardTogglesSection}>
 
-                    <Text type="matchRecentMessage">Show me</Text>
                   </div>
                   <div className={styles.mainDashboardTogglesSection}>
 
-                    <Text type="matchRecentMessage">Show me</Text>
                     
                   </div>
                 </div>

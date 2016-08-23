@@ -17,8 +17,13 @@ import {
   selectIsFetching,
   selectNewNotifications,
 } from './selectors';
-import styles from './styles.css';
+
+import {
+  selectTargetGender,
+} from 'containers/Dashboard/selectors';
+
 import { createStructuredSelector } from 'reselect';
+
 import {
   selectPersonAction,
   sendMessage,
@@ -29,9 +34,12 @@ import {
 
 import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
+import Panel from 'components/Panel';
 import MessageBubble from 'components/MessageBubble';
 import MessengerInput from 'components/MessengerInput';
 import Infinite from 'react-infinite';
+import styles from './styles.css';
+
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
@@ -51,10 +59,12 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   mapMessages() {
-    return this.props.matchMessages && this.props.matchMessages.map((each, index, messages) => <MessageBubble key={each.payload._id} from={each.from}>{each.payload.message}</MessageBubble>)
-    .concat(this.props.selectOptimistic.map((every) => {
-      if (every.id === this.props.currentPerson.id) {
-        return <MessageBubble key={every.message} from="you">{every.message}</MessageBubble>;
+    return this.props.matchMessages.map((each) => {
+      return (<MessageBubble key={each.payload._id} from={each.from} date={each.payload.sent_date}>{each.payload.message}</MessageBubble>);
+    })
+    .concat(this.props.selectOptimistic.map((each) => {
+      if (each.id === this.props.currentPerson.id) {
+        return <MessageBubble key={each.message} from="you">{each.message}</MessageBubble>;
       }
     }));
   }
@@ -85,7 +95,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                 >
                     {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
                 </Infinite>
-                <div className={styles.chatBoxPanel} >
+                <div className={styles.chatBoxPanel}>
                   {this.props.currentPerson ?
                     <MessengerInput
                       sendTo={this.props.currentPerson && this.props.currentPerson._id}
@@ -100,7 +110,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                     data={this.props.currentPerson.person}
                     imageData={this.props.matchDetailImages}
                   /> :
-                  <h1>Test</h1>}
+                  <Panel hasMatches={true} targetGender={this.props.targetGender}/>}
               </div>
             </div>
           </div>
@@ -129,6 +139,7 @@ const mapStateToProps = createStructuredSelector({
   isAllDataFetched: selectIsAllFetched(),
   isDataFetching: selectIsFetching(),
   newMatches: selectNewNotifications(),
+  targetGender: selectTargetGender(),
 });
 
 Messages.propTypes = {
@@ -149,6 +160,7 @@ Messages.propTypes = {
   fetchHistoryLocally: PropTypes.func,
   dumpAll: PropTypes.func,
   newMatches: PropTypes.array,
+  targetGender: PropTypes.number,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

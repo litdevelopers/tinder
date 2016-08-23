@@ -9,7 +9,7 @@ function Text(props) {
 }
 
 Text.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   children: PropTypes.node,
 };
 

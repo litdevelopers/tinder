@@ -80,6 +80,7 @@
 
 .dropdownText {
   color: white;
+  flex: 2;
 }
 
 .lastActive{
@@ -116,8 +117,17 @@
   font-size: 12px;
 }
 
+
 .dashboardSettingsHeader {
   font-size: 16px;
   font-weight: 500;
   margin: 15px;
+}
+
+.dismiss {
+  font-size: 12px;
+  color: white;
+  align-self: flex-end;
+  flex: 1;
+  text-align: right;
 }

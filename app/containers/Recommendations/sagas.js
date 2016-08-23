@@ -48,6 +48,7 @@ import {
   selectUserID,
 } from 'containers/Dashboard/selectors';
 
+
 import { selectRecommendationsList, selectLimitedRecommendationsList, selectShouldUpdate } from './selectors';
 import { postRequest } from 'utils/request';
 import { storeChunkWithToken, fetchChunkData, storeToken, getToken } from 'utils/operations';
@@ -82,11 +83,15 @@ function* fetchRecommendationsAction() {
     }
   } catch (error) {
     yield put(fetchRecommendationsError(error));
-    yield put((newNotification(error)));
+    yield put(newNotification(error));
     yield put(newNotificationAdded());
   }
 }
 
+function* newMatchAction(data) {
+  yield put(newNotification((`New Match with ${data.name}!`)));
+  yield put(newNotificationAdded());
+}
 
 export function* actionPerson(action, type) {
   const userToken = yield select(selectAuthToken());
@@ -103,13 +108,13 @@ export function* actionPerson(action, type) {
       if ((type === 'like' || type === 'superlike') && data.data.match) {
         const match = data.data.match;
         const currentMatchesList = yield getToken('matchesList');
+        
         if (currentMatchesList) {
           const selfId = yield select(selectUserID());
-          // console.warn('Matches List exists, will push to storage');
-          // console.log(match._id, match);
           const fetchUserURL = `${AUTH_URL}/tinder/getuser`;
           const userData = yield call(postRequest, fetchUserURL, { userToken, userId: match.participants.filter((each) => each !== selfId)[0] });
           match.person = userData.data.results;
+          yield newMatchAction(userData.data.results);
           yield storeToken(match._id, match);
           yield storeToken('matchesList', [match._id].concat(currentMatchesList));
           yield put(pushNewNotification([userData.data.results._id]));

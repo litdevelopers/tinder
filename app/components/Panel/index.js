@@ -18,7 +18,7 @@ export default function Panels(props) {
       className={styles.detailView_placeholder}
     >
       <img src={placeholderMapping[props.targetGender]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
-      <Text type="placeholder">{props.hasMatches ? 'Pick a match to find out more!' : 'No matches at this time. Try again later!'}</Text>
+      <Text type="placeholder">{props.hasMatches ? 'Pick a person to find out more!' : 'No matches at this time. Try again later!'}</Text>
     </div>);
 }
 

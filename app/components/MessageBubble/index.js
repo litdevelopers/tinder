@@ -7,6 +7,7 @@
 import React, { PropTypes } from 'react';
 import styles from './styles.css';
 import Text from 'components/Text';
+import { parsePingTime } from 'utils/operations';
 
 function MessageBubble(props) {
   return (
@@ -14,6 +15,7 @@ function MessageBubble(props) {
       {props.children.match(/gif|giphy/) ? <span className={styles.messageContent}><img role="presentation" src={props.children} /></span> :
         <Text type="">{props.children}</Text>
       }
+      <span className={styles.messageDate}>{parsePingTime(props.date, false)}</span>
     </div>
   );
 }
@@ -21,6 +23,7 @@ function MessageBubble(props) {
 MessageBubble.propTypes = {
   from: PropTypes.string.isRequired,
   children: PropTypes.string,
+  date: PropTypes.string,
 };
 
 export default MessageBubble;

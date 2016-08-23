@@ -1,15 +1,9 @@
 import { take, call, put, select, fork, cancel, actionChannel } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import { postRequest } from 'utils/request';
-import { messagesSortByRecent, storeChunkWithToken, getStoreLength, fetchChunkData, storeToken, getToken } from 'utils/operations';
-
-import {
-  NEW_MATCHES,
-} from 'containers/Dashboard/constants';
-
+import { messagesSortByRecent, storeChunkWithToken, fetchChunkData, storeToken, getToken } from 'utils/operations';
 
 import {
   SEND_MESSAGE,

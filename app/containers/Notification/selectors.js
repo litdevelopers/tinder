@@ -4,7 +4,7 @@ const selectNotifications = () => state => state.get('notifications').toJS();
 
 export const selectCurrentError = () => createSelector(
   selectNotifications(),
-  (notificationsState) => notificationsState.currentError
+  (notificationsState) => notificationsState.currentMessage
 );
 
 // export const selectQueuedError = () => createSelector(
