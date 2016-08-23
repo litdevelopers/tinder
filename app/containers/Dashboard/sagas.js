@@ -78,7 +78,6 @@ function* parseSyncData(data) {
         for (;inneriter < messageUpdates[iterator].messages.length; inneriter++) {
           const { from, _id } = messageUpdates[iterator].messages[inneriter];
           if (from !== selfID && dataToBeMutated[iterator].messages.map((each) => each._id).indexOf(_id) === -1) {
-            notifications.push(from);
             dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
           }
         }
@@ -102,6 +101,10 @@ function* parseSyncData(data) {
     if (notifications.length !== 0) {
       yield put(pushNewNotification(notifications));
       yield put(shouldReloadData());
+      const notificationsPermission = yield getToken('notificationsAllowed');
+      if(notificationsPermission) {
+        createNotification('Check out your new matches and messages in lit.', null, "New updates in Tinder!");
+      }
     }
   }
   yield call(storeMetadataAction);

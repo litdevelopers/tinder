@@ -56,7 +56,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   mapMatches() {
-    return this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} isNew={this.props.newMatches.indexOf(each.person._id) !== -1} />);
+    return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} isNew={each.person && each.person._id && this.props.newMatches.indexOf(each.person._id) !== -1} />);
   }
 
   mapMessages() {
