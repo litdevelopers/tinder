@@ -16,7 +16,12 @@ const selectDashboardDomain = () => state => state.get('dashboard');
 
 const selectDashboard = () => createSelector(
   selectDashboardDomain(),
-  (substate) => substate.toJS()
+  (substate) => {
+    if (!substate) {
+      return undefined;
+    }
+    return substate.toJS()
+  }
 );
 
 const selectFetching = () => createSelector(
@@ -36,7 +41,12 @@ const selectGlobalErrors = () => createSelector(
 
 const selectUserObject = () => createSelector(
   selectDashboard(),
-  (dashboardState) => dashboardState.user || null
+  (dashboardState) => {
+    if (!dashboardState) {
+      return undefined;
+    }
+    return dashboardState.user;
+  }
 );
 
 const selectUserID = () => createSelector(
@@ -45,13 +55,21 @@ const selectUserID = () => createSelector(
 );
 
 const selectDashboardHistory = () => createSelector(
-    selectDashboard(),
-    (dashboard) => dashboard.history
+  selectDashboard(),
+  (dashboard) => dashboard.history
 );
 
 const selectMatchesHistory = () => createSelector(
   selectDashboard(),
   (dashboard) => dashboard.matches
+);
+
+const selectUserName = () => createSelector(
+  selectUserObject(),
+  (userObject) => {
+    if (!userObject) return undefined;
+    return userObject.name;
+  }
 );
 
 export default selectDashboard;
@@ -65,4 +83,5 @@ export {
   selectUserID,
   selectDashboardHistory,
   selectMatchesHistory,
+  selectUserName,
 };

@@ -37,6 +37,7 @@ import DetailView from 'components/DetailView';
 import Panel from 'components/Panel';
 import MessageBubble from 'components/MessageBubble';
 import MessengerInput from 'components/MessengerInput';
+import Text from 'components/Text';
 import Infinite from 'react-infinite';
 import styles from './styles.css';
 
@@ -55,7 +56,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   mapMatches() {
-    return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} isNew={this.props.newMatches.indexOf(each.person._id) !== -1} />);
+    return this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} isNew={this.props.newMatches.indexOf(each.person._id) !== -1} />);
   }
 
   mapMessages() {
@@ -93,15 +94,21 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                   elementHeight={50}
                   itemsPerRow={1}
                 >
-                    {this.props.currentPerson && this.props.matchMessages ? this.mapMessages() : <h1>test</h1>}
+                    {this.props.currentPerson && this.props.matchMessages ?
+                      this.mapMessages() :
+                      <Text
+                        type="matchName"
+                        style={{ justifyContent: 'center' }}
+                      >
+                        {this.props.selectMatches ? 'Pick a match to start a conversation!' : 'Find some new matches!'}
+                    </Text>}
                 </Infinite>
                 <div className={styles.chatBoxPanel}>
-                  {this.props.currentPerson ?
                     <MessengerInput
                       sendTo={this.props.currentPerson && this.props.currentPerson._id}
                       sendMessage={this.props.onSendMessage}
-                    /> :
-                    <h1>Test</h1>}
+                      disabled={!this.props.currentPerson}
+                    />
                 </div>
               </div>
               <div className={styles.profileBioPanel} >

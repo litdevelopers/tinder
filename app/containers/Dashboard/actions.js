@@ -16,7 +16,14 @@ import {
   REHYDRATE_MATCHES,
   REHYDRATE_MATCHES_SUCCESS,
   REHYDRATE_MATCHES_ERROR,
+  CHECK_NOTIFICATION_PERMISSIONS,
 } from './constants';
+
+export function checkNotificationPermissions(){
+  return {
+    type: CHECK_NOTIFICATION_PERMISSIONS,
+  };
+}
 
 export function rehydrateMatches() {
   return {

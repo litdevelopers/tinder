@@ -6,13 +6,14 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchUpdates, rehydrateMatches } from './actions';
+import { fetchUpdates, rehydrateMatches, checkNotificationPermissions } from './actions';
 
 import Notification from 'containers/Notification';
 import styles from './styles.css';
 
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
+    this.props.checkNotificationPermissions();
     this.props.rehydrateMatches();
   }
 
@@ -34,12 +35,14 @@ Dashboard.propTypes = {
   children: PropTypes.node.isRequired,
   startBackgroundSync: PropTypes.func.isRequired,
   rehydrateMatches: PropTypes.func,
+  checkNotificationPermissions: PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     startBackgroundSync: () => dispatch(fetchUpdates()),
     rehydrateMatches: () => dispatch(rehydrateMatches()),
+    checkNotificationPermissions: () => dispatch(checkNotificationPermissions()),
   };
 }
 

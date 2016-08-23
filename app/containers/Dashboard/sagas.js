@@ -8,6 +8,7 @@ import {
   FETCH_UPDATES,
   REHYDRATE_MATCHES,
   REHYDRATE_MATCHES_SUCCESS,
+  CHECK_NOTIFICATION_PERMISSIONS
 } from './constants';
 
 import {
@@ -34,6 +35,7 @@ import { selectUserID } from './selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { postRequest } from 'utils/request';
 import { storeToken, getToken, storeChunkWithToken, fetchChunkData } from 'utils/operations';
+import { requestNotificationPermissions, createNotification } from 'utils/notifications';
 
 
 function* getUserData() {
@@ -162,12 +164,10 @@ function* getDataFetchWatcher() {
   }
 }
 
-// function* getUpdatesWatcher() {
-//   while (yield take(FETCH_UPDATES)) {
-//     // starts the task in the background
-
-//   }
-// }
+function* checkNotificationPermissionsAction() {
+  const permissions = yield requestNotificationPermissions();
+  yield storeToken('notificationsAllowed', permissions);
+}
 
 function* rehydrateMatchesWatcher() {
   while (yield take(REHYDRATE_MATCHES)) {
@@ -175,10 +175,17 @@ function* rehydrateMatchesWatcher() {
   }
 }
 
+function* notificationCheckWatcher() {
+  while (yield take(CHECK_NOTIFICATION_PERMISSIONS)) {
+    yield fork(checkNotificationPermissionsAction);
+  }
+}
+
 // Individual exports for testing
 export function* dashboardSaga() {
   const rehydrateMatchesWatch = yield fork(rehydrateMatchesWatcher);
   const dataFetchWatcher = yield fork(getDataFetchWatcher);
+  const notificationCheckWatch = yield fork(notificationCheckWatcher);
   // yield fork(getUpdatesWatcher);
 
 

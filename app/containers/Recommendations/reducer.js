@@ -77,7 +77,8 @@ export default function recommendationsReducer(state = initialState, action) {
     case SORT_RECOMMENDATIONS:
       return state.set('recommendations', action.payload === 'normal' ? state.get('recommendations') : state.get('recommendations').splice(0).sort(sortMapping[action.payload]));
     case REMOVE_RECOMMENDATION:
-      return state.set('recommendations', state.get('recommendations').filter((each) => each._id !== action.payload));
+      return state
+      .set('recommendations', state.get('recommendations').filter((each) => each._id !== action.payload));
     case DUMP_ALL_RECOMMENDATIONS:
       return state
         .set('currentDetailView', fromJS({ id: '', image: '' }))

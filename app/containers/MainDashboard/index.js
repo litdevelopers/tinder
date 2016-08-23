@@ -5,7 +5,7 @@ import { Motion, spring } from 'react-motion';
 import Rheostat from 'rheostat';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
-import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, setGenderFilter, selectLocation, setGender } from './actions';
+import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, setGenderFilter, selectLocation, setGender, setDiscover } from './actions';
 import { fetchData } from 'containers/Dashboard/actions';
 
 import { selectUserObject } from 'containers/Dashboard/selectors';
@@ -174,7 +174,15 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                     </select>
                   </div>
                   <div className={styles.mainDashboardTogglesSection}>
-
+                    <Text type="matchRecentMessage">Discoverable</Text>
+                    <select
+                      className={styles.mainDashboardDropdown}
+                      value={userObject.discoverable}
+                      onChange={(e) => this.props.setDiscover(e.target.value)}
+                    >
+                      <option value={true}>True</option>
+                      <option value={false}>False</option>
+                    </select>
                   </div>
                   <div className={styles.mainDashboardTogglesSection}>
 
@@ -199,8 +207,12 @@ MainDashboard.propTypes = {
   setAgeFilter: PropTypes.func,
   setDistanceFilter: PropTypes.func,
   setGenderFilter: PropTypes.func,
+  setDiscover: PropTypes.func,
   setGender: PropTypes.func,
-  userObject: PropTypes.object,
+  userObject: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   markerLocation: PropTypes.object,
   isSelectingLocation: PropTypes.bool,
 };
@@ -222,6 +234,7 @@ function mapDispatchToProps(dispatch) {
     fetchInitialData: () => dispatch(fetchData('USER_DATA')),
     editingBio: (e) => dispatch(editingBio(e.target.value)),
     reorderPhotos: (photoOrder) => dispatch(reorderPhotos(photoOrder)),
+    setDiscover: (newValue) => dispatch(setDiscover(newValue)),
   };
 }
 

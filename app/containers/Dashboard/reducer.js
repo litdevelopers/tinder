@@ -22,6 +22,7 @@ import {
   SET_GENDER,
   SET_GENDER_FILTER,
   REORDER_PHOTOS,
+  SET_DISCOVER,
 } from 'containers/MainDashboard/constants';
 
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -54,6 +55,10 @@ function dashboardReducer(state = initialState, action) {
         .set('isFetching', false);
     case EDITING_BIO:
       return state.setIn(['user', 'bio'], action.payload);
+    case SET_DISCOVER:
+      return state
+      .set('shouldUpdateRecommendations', true)
+      .setIn(['user', 'discoverable'], action.payload.discovery);
     case SET_AGE_FILTER:
       return state
       .set('shouldUpdateRecommendations', true)

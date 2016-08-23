@@ -27,7 +27,7 @@ class MessengerInput extends React.Component { // eslint-disable-line react/pref
   render() {
     return (
       <div className={styles.write}>
-        <input value={this.state.inputField} onChange={(e) => { this.setState({ inputField: e.target.value }); }} onKeyPress={(e) => this.handleKeyPress(e)} contentEditable="true" className={styles.input} type="text" />
+        <input value={this.state.inputField} onChange={(e) => { this.setState({ inputField: e.target.value }); }} onKeyPress={(e) => this.handleKeyPress(e)} contentEditable="true" className={styles.input} type="text" disabled={this.props.disabled}/>
         <a className={styles.send} />
       </div>
     );
@@ -37,6 +37,7 @@ class MessengerInput extends React.Component { // eslint-disable-line react/pref
 MessengerInput.propTypes = {
   sendTo: PropTypes.string,
   sendMessage: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default MessengerInput;

@@ -7,3 +7,5 @@ export const SET_AGE_FILTER = 'SET_AGE_FILTER';
 export const SET_GENDER_FILTER = 'SET_GENDER_FILTER';
 export const SET_DISTANCE_FILTER = 'SET_DISTANCE_FILTER';
 export const SET_GENDER = 'SET_GENDER';
+export const SET_DISCOVER = 'SET_DISCOVER';
+

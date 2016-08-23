@@ -11,6 +11,7 @@ import {
   SELECTING_LOCATION,
   SET_GENDER_FILTER,
   SET_GENDER,
+  SET_DISCOVER,
 } from './constants';
 
 import {
@@ -115,7 +116,7 @@ function* profileUpdateWatcherFunction() {
   let currentUpdate;
 
   while (yield ([SET_AGE_FILTER, SET_DISTANCE_FILTER])) {
-    const { payload } = yield take([SET_AGE_FILTER, SET_DISTANCE_FILTER, SET_GENDER_FILTER, SET_GENDER]);
+    const { payload } = yield take([SET_AGE_FILTER, SET_DISTANCE_FILTER, SET_GENDER_FILTER, SET_GENDER, SET_DISCOVER]);
     if (currentUpdate) {
       yield cancel(currentUpdate);
     }

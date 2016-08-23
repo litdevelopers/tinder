@@ -5,6 +5,7 @@ import {
   GLOBAL_NOTIFICATION_ADDED,
 } from './constants';
 import { fromJS } from 'immutable';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 // The initial state of the App
 const initialState = fromJS({
@@ -25,6 +26,8 @@ function authReducer(state = initialState, action) {
       return state.set('currentMessage', action.payload);
     case GLOBAL_NOTIFICATION_ADDED:
       return state;
+    case LOCATION_CHANGE:
+      return state.set('currentMessage', '');
     default:
       return state;
   }

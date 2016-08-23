@@ -11,8 +11,8 @@
   position: absolute;
   z-index: 3;
   right: 0;
-  border-color: #DB4C2C;
-  color: #DB4C2C;
+  border-color: #c4c4c4;
+  color: #484848;
 }
 
 .locationToggle:focus {

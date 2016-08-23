@@ -65,6 +65,7 @@ MatchCard.propTypes = {
   onClickButton: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
+  tab_index: PropTypes.number,
 };
 
 

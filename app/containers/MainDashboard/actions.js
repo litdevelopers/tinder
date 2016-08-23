@@ -5,9 +5,19 @@ import {
   SET_GENDER_FILTER,
   SET_DISTANCE_FILTER,
   SET_GENDER,
+  SET_DISCOVER,
   SELECTING_LOCATION,
   SELECT_LOCATION,
 } from './constants';
+
+export function setDiscover(newValue) {
+  return {
+    type: SET_DISCOVER,
+    payload: {
+      discovery: newValue,
+    },
+  };
+}
 
 export function setGender(newValue) {
   return {
