@@ -23,11 +23,15 @@
   color:#eee;
 }
 
-.navigation_item_active {
-  color:#DB4C2C !important;
-}
-
 .navigation_item{
   flex-basis: 10%;
-  margin-left:40px;
+  cursor: pointer;
+  color: #e2e2e2;
+  text-align: center;
+}
+
+.navigation_item_active {
+  composes: navigation_item;
+  color:#DB4C2C !important;
+  cursor: pointer;
 }
