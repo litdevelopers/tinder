@@ -29,6 +29,10 @@ function* loginFacebookSaga() {
   }
 }
 
+function* loginChromeSaga() {
+  const token = yield
+}
+
 function* loginLocalSaga() {
   const authToken = yield getToken('tinderToken');
 

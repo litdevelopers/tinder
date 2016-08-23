@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import { changeLogin, changePassword, loginFacebook, loginLocal } from './actions';
+import { changeLogin, changePassword, loginFacebook, loginLocal, loginChrome } from './actions';
 import { createStructuredSelector } from 'reselect';
 
 import {
@@ -17,6 +17,7 @@ class Auth extends React.Component {
       this.props.routeToDashboard();
     }
     this.props.loginLocal();
+    this.props.loginChrome();
   }
 
   render() {
@@ -46,6 +47,7 @@ Auth.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatch,
     onChangeLogin: (event) => dispatch(changeLogin(event.target.value)),
     onChangePassword: (event) => dispatch(changePassword(event.target.value)),
     loginLocal: () => dispatch(loginLocal()),
@@ -53,6 +55,7 @@ function mapDispatchToProps(dispatch) {
       e.preventDefault();
       dispatch(loginFacebook());
     },
+    loginChrome: () => dispatch(loginChrome()),
     routeToDashboard: () => dispatch(push('/dashboard')),
   };
 }

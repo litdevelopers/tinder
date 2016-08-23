@@ -38,6 +38,18 @@ function authReducer(state = initialState, action) {
       return state
           .set('authError', action.payload)
           .set('isAuthing', false);
+    case LOGIN_CHROME:
+      return state
+        .set('isAuthing', true);
+    case LOGIN_CHROME_SUCCESS:
+      return state
+        .set('userToken', action.payload.authToken)
+        .set('fbToken', action.payload.fbToken)
+        .set('isAuthing', false);
+    case LOGIN_CHROME_ERROR:
+      return state
+          .set('authError', action.payload)
+          .set('isAuthing', false);
     case SET_GLOBALS:
       return state.set('globals', action.payload);
     default:

@@ -1,0 +1,1 @@
+Pyre.init();

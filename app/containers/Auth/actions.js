@@ -50,6 +50,28 @@ export function loginFacebook() {
   };
 }
 
+export function loginChrome() {
+  return {
+    type: LOGIN_CHROME,
+  };
+}
+
+export function loginChromeSuccess({authToken , fbToken}) {
+  return {
+    type: LOGIN_CHROME_SUCCESS,
+    payload: {
+      authToken,
+      fbToken,
+    };
+  }
+}
+
+export function loginChromeError(err) {
+  return {
+    type: LOGIN_CHROME_ERROR,
+    payload: err
+  }
+}
 export function loginFacebookError(error) {
   return {
     type: LOGIN_FACEBOOK_ERROR,

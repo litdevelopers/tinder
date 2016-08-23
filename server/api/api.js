@@ -33,6 +33,14 @@ router.post('/auth/facebook', (req, res) => {
   });
 });
 
+router.post('/auth/facebook/:token', (req, res) => {
+  const token = req.params.token
+  const client = new tinder.TinderClient();
+  client.authorize(token, 0, () => {
+    res.status(200).json({ authToken: client.getAuthToken(), fbToken: token });
+  });
+});
+
 // router.post('/tinder/data', (req, res) => {
 //   const { authToken } = req.body;
 //   const client = new tinder.TinderClient();
