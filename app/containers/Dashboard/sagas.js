@@ -81,7 +81,7 @@ function* parseSyncData(data) {
           }
         }
 
-        dataToBeMutated[iterator].last_activity_date = new Date().toISOString();
+        dataToBeMutated[iterator].last_activity_date = messageUpdates[iterator].last_activity_date;
       }
       // We should probably update the matches list too. I think new messages then new matches.
       yield storeChunkWithToken(dataToBeMutated);
@@ -141,6 +141,7 @@ function* rehydrateMatchesAction() {
     const data = yield call(postRequest, postURL, { authToken, lastActivityDate });
     yield call(parseSyncData, data);
     yield put(rehydrateMatchesSuccess());
+    yield fork(tinderBackgroundSync);
   } catch (error) {
     yield put(rehydrateMatchesError(error));
     yield put((newNotification(error)));
@@ -161,12 +162,12 @@ function* getDataFetchWatcher() {
   }
 }
 
-function* getUpdatesWatcher() {
-  while (yield take(FETCH_UPDATES)) {
-    // starts the task in the background
-    yield fork(tinderBackgroundSync);
-  }
-}
+// function* getUpdatesWatcher() {
+//   while (yield take(FETCH_UPDATES)) {
+//     // starts the task in the background
+
+//   }
+// }
 
 function* rehydrateMatchesWatcher() {
   while (yield take(REHYDRATE_MATCHES)) {
@@ -178,7 +179,7 @@ function* rehydrateMatchesWatcher() {
 export function* dashboardSaga() {
   const rehydrateMatchesWatch = yield fork(rehydrateMatchesWatcher);
   const dataFetchWatcher = yield fork(getDataFetchWatcher);
-  yield fork(getUpdatesWatcher);
+  // yield fork(getUpdatesWatcher);
 
 
   yield take(LOCATION_CHANGE);

@@ -99,6 +99,34 @@ router.post('/tinder/historynew', (req, res) => {
   });
 });
 
+router.post('/v2/tinder/history', (req, res) => {
+  const { authToken, pointer } = req.body;
+  const client = new tinder.TinderClient();
+  client.setAuthToken(authToken);
+  tinderPromise.getHistory(client)
+  .then((data) => {
+    const messages = {};
+    const matches = {};
+    for (let iter = 0; iter < data.matches.length; iter++) {
+      messages[data.matches[iter].id] = data.matches[iter].messages;
+      matches[data.matches[iter].id] = data.matches[iter];
+      delete matches[data.matches[iter].id].messages;
+    }
+    res.status(200).json({
+      matches,
+      messages,
+      squads: data.squads,
+      deleted_lists: data.deleted_lists,
+      lists: data.lists,
+      final: true,
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(400).json(err);
+  });
+});
+
 router.post('/tinder/like', (req, res) => {
   const likeUser = req.body.userID;
   const xAuth = req.body.userToken;
