@@ -16,7 +16,10 @@ const selectMessagesDomain = () => state => state.get('messages');
 
 const selectMessages = () => createSelector(
   selectMessagesDomain(),
-  (substate) => substate.toJS()
+  (substate) => {
+    if (!substate) return undefined;
+    return substate.toJS();
+  }
 );
 
 const selectMatches = () => createSelector(
@@ -96,7 +99,10 @@ const selectIsFetching = () => createSelector(
 
 const selectNewNotifications = () => createSelector(
   selectMessages(),
-  (substate) => substate.newMatches
+  (substate) => {
+    if (!substate) return undefined;
+    return substate.newMatches;
+  }
 );
 
 export {

@@ -28,10 +28,23 @@
   cursor: pointer;
   color: #e2e2e2;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
 }
 
 .navigation_item_active {
   composes: navigation_item;
   color:#DB4C2C !important;
   cursor: pointer;
+}
+
+.newDot {
+  height: 8px;
+  max-width: 8px;
+  border-radius: 8px;
+  margin-left: 5px;
+  background-color: #DB4C2C;
+  flex: 1;
+  align-self: flex-start;
 }
