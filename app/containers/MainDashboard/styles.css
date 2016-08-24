@@ -210,6 +210,11 @@
 	font-weight: 300;
 }
 
+.mainDashboardSwitch {
+	composes: mainDashboardDropdown;
+	padding: 0 10px;
+}
+
 .mainDashboardScrollable {
 	flex: 1;
 	display: flex;

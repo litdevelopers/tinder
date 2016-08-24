@@ -38,11 +38,15 @@ const PhotoItem = SortableElement(({ photo }) => <div className={styles.photoIte
 export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
+    this.state = {
+      updated: false,
+    };
     this.onSetAgeFilter = this.onSetAgeFilter.bind(this);
     this.onSetDiscover = this.onSetDiscover.bind(this);
     this.onSetDistanceFilter = this.onSetDistanceFilter.bind(this);
     this.onSetGender = this.onSetGender.bind(this);
     this.onSetGenderFilter = this.onSetGenderFilter.bind(this);
+    this.onChangeNotificationSettings = this.onChangeNotificationSettings.bind(this);
   }
 
   componentWillMount() {
@@ -58,20 +62,28 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
   }
 
   onSetGender(event) {
-    this.setGender(event.target.value);
+    this.props.setGender(event.target.value);
   }
 
   onSetGenderFilter(event) {
-    this.setGenderFilter(event.target.value);
+    this.props.setGenderFilter(event.target.value);
   }
 
   onSetDiscover(event) {
-    this.setDiscover(event.target.value);
+    this.props.setDiscover(event.target.value);
+  }
+
+  onChangeNotificationSettings(event) {
+    localStorage.setItem(event.target.id, event.target.value);
+    this.setState({
+      updated: !this.state.updated,
+    });
   }
 
   renderPhotos(photos) {
     return <PhotoList axis="x" items={photos} onSortEnd={({ oldIndex, newIndex }) => { this.props.reorderPhotos(arrayMove(photos, oldIndex, newIndex)); }} />;
   }
+
 
   render() {
     const { userObject } = this.props;
@@ -221,30 +233,45 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                         <Icon type="notificationMatch" />
                         <Text type="switchText">New match</Text>
                         <div className={styles.mainDashboardSwitchInput}>
-                          <Text type="radioButtonLabel">Yes</Text>
-                          <input type="radio" name="matchNotifications" />
-                          <Text type="radioButtonLabel">No</Text>
-                          <input type="radio" name="matchNotifications" />
+                          <select
+                            className={styles.mainDashboardSwitch}
+                            value={localStorage.getItem('matchesNotification')}
+                            id="matchesNotification"
+                            onChange={this.onChangeNotificationSettings}
+                          >
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
+                          </select>
                         </div>
                       </div>
                       <div className={styles.mainDashboardSwitchBox}>
                         <Icon type="notificationMessage" />
                         <Text type="switchText">New message</Text>
                         <div className={styles.mainDashboardSwitchInput}>
-                          <Text type="radioButtonLabel">Yes</Text>
-                          <input type="radio" name="newMessageNotifications" />
-                          <Text type="radioButtonLabel">No</Text>
-                          <input type="radio" name="newMessageNotifications" />
+                          <select
+                            className={styles.mainDashboardSwitch}
+                            value={localStorage.getItem('messageNotification')}
+                            id="messageNotification"
+                            onChange={this.onChangeNotificationSettings}
+                          >
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
+                          </select>
                         </div>
                       </div>
                       <div className={styles.mainDashboardSwitchBox}>
                         <Icon type="notificationLike" />
                         <Text type="switchText">New message like</Text>
                         <div className={styles.mainDashboardSwitchInput}>
-                          <Text type="radioButtonLabel">Yes</Text>
-                          <input type="radio" name="messageLikeNotifications" />
-                          <Text type="radioButtonLabel">No</Text>
-                          <input type="radio" name="messageLikeNotifications" />
+                          <select
+                            className={styles.mainDashboardSwitch}
+                            value={localStorage.getItem('messagesLikeNotification')}
+                            id="messagesLikeNotification"
+                            onChange={this.onChangeNotificationSettings}
+                          >
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
+                          </select>
                         </div>
                       </div>
                     </div>

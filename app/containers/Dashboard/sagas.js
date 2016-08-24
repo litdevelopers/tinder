@@ -173,8 +173,14 @@ function* getDataFetchWatcher() {
 }
 
 function* checkNotificationPermissionsAction() {
+  const currentPermissions = yield getToken('notificationsAllowed');
   const permissions = yield requestNotificationPermissions();
-  yield storeToken('notificationsAllowed', permissions);
+  if (permissions && currentPermissions === undefined) {
+    yield storeToken('notificationsAllowed', permissions);
+    localStorage.setItem('matchesNotification', permissions);
+    localStorage.setItem('messagesNotification', permissions);
+    localStorage.setItem('messagesLikeNotification', permissions);
+  }
 }
 
 function* rehydrateMatchesWatcher() {
