@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import {
   SUPERLIKE_PERSON,
   PASS_PERSON,
@@ -16,6 +16,7 @@ import {
   FETCH_RECOMMENDATIONS_SUCCESS,
   REMOVE_RECOMMENDATION,
   DUMP_ALL_RECOMMENDATIONS,
+  SORT_LIKES,
 } from './constants';
 
 import {
@@ -41,6 +42,7 @@ const initialState = fromJS({
   isFetching: false,
   recommendations: false,
   lastAction: '',
+  sortLikes: [],
 });
 
 export default function recommendationsReducer(state = initialState, action) {
@@ -83,6 +85,10 @@ export default function recommendationsReducer(state = initialState, action) {
       return state
         .set('currentDetailView', fromJS({ id: '', image: '' }))
         .set('recommendations', false);
+    case SORT_LIKES:
+      const likeList = List(action.payload);
+      return state
+        .set('sortLikes', state.get('sortLikes').toSet().union(likeList.toSet()).toList())
     default:
       return state;
   }

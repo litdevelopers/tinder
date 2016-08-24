@@ -30,6 +30,7 @@ import {
   removeRecommendation,
   dumpAllRecommendations,
   dumpAllRecommendationsSuccess,
+  sortLikes,
 } from './actions';
 
 import {
@@ -64,17 +65,28 @@ function* fetchRecommendationsAction() {
       if (!currentMatches) {
         yield put(fetchRecommendationsSuccess(data.data));
       } else {
+        const filteredPotentialMatches = data.data.filter((each) => {
+          let flag = false;
+          let counter = 0;
+          for (; counter < currentMatches.length; counter++) {
+            if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
+              console.log(each.name);
+              flag = true;
+            }
+          }
+          return flag;
+        });
         const filteredNewMatches = data.data.filter((each) => {
           let flag = true;
           let counter = 0;
           for (; counter < currentMatches.length; counter++) {
             if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
-              console.log(each.name);
               flag = false;
             }
           }
           return flag;
         });
+        yield put(sortLikes(filteredPotentialMatches));
         yield put(fetchRecommendationsSuccess(currentMatches.concat(filteredNewMatches)));
       }
     } else {
@@ -108,7 +120,7 @@ export function* actionPerson(action, type) {
       if ((type === 'like' || type === 'superlike') && data.data.match) {
         const match = data.data.match;
         const currentMatchesList = yield getToken('matchesList');
-        
+
         if (currentMatchesList) {
           const selfId = yield select(selectUserID());
           const fetchUserURL = `${AUTH_URL}/tinder/getuser`;

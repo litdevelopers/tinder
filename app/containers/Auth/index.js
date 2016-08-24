@@ -22,7 +22,6 @@ class Auth extends React.Component {
 
   componentDidMount() {
     const { token } = this.props.route.params;
-    console.log('token is: ', token)
     if (token) {
       this.props.loginChrome(token);
     } else {

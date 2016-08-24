@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { detailPerson, superLikePerson, likePerson, passPerson, fetchRecommendations, sortRecommendations, dumpAllRecommendationsStart, fetchRecommendationsLocally } from './actions';
 
-import { selectRecommendationsList, selectCurrentRecommendation, selectCurrentRecommendationsLinks, selectIsFetching } from './selectors';
+import { selectRecommendationsList, selectCurrentRecommendation, selectCurrentRecommendationsLinks, selectIsFetching, selectPotentialMatchList } from './selectors';
 import { selectTargetGender } from 'containers/Dashboard/selectors';
 
 
@@ -26,7 +26,13 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
   }
 
   mapRecommendations() {
-    return this.props.recommendations.map((each) => <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />);
+    return this.props.recommendations.map((each) => {
+      if (this.props.potentialMatches.includes(each._id)) {
+        return <MatchCard type="active" key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />
+      }
+      return <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />
+    }
+    );
   }
 
   handleFetch() {
@@ -109,6 +115,7 @@ const mapStateToProps = createStructuredSelector({
   recommendations: selectRecommendationsList(),
   recommendationDetail: selectCurrentRecommendation(),
   recommendationImages: selectCurrentRecommendationsLinks(),
+  potentialMatches: selectPotentialMatchList(),
   targetGender: selectTargetGender(),
   isFetching: selectIsFetching(),
 });
