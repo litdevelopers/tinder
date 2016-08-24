@@ -29,8 +29,8 @@ function* loginFacebookSaga() {
   }
 }
 
-function* loginChromeSaga(action) {
-  const requestURL = `${AUTH_URL}/auth/facebook/` + action.payload;
+function* loginChromeSaga(token) {
+  const requestURL = `${AUTH_URL}/auth/facebook/${token}`;
   try {
     const authData = yield call(postRequest, requestURL);
     if (authData.status === 200) {
@@ -40,7 +40,7 @@ function* loginChromeSaga(action) {
       yield put(push('/dashboard/home'));
     }
   } catch (loginError) {
-      yield put(loginFacebookError(loginError));
+    yield put(loginFacebookError(loginError));
   }
 }
 
@@ -54,10 +54,14 @@ function* loginLocalSaga() {
       yield put(push('/dashboard/home'));
     }
   } catch (err) {
-    console.log('Could not login locally with stored auth token. Fall back to fresh login.');
+    console.log('Could not login locally with stored auth token. Fall back to chrome extension log in.');
+    const token = window.location.pathname.split('/login/')[1];
+    if (token) {
+      yield call(loginChromeSaga, token);
+    } else {
+      chrome.runtime.sendMessage('ijolldjdhcdcceonmopahocncafnlike', { type: 'doAuth' }); // eslint-disable-line
+    }
   }
-
-
 }
 
 

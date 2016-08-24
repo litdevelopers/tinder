@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import { changeLogin, changePassword, loginFacebook, loginLocal, loginChrome } from './actions';
+import { changeLogin, changePassword, loginFacebook, loginLocal } from './actions';
 import { createStructuredSelector } from 'reselect';
 
 import {
@@ -17,18 +17,6 @@ class Auth extends React.Component {
       this.props.routeToDashboard();
     }
     this.props.loginLocal();
-
-  }
-
-  componentDidMount() {
-    const { token } = this.props.route.params;
-    if (token) {
-      this.props.loginChrome(token);
-    } else {
-      chrome.runtime.sendMessage('pnjomljokngeigoagoghbhfeklgecjnl', {type: "doAuth"}, function(response) {
-            console.log(response);
-      });
-    }
   }
 
   render() {
@@ -66,18 +54,15 @@ function mapDispatchToProps(dispatch) {
       e.preventDefault();
       dispatch(loginFacebook());
     },
-    loginChrome: (token) => dispatch(loginChrome(token)),
     routeToDashboard: () => dispatch(push('/dashboard')),
   };
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  route: ownProps,
-  ...createStructuredSelector({
+const mapStateToProps = createStructuredSelector({
   login: selectLogin(),
   password: selectPassword(),
   token: selectAuthToken(),
-})});
+});
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

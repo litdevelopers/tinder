@@ -60,7 +60,7 @@ export function loginChrome(token) {
   };
 }
 
-export function loginChromeSuccess({authToken , fbToken}) {
+export function loginChromeSuccess({ authToken, fbToken }) {
   return {
     type: LOGIN_CHROME_SUCCESS,
     payload: {
@@ -73,8 +73,8 @@ export function loginChromeSuccess({authToken , fbToken}) {
 export function loginChromeError(err) {
   return {
     type: LOGIN_CHROME_ERROR,
-    payload: err
-  }
+    payload: err,
+  };
 }
 export function loginFacebookError(error) {
   return {
