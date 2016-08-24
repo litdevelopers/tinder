@@ -1,6 +1,6 @@
-var Pyre = (function ()
+var Lit = (function ()
 {
-	//The whole purpose of this extension is to get a token to enable authenthication and to provide a quick access to Pyre
+	//The whole purpose of this extension is to get a token to enable authenthication and to provide a quick access to Lit
 	var url = 'http://localhost:3000/login';
 
 	function newTab(tab)
@@ -34,7 +34,7 @@ var Pyre = (function ()
 
 		init: function ()
 		{
-			Pyre.Facebook.init();
+			Lit.Facebook.init();
 			chromeListener();
 		}
 	};

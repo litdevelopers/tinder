@@ -17,7 +17,19 @@ class Auth extends React.Component {
       this.props.routeToDashboard();
     }
     this.props.loginLocal();
-    this.props.loginChrome();
+
+  }
+
+  componentDidMount() {
+    const { token } = this.props.route.params;
+    console.log('token is: ', token)
+    if (token) {
+      this.props.loginChrome(token);
+    } else {
+      chrome.runtime.sendMessage('pnjomljokngeigoagoghbhfeklgecjnl', {type: "doAuth"}, function(response) {
+            console.log(response);
+      });
+    }
   }
 
   render() {
@@ -55,16 +67,18 @@ function mapDispatchToProps(dispatch) {
       e.preventDefault();
       dispatch(loginFacebook());
     },
-    loginChrome: () => dispatch(loginChrome()),
+    loginChrome: (token) => dispatch(loginChrome(token)),
     routeToDashboard: () => dispatch(push('/dashboard')),
   };
 }
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = (state, ownProps) => ({
+  route: ownProps,
+  ...createStructuredSelector({
   login: selectLogin(),
   password: selectPassword(),
   token: selectAuthToken(),
-});
+})});
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

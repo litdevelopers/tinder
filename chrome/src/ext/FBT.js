@@ -27,11 +27,7 @@ jQuery(function ()
 		{
 			var token = html.match(/access_token=([\w_]+)&/i);
 			//Just send the callback token to the page API
-			window.location.href="http://localhost:3000/login"
-			jQuery.ajax({
-				url: 'http://localhost:3000/auth/facebook/' + token[1],
-				type: 'POST'
-			})
+			window.location.href='http://localhost:3000/login/' + token[1];
 		}
 	});
 });

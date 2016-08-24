@@ -4,6 +4,9 @@ import {
   LOGIN_FACEBOOK,
   LOGIN_FACEBOOK_ERROR,
   LOGIN_FACEBOOK_SUCCESS,
+  LOGIN_CHROME,
+  LOGIN_CHROME_SUCCESS,
+  LOGIN_CHROME_ERROR,
   SET_GLOBALS,
 } from './constants';
 import { fromJS } from 'immutable';

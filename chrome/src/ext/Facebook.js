@@ -1,4 +1,4 @@
-Pyre.Facebook = (function (Pyre)
+Lit.Facebook = (function (Lit)
 {
 	//This redirects the current tab to a Facebook authorization page, nothing is done until the user authorizes the app
 	function openAuthTab(tab)
@@ -35,4 +35,4 @@ Pyre.Facebook = (function (Pyre)
 			chromeListener();
 		}
 	};
-})(Pyre);
+})(Lit);

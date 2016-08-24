@@ -7,6 +7,9 @@ import {
     LOGIN_LOCAL,
     LOGIN_LOCAL_SUCCESS,
     SET_GLOBALS,
+    LOGIN_CHROME,
+    LOGIN_CHROME_SUCCESS,
+    LOGIN_CHROME_ERROR,
 } from './constants';
 
 export function setGlobals(data) {
@@ -50,9 +53,10 @@ export function loginFacebook() {
   };
 }
 
-export function loginChrome() {
+export function loginChrome(token) {
   return {
     type: LOGIN_CHROME,
+    payload: token,
   };
 }
 
@@ -62,8 +66,8 @@ export function loginChromeSuccess({authToken , fbToken}) {
     payload: {
       authToken,
       fbToken,
-    };
-  }
+    },
+  };
 }
 
 export function loginChromeError(err) {
