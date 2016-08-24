@@ -8,6 +8,8 @@ import {
   SET_DISCOVER,
   SELECTING_LOCATION,
   SELECT_LOCATION,
+  CLEAR_LOCAL_DATA,
+  LOG_OUT,
 } from './constants';
 
 export function setDiscover(newValue) {
@@ -86,3 +88,14 @@ export function setDistanceFilter(newFilter) {
   };
 }
 
+export function clearLocalData() {
+  return {
+    type: CLEAR_LOCAL_DATA,
+  };
+}
+
+export function logOut() {
+  return {
+    type: LOG_OUT,
+  };
+}

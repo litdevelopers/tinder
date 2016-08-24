@@ -5,7 +5,7 @@ import { Motion, spring } from 'react-motion';
 import Rheostat from 'rheostat';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
-import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, setGenderFilter, selectLocation, setGender, setDiscover } from './actions';
+import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, setGenderFilter, selectLocation, setGender, setDiscover, logOut, clearLocalData } from './actions';
 import { fetchData } from 'containers/Dashboard/actions';
 
 import { selectUserObject } from 'containers/Dashboard/selectors';
@@ -15,7 +15,9 @@ import { getFacebookUrl } from 'utils/facebook';
 import { getAge } from 'utils/operations';
 
 import Text from 'components/Text';
+import Button from 'components/Button';
 import MapView from 'components/MapView';
+import Icon from 'components/Icon';
 import styles from './styles.css';
 
 const PhotoList = SortableContainer(({ items }) => { // eslint-disable-line
@@ -34,8 +36,37 @@ const PhotoItem = SortableElement(({ photo }) => <div className={styles.photoIte
 
 
 export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+    this.onSetAgeFilter = this.onSetAgeFilter.bind(this);
+    this.onSetDiscover = this.onSetDiscover.bind(this);
+    this.onSetDistanceFilter = this.onSetDistanceFilter.bind(this);
+    this.onSetGender = this.onSetGender.bind(this);
+    this.onSetGenderFilter = this.onSetGenderFilter.bind(this);
+  }
+
   componentWillMount() {
     this.props.fetchInitialData();
+  }
+
+  onSetAgeFilter(newValue) {
+    this.props.setAgeFilter(newValue.values);
+  }
+
+  onSetDistanceFilter(newValues) {
+    this.props.setDistanceFilter(newValues.values);
+  }
+
+  onSetGender(event) {
+    this.setGender(event.target.value);
+  }
+
+  onSetGenderFilter(event) {
+    this.setGenderFilter(event.target.value);
+  }
+
+  onSetDiscover(event) {
+    this.setDiscover(event.target.value);
   }
 
   renderPhotos(photos) {
@@ -111,83 +142,121 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
           </div>
           <div className={styles.mainDashboardSettings}>
             <div className={styles.mainDashboardSettingsMain}>
-              <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Your Photos<Text type="matchRecentMessage" style={{ fontSize: 12 }}>Rearrange your images</Text></Text>
+              <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Your Photos<Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}>Rearrange your images</Text></Text>
               {this.renderPhotos(photos)}
-              <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Age, Gender and distance options<Text type="matchRecentMessage" style={{ fontSize: 12 }}>Adjust your settings here</Text></Text>
-              <div className={styles.mainDashboardSliders}>
-                <div className={styles.mainDashboardSlider}>
-                  <Rheostat
-                    min={18}
-                    snap
-                    onValuesUpdated={(newValues) => this.props.setAgeFilter(newValues.values)}
-                    max={55}
-                    values={[userObject.age_filter_min, userObject.age_filter_max > 55 ? 55 : userObject.age_filter_max]}
-                    className={styles.styledSlider}
-                  />
-                  <div className={styles.sliderText}>
-                    <Text type="bio" style={{ flex: 1 }}>{userObject.age_filter_min}</Text>
-                    <Text type="matchRecentMessage" style={{ flex: 1, textAlign: 'center' }}>Age Preference</Text>
-                    <Text type="bio" style={{ flex: 1, textAlign: 'right' }}>{userObject.age_filter_max > 55 ? '55+' : userObject.age_filter_max}</Text>
-                  </div>
-                </div>
-                <div className={styles.mainDashboardSlider}>
-                  <Rheostat
-                    min={3.2}
-                    snap
-                    max={160}
-                    onValuesUpdated={(newValues) => {
-                      this.props.setDistanceFilter(newValues.values);
-                    }}
-                    values={[Number(userObject.distance_filter)]}
-                    className={styles.styledSlider}
-                  />
-                  <div className={styles.sliderText}>
-                    <Text type="bio" style={{ flex: 1 }}>1 km</Text>
-                    <Text type="matchRecentMessage" style={{ flex: 1, textAlign: 'center' }}>Distance Filter</Text>
-                    <Text type="bio" style={{ flex: 1, textAlign: 'right' }}>{(userObject.distance_filter * 1.6).toFixed(0)} km</Text>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.mainDashboardToggles}>
-                <div className={styles.mainDashboardTogglesContainer}>
-                  <div className={styles.mainDashboardTogglesSection}>
-                    <Text type="matchRecentMessage">I am a...</Text>
-                    <select
-                      className={styles.mainDashboardDropdown}
-                      value={userObject.gender}
-                      onChange={(e) => this.props.setGender(e.target.value)}
-                    >
-                      <option value={0}>Male</option>
-                      <option value={1}>Female</option>
-                    </select>
-                  </div>
-                  <div className={styles.mainDashboardTogglesSection}>
-                    <Text type="matchRecentMessage">Show me...</Text>
-                    <select
-                      className={styles.mainDashboardDropdown}
-                      value={userObject.gender_filter}
-                      onChange={(e) => this.props.setGenderFilter(e.target.value)}
-                    >
-                      <option value={0}>Males</option>
-                      <option value={1}>Females</option>
-                      <option value={-1}>Both</option>
-                    </select>
-                  </div>
-                  <div className={styles.mainDashboardTogglesSection}>
-                    <Text type="matchRecentMessage">Discoverable</Text>
-                    <select
-                      className={styles.mainDashboardDropdown}
-                      value={userObject.discoverable}
-                      onChange={(e) => this.props.setDiscover(e.target.value)}
-                    >
-                      <option value={true}>True</option>
-                      <option value={false}>False</option>
-                    </select>
-                  </div>
-                  <div className={styles.mainDashboardTogglesSection}>
+              <div className={styles.mainDashboardScrollable}>
+                <div className={styles.mainDashboardScrollableColumn}>
+                  <div className={styles.mainDashboardScrollableColumnContainer}>
+                    <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Age, Gender and distance options<Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}>Adjust your settings here</Text></Text>
+                    <div className={styles.mainDashboardSlider}>
+                      <Rheostat
+                        min={18}
+                        snap
+                        onValuesUpdated={this.onSetAgeFilter}
+                        max={55}
+                        values={[userObject.age_filter_min, userObject.age_filter_max > 55 ? 55 : userObject.age_filter_max]}
+                        className={styles.styledSlider}
+                      />
+                      <div className={styles.sliderText}>
+                        <Text type="bio" style={{ flex: 1 }}>{userObject.age_filter_min}</Text>
+                        <Text type="matchRecentMessage" style={{ flex: 1, textAlign: 'center' }}>Age Preference</Text>
+                        <Text type="bio" style={{ flex: 1, textAlign: 'right' }}>{userObject.age_filter_max > 55 ? '55+' : userObject.age_filter_max}</Text>
+                      </div>
+                    </div>
 
-                    
+                    <div className={styles.mainDashboardSlider}>
+                      <Rheostat
+                        min={3.2}
+                        snap
+                        max={160}
+                        onValuesUpdated={this.onSetDistanceFilter}
+                        values={[Number(userObject.distance_filter)]}
+                        className={styles.styledSlider}
+                      />
+                      <div className={styles.sliderText}>
+                        <Text type="bio" style={{ flex: 1 }}>1 km</Text>
+                        <Text type="matchRecentMessage" style={{ flex: 1, textAlign: 'center' }}>Distance Filter</Text>
+                        <Text type="bio" style={{ flex: 1, textAlign: 'right' }}>{(userObject.distance_filter * 1.6).toFixed(0)} km</Text>
+                      </div>
+                    </div>
+                    <div className={styles.mainDashboardTogglesContainer}>
+                      <div className={styles.mainDashboardTogglesSection}>
+                        <Text type="matchRecentMessage">I am a...</Text>
+                        <select
+                          className={styles.mainDashboardDropdown}
+                          value={userObject.gender}
+                          onChange={this.onSetGender}
+                        >
+                          <option value={0}>Male</option>
+                          <option value={1}>Female</option>
+                        </select>
+                      </div>
+                      <div className={styles.mainDashboardTogglesSection}>
+                        <Text type="matchRecentMessage">Show me...</Text>
+                        <select
+                          className={styles.mainDashboardDropdown}
+                          value={userObject.gender_filter}
+                          onChange={this.onSetGenderFilter}
+                        >
+                          <option value={0}>Males</option>
+                          <option value={1}>Females</option>
+                          <option value={-1}>Both</option>
+                        </select>
+                      </div>
+                      <div className={styles.mainDashboardTogglesSection}>
+                        <Text type="matchRecentMessage">Discoverable</Text>
+                        <select
+                          className={styles.mainDashboardDropdown}
+                          value={userObject.discoverable}
+                          onChange={this.onSetDiscover}
+                        >
+                          <option value={true}>True</option>
+                          <option value={false}>False</option>
+                        </select>
+                      </div>
+                    </div>
+                    <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Notification Settings<Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}>Adjust when and what you're notified about</Text></Text>
+                    <div className={styles.mainDashboardSwitchContainer}>
+                      <div className={styles.mainDashboardSwitchBox}>
+                        <Icon type="notificationMatch" />
+                        <Text type="switchText">New match</Text>
+                        <div className={styles.mainDashboardSwitchInput}>
+                          <Text type="radioButtonLabel">Yes</Text>
+                          <input type="radio" name="matchNotifications" />
+                          <Text type="radioButtonLabel">No</Text>
+                          <input type="radio" name="matchNotifications" />
+                        </div>
+                      </div>
+                      <div className={styles.mainDashboardSwitchBox}>
+                        <Icon type="notificationMessage" />
+                        <Text type="switchText">New message</Text>
+                        <div className={styles.mainDashboardSwitchInput}>
+                          <Text type="radioButtonLabel">Yes</Text>
+                          <input type="radio" name="newMessageNotifications" />
+                          <Text type="radioButtonLabel">No</Text>
+                          <input type="radio" name="newMessageNotifications" />
+                        </div>
+                      </div>
+                      <div className={styles.mainDashboardSwitchBox}>
+                        <Icon type="notificationLike" />
+                        <Text type="switchText">New message like</Text>
+                        <div className={styles.mainDashboardSwitchInput}>
+                          <Text type="radioButtonLabel">Yes</Text>
+                          <input type="radio" name="messageLikeNotifications" />
+                          <Text type="radioButtonLabel">No</Text>
+                          <input type="radio" name="messageLikeNotifications" />
+                        </div>
+                      </div>
+                    </div>
+                    <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Account settings<Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}>Log out or clear stored data</Text></Text>
+                    <div className={styles.mainDashboardTogglesContainer} style={{ marginTop: 0 }}>
+                      <Button type="accountSettings" onClick={this.props.logOut}>Log out</Button>
+                      <Button type="accountSettings" onClick={this.props.clearLocalData}>Clear local data</Button>
+                    </div>
                   </div>
+                </div>
+                <div className={styles.mainDashboardScrollableColumn}>
+                
                 </div>
               </div>
             </div>
@@ -209,6 +278,8 @@ MainDashboard.propTypes = {
   setGenderFilter: PropTypes.func,
   setDiscover: PropTypes.func,
   setGender: PropTypes.func,
+  clearLocalData: PropTypes.func,
+  logOut: PropTypes.func,
   userObject: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.bool,
@@ -235,6 +306,8 @@ function mapDispatchToProps(dispatch) {
     editingBio: (e) => dispatch(editingBio(e.target.value)),
     reorderPhotos: (photoOrder) => dispatch(reorderPhotos(photoOrder)),
     setDiscover: (newValue) => dispatch(setDiscover(newValue)),
+    logOut: () => dispatch(logOut()),
+    clearLocalData: () => dispatch(clearLocalData()),
   };
 }
 

@@ -10,10 +10,6 @@ import { push } from 'react-router-redux';
 
 
 class Navigation extends React.Component { // eslint-disable-line
-  shouldComponentUpdate(props) {
-    return true;
-  }
-
   render() {
     return (
       <div className={styles.navigation}>

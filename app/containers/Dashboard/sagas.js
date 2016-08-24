@@ -5,10 +5,9 @@ import { AUTH_URL } from 'global_constants';
 
 import {
   FETCH_DATA,
-  FETCH_UPDATES,
   REHYDRATE_MATCHES,
   REHYDRATE_MATCHES_SUCCESS,
-  CHECK_NOTIFICATION_PERMISSIONS
+  CHECK_NOTIFICATION_PERMISSIONS,
 } from './constants';
 
 import {
@@ -66,6 +65,7 @@ function* parseSyncData(data) {
     const messageUpdates = data.data.matches.filter((each) => each.is_new_message);
     const matchUpdates = data.data.matches.filter((each) => !each.is_new_message);
     const notifications = [];
+    let reloadFlag = false;
     if (messageUpdates.length !== 0) {
       console.warn('New message Updates');
       const idList = messageUpdates.map((each) => each._id);
@@ -77,11 +77,15 @@ function* parseSyncData(data) {
         let inneriter = 0;
         for (;inneriter < messageUpdates[iterator].messages.length; inneriter++) {
           const { from, _id } = messageUpdates[iterator].messages[inneriter];
-          if (from !== selfID && dataToBeMutated[iterator].messages.map((each) => each._id).indexOf(_id) === -1) {
+          if (dataToBeMutated[iterator].messages.map((each) => each._id).indexOf(_id) === -1) {
+            console.log('Storing new message');
             dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
+            reloadFlag = true;
+          }
+          if (from !== selfID) {
+            notifications.push(from);
           }
         }
-
         dataToBeMutated[iterator].last_activity_date = messageUpdates[iterator].last_activity_date;
       }
       // We should probably update the matches list too. I think new messages then new matches.
@@ -96,14 +100,15 @@ function* parseSyncData(data) {
         const newFilteredMatchesList = yield storeChunkWithToken(filteredMatchUpdates);
         filteredMatchUpdates.forEach((each) => notifications.push(each.person._id));
         yield storeToken('matchesList', newFilteredMatchesList.concat(currentMatchesList));
+        reloadFlag = true;
       }
     }
+    if (reloadFlag) yield put(shouldReloadData());
     if (notifications.length !== 0) {
       yield put(pushNewNotification(notifications));
-      yield put(shouldReloadData());
       const notificationsPermission = yield getToken('notificationsAllowed');
-      if(notificationsPermission) {
-        createNotification('Check out your new matches and messages in lit.', null, "New updates in Tinder!");
+      if (notificationsPermission) {
+        createNotification('Check out your new matches and messages in lit.', null, 'New updates in Tinder!');
       }
     }
   }
@@ -194,6 +199,7 @@ export function* dashboardSaga() {
 
   yield take(LOCATION_CHANGE);
   yield cancel(dataFetchWatcher);
+  yield cancel(notificationCheckWatch);
   yield take(REHYDRATE_MATCHES_SUCCESS);
   yield cancel(rehydrateMatchesWatch);
 }

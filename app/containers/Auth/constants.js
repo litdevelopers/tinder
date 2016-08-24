@@ -13,3 +13,4 @@ export const CHANGE_LOGIN = 'CHANGE_USERNAME';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 
 export const SET_GLOBALS = 'SET_GLOBALS';
+export const EMPTY_REDUCER = 'EMPTY_REDUCER';

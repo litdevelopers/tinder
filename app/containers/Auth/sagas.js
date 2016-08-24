@@ -54,10 +54,9 @@ function* loginLocalSaga() {
       yield put(push('/dashboard/home'));
     }
   } catch (err) {
-    console.log('Could not login locally with stored auth token. Fall back to chrome extension log in.');
     const token = window.location.pathname.split('/login/')[1];
     if (token) {
-      yield call(loginChromeSaga, token);
+      yield loginChromeSaga(token);
     } else {
       chrome.runtime.sendMessage('ijolldjdhcdcceonmopahocncafnlike', { type: 'doAuth' }); // eslint-disable-line
     }

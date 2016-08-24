@@ -10,7 +10,14 @@ import {
     LOGIN_CHROME,
     LOGIN_CHROME_SUCCESS,
     LOGIN_CHROME_ERROR,
+    EMPTY_REDUCER,
 } from './constants';
+
+export function emptyReducer() {
+  return {
+    type: EMPTY_REDUCER,
+  };
+}
 
 export function setGlobals(data) {
   return {

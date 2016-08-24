@@ -100,15 +100,15 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                         type="matchName"
                         style={{ justifyContent: 'center' }}
                       >
-                        {this.props.selectMatches ? 'Pick a match to start a conversation!' : 'Find some new matches!'}
-                    </Text>}
+                          {this.props.selectMatches ? 'Pick a match to start a conversation!' : 'Find some new matches!'}
+                      </Text>}
                 </Infinite>
                 <div className={styles.chatBoxPanel}>
-                    <MessengerInput
-                      sendTo={this.props.currentPerson && this.props.currentPerson._id}
-                      sendMessage={this.props.onSendMessage}
-                      disabled={!this.props.currentPerson}
-                    />
+                  <MessengerInput
+                    sendTo={this.props.currentPerson && this.props.currentPerson._id}
+                    sendMessage={this.props.onSendMessage}
+                    disabled={!this.props.currentPerson}
+                  />
                 </div>
               </div>
               <div className={styles.profileBioPanel} >
@@ -117,7 +117,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                     data={this.props.currentPerson.person}
                     imageData={this.props.matchDetailImages}
                   /> :
-                  <Panel hasMatches={true} targetGender={this.props.targetGender}/>}
+                  <Panel hasMatches targetGender={this.props.targetGender} />}
               </div>
             </div>
           </div>

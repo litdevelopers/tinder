@@ -17,6 +17,11 @@ import styles from './styles.css';
 
 
 class DashboardRecommendations extends React.Component { // eslint-disable-line
+  constructor() {
+    super();
+    this.changeFilter = this.changeFilter.bind(this);
+  }
+
   componentWillMount() {
     this.props.fetchRecommendationsLocally();
   }
@@ -28,15 +33,19 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
   mapRecommendations() {
     return this.props.recommendations.map((each) => {
       if (this.props.potentialMatches.includes(each._id)) {
-        return <MatchCard type="active" key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />
+        return <MatchCard type="active" key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />;
       }
-      return <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />
+      return <MatchCard key={each._id} data={each} onClick={this.props.onClickCard} onClickButton={this.props.onClickButton} />;
     }
     );
   }
 
   handleFetch() {
     if (!this.props.isFetching) this.props.fetchRecommendations();
+  }
+
+  changeFilter(event) {
+    this.props.onFilter(event.target.value);
   }
 
   render() {
@@ -46,9 +55,7 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
         <div className={styles.dashboardMatchesCards}>
           <div className={styles.dashboardMatchesNavigation}>
             <select
-              onChange={(event) => {
-                this.props.onFilter(event.target.value);
-              }}
+              onChange={this.changeFilter}
             >
               <option value="normal">Sort By...</option>
               <option value="lastActive">Recently Active</option>
@@ -109,6 +116,7 @@ DashboardRecommendations.propTypes = {
   isFetching: PropTypes.bool,
   dumpAllRecommendations: PropTypes.func,
   fetchRecommendationsLocally: PropTypes.func,
+  potentialMatches: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({

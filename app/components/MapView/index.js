@@ -5,8 +5,6 @@ import Marker from 'react-google-maps/lib/Marker';
 import { triggerEvent } from 'react-google-maps/lib/utils';
 import Button from 'components/Button';
 import styles from './styles.css';
-import shallowCompare from 'react-addons-shallow-compare';
-
 
 export default class MapView extends React.Component {
   constructor() {
@@ -14,10 +12,6 @@ export default class MapView extends React.Component {
     this.handleResize = this.handleResize.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.listener = null;
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
   }
 
   componentWillUnmount() {

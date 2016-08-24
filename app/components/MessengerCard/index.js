@@ -43,7 +43,7 @@ function MessengerCard(props) {
 MessengerCard.propTypes = {
   data: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
-  isNew: PropTypes.bool.isRequired,
+  isNew: PropTypes.bool,
 };
 
 export default MessengerCard;

@@ -1,6 +1,6 @@
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import {
@@ -12,6 +12,8 @@ import {
   SET_GENDER_FILTER,
   SET_GENDER,
   SET_DISCOVER,
+  CLEAR_LOCAL_DATA,
+  LOG_OUT,
 } from './constants';
 
 import {
@@ -22,10 +24,17 @@ import {
 import { selectAuthToken } from 'containers/Auth/selectors';
 import {
   newNotification,
-  newNotificationAdded
+  newNotificationAdded,
 } from 'containers/Notification/actions';
 
+import { emptyReducer } from 'containers/Auth/actions';
+
 import { postRequest } from 'utils/request';
+import {
+  removeToken,
+  removeChunkWithArray,
+  getToken,
+} from 'utils/operations';
 
 function* updateBioAction(newBio) {
   yield call(delay, 1000);
@@ -129,6 +138,19 @@ function* profileUpdateWatcherFunction() {
   }
 }
 
+function* clearLocalData() {
+  const matchesList = yield getToken('matchesList');
+  const recommendationsList = yield getToken('recommendationsList');
+  try {
+    if (matchesList) yield removeChunkWithArray(matchesList);
+    if (recommendationsList) yield removeChunkWithArray(recommendationsList);
+    yield removeToken('matchesList');
+    yield removeToken('recommendationsList');
+  } catch (error) {
+    console.warn(error);
+  }
+}
+
 function* locationUpdateWatcherFunction() {
   while (yield take(SELECTING_LOCATION)) {
     const currentLocationData = yield select(selectMarkerLocation());
@@ -139,17 +161,36 @@ function* locationUpdateWatcherFunction() {
   }
 }
 
+function* logOut() {
+  yield removeToken('tinderToken');
+  yield removeToken('fbToken');
+  yield call(emptyReducer);
+  yield put(push('/'));
+}
+
+function* logOutWatcher() {
+  while (yield take(LOG_OUT)) {
+    yield fork(logOut);
+  }
+}
+
+function* clearLocalWatcher() {
+  while (yield take(CLEAR_LOCAL_DATA)) {
+    yield fork(clearLocalData);
+  }
+}
+
 export function* mainDashboardSaga() {
   const bioWatcher = yield fork(getBioUpdatesWatcher);
   const photoOrderWatcher = yield fork(getPhotoUpdateOrderWatcher);
   const profileUpdateWatcher = yield fork(profileUpdateWatcherFunction);
   const locationUpdateWatcher = yield fork(locationUpdateWatcherFunction);
+  const logOutWatch = yield fork(logOutWatcher);
+  const clearLocalWatch = yield fork(clearLocalWatcher);
+  const watchers = [bioWatcher, photoOrderWatcher, profileUpdateWatcher, locationUpdateWatcher, logOutWatch, clearLocalWatch];
 
   yield take(LOCATION_CHANGE);
-  yield cancel(bioWatcher);
-  yield cancel(photoOrderWatcher);
-  yield cancel(profileUpdateWatcher);
-  yield cancel(locationUpdateWatcher);
+  yield watchers.map((each) => cancel(each));
 }
 // All sagas to be loaded
 export default [

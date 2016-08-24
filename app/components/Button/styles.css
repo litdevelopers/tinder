@@ -82,3 +82,12 @@
 .fetchMatches {
   flex-basis: 10%;
 }
+
+
+.accountSettings {
+  flex: 1;
+  background: white;
+  border: 1px solid #eee;
+  padding: 10px 20px;
+  margin: 10px;
+}

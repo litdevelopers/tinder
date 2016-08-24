@@ -120,8 +120,9 @@
 
 .dashboardSettingsHeader {
   font-size: 16px;
-  font-weight: 500;
-  margin: 15px;
+  font-weight: 800;
+  margin: 20px 10px;
+  display: block;
 }
 
 .dismiss {
@@ -130,4 +131,22 @@
   align-self: flex-end;
   flex: 1;
   text-align: right;
+}
+
+.dashboardSettingsSubheader {
+  composes: matchRecentMessage;
+  max-width: none;
+}
+
+.switchText {
+  composes: dashboardSettingsHeader;
+  font-weight: 300;
+  margin: 0;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.radioButtonLabel {
+  composes: matchRecentMessage;
+  margin: 0px 5px;
 }

@@ -8,6 +8,7 @@ import {
   LOGIN_CHROME_SUCCESS,
   LOGIN_CHROME_ERROR,
   SET_GLOBALS,
+  EMPTY_REDUCER,
 } from './constants';
 import { fromJS } from 'immutable';
 
@@ -55,6 +56,8 @@ function authReducer(state = initialState, action) {
           .set('isAuthing', false);
     case SET_GLOBALS:
       return state.set('globals', action.payload);
+    case EMPTY_REDUCER:
+      return initialState;
     default:
       return state;
   }

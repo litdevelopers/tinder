@@ -53,6 +53,14 @@ export function getToken(key) {
   });
 }
 
+export function removeToken(key) {
+  return new Promise((resolve, reject) => {
+    localForage.removeItem(key)
+    .then((token) => resolve(token))
+    .catch((error) => reject(error));
+  });
+}
+
 export function storeChunkWithToken(arrayData) {
   return new Promise((resolve, reject) => {
     const arrayId = [];
@@ -62,6 +70,19 @@ export function storeChunkWithToken(arrayData) {
       arrayId.push(arrayData[iter]._id); // eslint-disable-line
     }
     resolve(arrayId);
+  });
+}
+
+export function removeChunkWithArray(arrayData) {
+  return new Promise((resolve, reject) => {
+    const actionsArray = [];
+    for (let iter = 0; iter < arrayData.length; iter++) {
+      actionsArray.push(localForage.removeItem(arrayData[iter]));
+    }
+    Promise.all(actionsArray).then(() => {
+      resolve('Done!');
+    })
+    .catch((err) => reject(err));
   });
 }
 

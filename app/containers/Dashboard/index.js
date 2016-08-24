@@ -13,12 +13,11 @@ import styles from './styles.css';
 
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    this.props.checkNotificationPermissions();
     this.props.rehydrateMatches();
   }
 
-  componentWillUnmount() {
-    // console.log('Dashboard Unmounting, storing last activity date');
+  componentDidMount() {
+    this.props.checkNotificationPermissions();
   }
 
   render() {

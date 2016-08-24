@@ -9,3 +9,8 @@ export const SET_DISTANCE_FILTER = 'SET_DISTANCE_FILTER';
 export const SET_GENDER = 'SET_GENDER';
 export const SET_DISCOVER = 'SET_DISCOVER';
 
+export const LOG_OUT = 'LOG_OUT';
+export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
+
+export const CLEAR_LOCAL_DATA = 'CLEAR_LOCAL_DATA';
+export const CLEAR_LOCAL_DATA_SUCCESS = 'CLEAR_LOCAL_DATA_SUCCESS';

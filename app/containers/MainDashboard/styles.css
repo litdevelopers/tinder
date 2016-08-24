@@ -29,6 +29,7 @@
 	max-width: 100%;
 	position: relative;
 	border-bottom: 1px solid #EEE;
+	border-top: 1px solid #EEE;
 }
 
 .mainDashboardSettingsPictureRow > div {
@@ -148,14 +149,14 @@
 
 .mainDashboardSliders {
 	flex: 1;
-	margin: 15px;
+	margin: 25px 15px;
 	display: flex;
 	flex-direction: row;
 }
 
 .mainDashboardSlider {
 	flex: 1;
-	margin: 10px 40px;
+	margin: 20px;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -185,11 +186,11 @@
 
 .mainDashboardToggles {
 	composes: mainDashboardSliders;
-	flex:2;
+	flex: 2;
 }
 
 .mainDashboardTogglesContainer {
-	margin: 10px;
+	margin: 30px 15px 0px 15px;
 	display: flex;
 	flex-direction: row;
 	flex-basis: 100%;
@@ -197,6 +198,8 @@
 
 .mainDashboardTogglesSection {
 	flex: 1;
+	display: flex;
+	flex-direction: column;
 }
 
 .mainDashboardDropdown {
@@ -207,23 +210,50 @@
 	font-weight: 300;
 }
 
-.mainDashboardDropdown:before {
-	content: '';
-	position: absolute;
-	pointer-events: none;
-	color: #757575;
-	top: 0;
-	bottom: 1px;
-	padding-top: 0.7em;
-	line-height: 1;
-	right: 0;
-	width: 2em;
-	text-align: center;
-	transform: scale(0.84, 0.42);
-	-webkit-transform: scale(0.84, 0.42);
-	-moz-transform: scale(0.84, 0.42);
-	-ms-transform: scale(0.84, 0.42);
-	-o-transform: scale(0.84, 0.42);
-	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.84, M12=0, M21=0, M22=0.42, SizingMethod='auto expand')";
-	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.84, M12=0, M21=0, M22=0.42, SizingMethod='auto expand')
+.mainDashboardScrollable {
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+}
+
+.mainDashboardScrollableColumn:not(:first-of-type) {
+	border-left: 1px solid #eee;
+}
+
+.mainDashboardScrollableColumn {
+	flex: 1;
+	overflow: hidden;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.mainDashboardScrollableColumnContainer {
+	flex: 1;
+	display: block;
+	height: 100%;
+	flex-direction: column;
+	overflow-y: scroll;
+}
+
+.mainDashboardSwitchContainer {
+	flex: 1;
+	margin: 10px;
+	flex-direction: column;
+}
+
+.mainDashboardSwitchBox {
+	width: 100%;
+	padding: 15px;
+	margin: 5px 0;
+	border: 1px solid #eee;
+	display: flex;
+	flex-direction: row;
+}
+
+.mainDashboardSwitchInput {
+	display: flex;
+	flex: 1;
+	justify-content: flex-end;
+	align-items: center;
 }
