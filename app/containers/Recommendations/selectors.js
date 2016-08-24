@@ -19,7 +19,6 @@ const selectPotentialMatchList = () => createSelector(
       const matches = dashboardState.sortLikes.slice().map((each) => {
         return each._id;
       });
-      console.log(matches);
       return matches;
     }
 );

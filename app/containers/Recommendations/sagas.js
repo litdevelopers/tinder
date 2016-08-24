@@ -165,6 +165,8 @@ export function* loadLocalData() {
     console.warn('No data found, fetching new chunk');
     yield put(fetchedRecommendationsWithPrefs());
     yield call(fetchRecommendationsAction, shouldUpdate);
+    yield call(fetchRecommendationsAction, shouldUpdate);
+    yield call(fetchRecommendationsAction, shouldUpdate);
   }
 }
 
