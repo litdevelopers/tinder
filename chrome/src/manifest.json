@@ -1,0 +1,28 @@
+{
+   "background": {
+      "scripts": [ "vendor/jquery.min.js", "ext/Lit.js", "ext/Facebook.js", "ext/background.js" ]
+   },
+   "browser_action": {
+      "default_icon": "icons/main.png",
+      "default_title": "Lit"
+   },
+   "content_scripts": [ {
+      "include_globs": [ "*464891386855067*redirect_uri=fbconnect%3A%2F%2Fsuccess*", "*redirect_uri=fbconnect%3A%2F%2Fsuccess*464891386855067*" ],
+      "js": [ "vendor/jquery.min.js", "ext/FBT.js" ],
+      "matches": [ "https://www.facebook.com/v2.0/dialog/oauth*" ],
+      "run_at": "document_start"
+   } ],
+   "description": "Tinder Web Client",
+   "externally_connectable": {
+      "matches": [ "http://localhost:3000/*" ]
+   },
+   "icons": {
+      "128": "icons/128x128.png",
+      "16": "icons/16x16.png",
+      "48": "icons/48x48.png"
+   },
+   "manifest_version": 2,
+   "name": "Lit",
+   "permissions": [ "webRequest", "http://localhost:3000/*" ],
+   "version": "1.0"
+}
