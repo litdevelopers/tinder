@@ -7,7 +7,7 @@ import Button from 'components/Button';
 
 
 function MatchCard(props) {
-  const { data } = props;
+  const { data, type } = props;
   const bioText = (data.bio.trim()) ?
     <p className={styles.matchCardContainer_bio}>{data.bio}</p> :
   null;
@@ -32,7 +32,7 @@ function MatchCard(props) {
 
   return (
     <div
-      className={styles.matchCard}
+      className={type === "active" ? `${styles.matchCardLike} ${styles.matchCard}` : styles.matchCard}
       style={{
         backgroundImage: `url(${data.photos[0].url})`,
       }}

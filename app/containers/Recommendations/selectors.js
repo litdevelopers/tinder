@@ -13,6 +13,16 @@ const selectRecommendationsList = () => createSelector(
     (dashboardState) => dashboardState.recommendations
 );
 
+const selectPotentialMatchList = () => createSelector(
+    selectRecommendations(),
+    (dashboardState) => {
+      const matches = dashboardState.sortLikes.slice().map((each) => {
+        return each._id;
+      });
+      return matches;
+    }
+);
+
 const selectLimitedRecommendationsList = () => createSelector(
   selectRecommendations(),
   (substate) => substate.recommendations ? substate.recommendations.slice(0, 20) : null
@@ -58,4 +68,5 @@ export {
   selectCurrentRecommendationsLinks,
   selectIsFetching,
   selectShouldUpdate,
+  selectPotentialMatchList,
 };

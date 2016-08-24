@@ -18,6 +18,7 @@ import {
   DUMP_ALL_RECOMMENDATIONS,
   DUMP_ALL_RECOMMENDATIONS_START,
   DUMP_ALL_RECOMMENDATIONS_SUCCESS,
+  SORT_LIKES,
 } from './constants';
 
 export function superLikePerson(id, hash) {
@@ -118,6 +119,13 @@ export function fetchRecommendationsError(errors) {
     type: FETCH_RECOMMENDATIONS_ERROR,
     payload: errors,
   };
+}
+
+export function sortLikes(data) {
+  return {
+    type: SORT_LIKES,
+    payload: data,
+  }
 }
 
 export function sortRecommendations(sortType) {
