@@ -61,9 +61,9 @@
 }
 
 
-.superlike:hover{
-  background-color: #5cc3e8;
+.superlike:active{
   color: white;
+  background-color: #5cc3e8;
   transition: 0.25s;
 }
 

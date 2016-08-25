@@ -66,6 +66,26 @@ function* parseSyncData(data) {
     const matchUpdates = data.data.matches.filter((each) => !each.is_new_message);
     const notifications = [];
     let reloadFlag = false;
+    if (matchUpdates.length !== 0) {
+      console.warn('New Match in incoming action');
+      const currentMatchesList = yield getToken('matchesList');
+      if (currentMatchesList) { // If the user didn't start storing data locally yet, don't flush to indexD
+        const filteredMatchUpdates = matchUpdates.filter((each) => currentMatchesList.indexOf(each.id) === -1);
+        const newFilteredMatchesList = yield storeChunkWithToken(filteredMatchUpdates);
+        filteredMatchUpdates.forEach((each) => {
+          notifications.push({
+            id: each.person._id,
+            type: 'match',
+            details: {
+              text: `New match with${each.person.name}!`,
+              image: each.person.photos[0].url,
+            }});
+        });
+        yield storeToken('matchesList', newFilteredMatchesList.concat(currentMatchesList));
+        reloadFlag = true;
+      }
+    }
+
     if (messageUpdates.length !== 0) {
       console.warn('New message Updates');
       const idList = messageUpdates.map((each) => each._id);
@@ -83,7 +103,14 @@ function* parseSyncData(data) {
             reloadFlag = true;
           }
           if (from !== selfID) {
-            notifications.push(from);
+            notifications.push({
+              id: from,
+              type: 'message',
+              details: {
+                image: dataToBeMutated[iterator].person.photos[0].url,
+                text: `${dataToBeMutated[iterator].person.name}: ${messageUpdates[iterator].messages[inneriter]}`
+              }
+            });
           }
         }
         dataToBeMutated[iterator].last_activity_date = messageUpdates[iterator].last_activity_date;
@@ -91,17 +118,6 @@ function* parseSyncData(data) {
       // We should probably update the matches list too. I think new messages then new matches.
       yield storeChunkWithToken(dataToBeMutated);
       yield storeToken('matchesList', idList.concat(matchesList.filter((each) => idList.indexOf(each) === -1)));
-    }
-    if (matchUpdates.length !== 0) {
-      console.warn('New Match in incoming action');
-      const currentMatchesList = yield getToken('matchesList');
-      if (currentMatchesList) { // If the user didn't start storing data locally yet, don't flush to indexD
-        const filteredMatchUpdates = matchUpdates.filter((each) => currentMatchesList.indexOf(each.id) === -1);
-        const newFilteredMatchesList = yield storeChunkWithToken(filteredMatchUpdates);
-        filteredMatchUpdates.forEach((each) => notifications.push(each.person._id));
-        yield storeToken('matchesList', newFilteredMatchesList.concat(currentMatchesList));
-        reloadFlag = true;
-      }
     }
     if (reloadFlag) yield put(shouldReloadData());
     if (notifications.length !== 0) {
@@ -160,22 +176,15 @@ function* rehydrateMatchesAction() {
 }
 
 function* getDataFetchWatcher() {
-  while (true) {
-    const { payload } = yield take(FETCH_DATA);
-    switch (payload) {
-      case 'USER_DATA':
-        yield fork(getUserData);
-        break;
-      default:
-        return;
-    }
+  while (yield take(FETCH_DATA)) {
+    yield fork(getUserData);
   }
 }
 
 function* checkNotificationPermissionsAction() {
   const currentPermissions = yield getToken('notificationsAllowed');
   const permissions = yield requestNotificationPermissions();
-  if (permissions && currentPermissions === undefined) {
+  if (permissions && currentPermissions === null) {
     yield storeToken('notificationsAllowed', permissions);
     localStorage.setItem('matchesNotification', permissions);
     localStorage.setItem('messagesNotification', permissions);

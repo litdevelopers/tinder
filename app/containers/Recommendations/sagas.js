@@ -129,7 +129,7 @@ export function* actionPerson(action, type) {
           yield newMatchAction(userData.data.results);
           yield storeToken(match._id, match);
           yield storeToken('matchesList', [match._id].concat(currentMatchesList));
-          yield put(pushNewNotification([userData.data.results._id]));
+          yield put(pushNewNotification([{ id: userData.data.results._id }]));
         }
       }
     }

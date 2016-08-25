@@ -23,7 +23,11 @@ import styles from './styles.css';
 const PhotoList = SortableContainer(({ items }) => { // eslint-disable-line
   const photoList = [];
   for (let iter = 0; iter < 6; iter++) {
-    photoList.push(<PhotoItem hideSortableGhost key={`photo-${iter}`} index={iter} photo={items[iter]} disabled={!items[iter]} />);
+    // if (items[iter - 1] && !items[iter]) { // This means it's the last block before empty
+    //   // photoList.push(<PhotoItem key={`photo-${iter}`} index={iter} photo={items[iter]} disabled uploadBlock/>);
+    // } else {
+      photoList.push(<PhotoItem key={`photo-${iter}`} index={iter} photo={items[iter]} disabled={!items[iter]} />);
+    // }
   }
   return (
     <div className={styles.mainDashboardSettingsPictureRow}>
@@ -32,7 +36,7 @@ const PhotoList = SortableContainer(({ items }) => { // eslint-disable-line
   );
 });
 
-const PhotoItem = SortableElement(({ photo }) => <div className={styles.photoItem} style={{ backgroundImage: `url(${photo ? photo.processedFiles[0].url : ''})` }} />); // eslint-disable-line
+const PhotoItem = SortableElement(({ photo, uploadBlock }) => <div className={styles.photoItem} style={{ backgroundImage: `url(${photo ? photo.processedFiles[0].url : ''})` }}>{uploadBlock ? <Text type="dashboardSettingsHeaderPhoto">Upload a photo<input name="photoUpload" id="photoUpload" className={styles.dashboardFile} type="file" /><label htmlFor="photoUpload"><Text type="dashboardSettingsSubheader" style={{ fontSize: 12, cursor: 'pointer' }}>to your profile</Text></label></Text> : null}</div>); // eslint-disable-line
 
 
 export class MainDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -235,7 +239,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                         <div className={styles.mainDashboardSwitchInput}>
                           <select
                             className={styles.mainDashboardSwitch}
-                            value={localStorage.getItem('matchesNotification')}
+                            value={localStorage.getItem('matchesNotification') || undefined}
                             id="matchesNotification"
                             onChange={this.onChangeNotificationSettings}
                           >
@@ -250,7 +254,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                         <div className={styles.mainDashboardSwitchInput}>
                           <select
                             className={styles.mainDashboardSwitch}
-                            value={localStorage.getItem('messageNotification')}
+                            value={localStorage.getItem('messageNotification') || undefined}
                             id="messageNotification"
                             onChange={this.onChangeNotificationSettings}
                           >
@@ -265,7 +269,7 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                         <div className={styles.mainDashboardSwitchInput}>
                           <select
                             className={styles.mainDashboardSwitch}
-                            value={localStorage.getItem('messagesLikeNotification')}
+                            value={localStorage.getItem('messagesLikeNotification') || undefined}
                             id="messagesLikeNotification"
                             onChange={this.onChangeNotificationSettings}
                           >

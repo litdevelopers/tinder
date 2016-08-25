@@ -54,7 +54,7 @@ function messagesReducer(state = initialState, action) {
     case SELECT_PERSON:
       return state
       .set('currentPerson', action.payload)
-      .set('newMatches', state.get('newMatches').filter((each) => each !== action.payload));
+      .set('newMatches', state.get('newMatches').filter((each) => each.id !== action.payload));
     case SEND_MESSAGE:
       return state
         .set('isSending', true)
@@ -79,7 +79,7 @@ function messagesReducer(state = initialState, action) {
       return state
       .set('optimisticUI', []);
     case PUSH_NEW_NOTIFICATION:
-      return state.set('newMatches', state.get('newMatches').concat(action.payload.filter((each) => each !== state.get('currentPerson'))));
+      return state.set('newMatches', state.get('newMatches').concat(action.payload.filter((each) => each.id !== state.get('currentPerson'))));
     default:
       return state;
   }

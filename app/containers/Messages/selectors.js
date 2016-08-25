@@ -101,7 +101,7 @@ const selectNewNotifications = () => createSelector(
   selectMessages(),
   (substate) => {
     if (!substate) return undefined;
-    return substate.newMatches;
+    return substate.newMatches.map((each) => each.id);
   }
 );
 

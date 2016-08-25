@@ -150,3 +150,13 @@
   composes: matchRecentMessage;
   margin: 0px 5px;
 }
+
+.dashboardSettingsHeaderPhoto {
+  composes: dashboardSettingsHeader;
+  font-weight: 300;
+  text-align: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
