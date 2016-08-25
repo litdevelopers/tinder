@@ -16,7 +16,7 @@ const selectRecommendationsList = () => createSelector(
 const selectPotentialMatchList = () => createSelector(
     selectRecommendations(),
     (dashboardState) => {
-      const matches = dashboardState.sortLikes.slice().map((each) => {
+      const matches = Array.from(dashboardState.sortLikes).map((each) => {
         return each._id;
       });
       return matches;

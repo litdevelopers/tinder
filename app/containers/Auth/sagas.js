@@ -4,9 +4,14 @@ import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { LOGIN_FACEBOOK, LOGIN_LOCAL, LOGIN_CHROME } from './constants';
 import { loginFacebookSuccess, loginFacebookError } from './actions';
 import { postRequest } from 'utils/request';
-import { storeToken, getToken } from 'utils/operations';
+import { storeToken, getToken, createStore } from 'utils/operations';
 import { AUTH_URL } from 'global_constants';
 import { selectLogin, selectPassword } from './selectors';
+
+function* storeTokensSaga({ authToken, fbToken }){
+  yield storeToken('tinderToken', authToken);
+  yield storeToken('fbToken', fbToken);
+}
 
 function* loginFacebookSaga() {
   const login = yield select(selectLogin());
@@ -19,8 +24,7 @@ function* loginFacebookSaga() {
   try {
     const authData = yield call(postRequest, requestURL, body);
     if (authData.status === 200) {
-      yield storeToken('tinderToken', authData.data.authToken);
-      yield storeToken('fbToken', authData.data.fbToken);
+      yield call(storeTokensSaga, authData.data);
       yield put(loginFacebookSuccess({ authToken: authData.data.authToken, fbToken: authData.data.fbToken }));
       yield put(push('/dashboard/home'));
     }
@@ -34,8 +38,7 @@ function* loginChromeSaga(token) {
   try {
     const authData = yield call(postRequest, requestURL);
     if (authData.status === 200) {
-      yield storeToken('tinderToken', authData.data.authToken);
-      yield storeToken('fbToken', authData.data.fbToken);
+      yield call(storeTokensSaga, authData.data);
       yield put(loginFacebookSuccess({ authToken: authData.data.authToken, fbToken: authData.data.fbToken }));
       yield put(push('/dashboard/home'));
     }
@@ -46,18 +49,17 @@ function* loginChromeSaga(token) {
 
 function* loginLocalSaga() {
   const authToken = yield getToken('tinderToken');
-
-  try {
-    const authenticationData = yield call(postRequest, `${AUTH_URL}/tinder/checkAuth`, { authToken });
-    if (authenticationData.data) {
-      yield put(loginFacebookSuccess({ authToken }));
-      yield put(push('/dashboard/home'));
-    }
-  } catch (err) {
-    const token = window.location.pathname.split('/login/')[1];
-    if (token) {
-      yield loginChromeSaga(token);
-    } else {
+  const token = window.location.pathname.split('/login/')[1];
+  if (token) {
+    yield loginChromeSaga(token);
+  } else {
+    try {
+      const authenticationData = yield call(postRequest, `${AUTH_URL}/tinder/checkAuth`, { authToken });
+      if (authenticationData.data) {
+        yield put(loginFacebookSuccess({ authToken }));
+        yield put(push('/dashboard/home'));
+      }
+    } catch (err) {
       chrome.runtime.sendMessage('ijolldjdhcdcceonmopahocncafnlike', { type: 'doAuth' }); // eslint-disable-line
     }
   }

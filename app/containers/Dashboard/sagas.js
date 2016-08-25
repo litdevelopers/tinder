@@ -36,6 +36,13 @@ import { postRequest } from 'utils/request';
 import { storeToken, getToken, storeChunkWithToken, fetchChunkData } from 'utils/operations';
 import { requestNotificationPermissions, createNotification } from 'utils/notifications';
 
+function* initializeHistoryStore() {
+  const userID = yield select(selectUserID());
+  const actionsHistory = yield getToken(`actionsHistory_${userID}`)
+  if (!actionsHistory) {
+    yield storeToken(`actionsHistory_${userID}`, []);
+  }
+}
 
 function* getUserData() {
   const authToken = yield select(selectAuthToken());
@@ -45,6 +52,7 @@ function* getUserData() {
     if (data.status === 200) {
       yield put(fetchDataSuccess('user', data.data.user));
       yield put(fetchDataSuccess('rating', data.data.rating));
+      yield fork(initializeHistoryStore);
     }
   } catch (error) {
     yield put(fetchDataError(error));
@@ -54,7 +62,8 @@ function* getUserData() {
 }
 
 function* parseSyncData(data) {
-  const matchesList = yield getToken('matchesList');
+  const userID = yield select(selectUserID());
+  const matchesList = yield getToken(`matchesList_${userID}`);
   if (data.data.matches.length !== 0 && matchesList) { // eslint-disable-line
     /*
       *One is that the user is on the matches page, and we push to reducer with saga watcher
@@ -68,7 +77,7 @@ function* parseSyncData(data) {
     let reloadFlag = false;
     if (matchUpdates.length !== 0) {
       console.warn('New Match in incoming action');
-      const currentMatchesList = yield getToken('matchesList');
+      const currentMatchesList = yield getToken(`matchesList_${userID}`);
       if (currentMatchesList) { // If the user didn't start storing data locally yet, don't flush to indexD
         const filteredMatchUpdates = matchUpdates.filter((each) => currentMatchesList.indexOf(each.id) === -1);
         const newFilteredMatchesList = yield storeChunkWithToken(filteredMatchUpdates);
@@ -81,7 +90,7 @@ function* parseSyncData(data) {
               image: each.person.photos[0].url,
             }});
         });
-        yield storeToken('matchesList', newFilteredMatchesList.concat(currentMatchesList));
+        yield storeToken(`matchesList_${userID}`, newFilteredMatchesList.concat(currentMatchesList));
         reloadFlag = true;
       }
     }
@@ -117,7 +126,7 @@ function* parseSyncData(data) {
       }
       // We should probably update the matches list too. I think new messages then new matches.
       yield storeChunkWithToken(dataToBeMutated);
-      yield storeToken('matchesList', idList.concat(matchesList.filter((each) => idList.indexOf(each) === -1)));
+      yield storeToken(`matchesList_${userID}`, idList.concat(matchesList.filter((each) => idList.indexOf(each) === -1)));
     }
     if (reloadFlag) yield put(shouldReloadData());
     if (notifications.length !== 0) {
@@ -128,7 +137,7 @@ function* parseSyncData(data) {
       }
     }
   }
-  yield call(storeMetadataAction);
+  yield call(storeMetadataAction, userID);
 }
 
 
@@ -153,15 +162,16 @@ export function* tinderBackgroundSync() {
   }
 }
 
-function* storeMetadataAction() {
-  yield storeToken('last_activity_date', new Date().toISOString());
+function* storeMetadataAction(userID) {
+  yield storeToken(`last_activity_date_${userID}`, new Date().toISOString());
   yield put(storeMetadataSuccess());
 }
 
 function* rehydrateMatchesAction() {
   const authToken = yield select(selectAuthToken());
+  const userID = yield select(selectUserID());
+  const lastActivityDate = yield getToken(`last_activity_date_${userID}`);
   const postURL = `${AUTH_URL}/tinder/updatesnew`;
-  const lastActivityDate = yield getToken('last_activity_date');
 
   try {
     const data = yield call(postRequest, postURL, { authToken, lastActivityDate });
@@ -187,7 +197,7 @@ function* checkNotificationPermissionsAction() {
   if (permissions && currentPermissions === null) {
     yield storeToken('notificationsAllowed', permissions);
     localStorage.setItem('matchesNotification', permissions);
-    localStorage.setItem('messagesNotification', permissions);
+    localStorage.setItem('messageNotification', permissions);
     localStorage.setItem('messagesLikeNotification', permissions);
   }
 }

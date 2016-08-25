@@ -22,6 +22,8 @@ import {
 } from './selectors';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
+import { selectUserID } from 'containers/Dashboard/selectors';
+
 import {
   newNotification,
   newNotificationAdded,
@@ -139,13 +141,14 @@ function* profileUpdateWatcherFunction() {
 }
 
 function* clearLocalData() {
-  const matchesList = yield getToken('matchesList');
-  const recommendationsList = yield getToken('recommendationsList');
+  const userID = yield select(selectUserID());
+  const matchesList = yield getToken(`matchesList_${userID}`);
+  const recommendationsList = yield getToken(`recommendationsList_${userID}`);
   try {
     if (matchesList) yield removeChunkWithArray(matchesList);
     if (recommendationsList) yield removeChunkWithArray(recommendationsList);
-    yield removeToken('matchesList');
-    yield removeToken('recommendationsList');
+    yield removeToken(`matchesList_${userID}`);
+    yield removeToken(`recommendationsList_${userID}`);
   } catch (error) {
     console.warn(error);
   }
@@ -165,7 +168,7 @@ function* logOut() {
   yield removeToken('tinderToken');
   yield removeToken('fbToken');
   yield call(emptyReducer);
-  yield put(push('/'));
+  window.location.replace('/');
 }
 
 function* logOutWatcher() {

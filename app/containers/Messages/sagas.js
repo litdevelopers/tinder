@@ -4,6 +4,7 @@ import { AUTH_URL } from 'global_constants';
 
 import { postRequest } from 'utils/request';
 import { messagesSortByRecent, storeChunkWithToken, fetchChunkData, storeToken, getToken } from 'utils/operations';
+import { selectUserID } from 'containers/Dashboard/selectors';
 
 import {
   SEND_MESSAGE,
@@ -64,15 +65,16 @@ function* fetchHistoryData() {
 
 // EXPERIMENTAL
 export function* dumpDataAction(emptyReducer = true) {
-  const preIdList = yield getToken('matchesList');
+  const userID = yield select(selectUserID());
+  const preIdList = yield getToken(`matchesList_${userID}`);
   if (!preIdList) {
     const data = yield select(selectMatches());
     if (emptyReducer) yield put(dumpAll());
     try {
       const idList = yield storeChunkWithToken(data);
-      const currentMatchesList = yield getToken('matchesList');
+      const currentMatchesList = yield getToken(`matchesList_${userID}`);
       if (!currentMatchesList) {
-        yield storeToken('matchesList', idList);
+        yield storeToken(`matchesList_${userID}`, idList);
       }
       yield put(dumpAllSuccess());
     } catch (error) {
@@ -86,7 +88,8 @@ export function* dumpDataAction(emptyReducer = true) {
 }
 
 export function* loadLocalData(additionalFunction = false) {
-  const matchesList = yield getToken('matchesList');
+  const userID = yield select(selectUserID());
+  const matchesList = yield getToken(`matchesList_${userID}`);
   if (matchesList) {
     console.log('Previous data stored, loading');
     const matches = yield fetchChunkData(matchesList);
@@ -111,11 +114,14 @@ export function* sendMessageData(payload) {
     if (result.status === 200) {
       yield put(sendMessageSuccess());
       const messagedUser = yield getToken(result.data.match_id);
-      const currentMatchesList = yield getToken('matchesList');
+      const userID = yield select(selectUserID());
+      const matchesList = yield getToken(`matchesList_${userID}`);
+
       messagedUser.messages.push(result.data);
       messagedUser.last_activity_date = new Date().toISOString();
+
       yield storeToken(result.data.match_id, messagedUser);
-      yield storeToken('matchesList', [result.data.match_id].concat(currentMatchesList.filter((each) => each !== result.data.match_id)));
+      yield storeToken(`matchesList_${userID}`, [result.data.match_id].concat(currentMatchesList.filter((each) => each !== result.data.match_id)));
       yield call(loadLocalData, reloadDataPlease);
     }
   } catch (error) {

@@ -19,7 +19,12 @@ const selectFacebookToken = () => createSelector(
 
 const selectAuthToken = () => createSelector(
   selectAuth(),
-  (authState) => authState.get('userToken')
+  (authState) => {
+    if (!authState) {
+      return undefined;
+    }
+    return authState.get('userToken');
+  }
 );
 
 const selectId = () => createSelector(

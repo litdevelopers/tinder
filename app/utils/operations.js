@@ -104,6 +104,12 @@ export function getStoreLength() {
   });
 }
 
+export function createStore(storeName) {
+  return localForage.createInstance({
+    name: storeName,
+  });
+}
+
 export function matchesSortByDistance(a, b) {
   return a.distance_mi - b.distance_mi;
 }

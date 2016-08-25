@@ -119,7 +119,8 @@ export function* actionPerson(action, type) {
       if (type === 'pass') yield put(passPersonSuccess({ id: action.id, action: 'pass' }));
       if ((type === 'like' || type === 'superlike') && data.data.match) {
         const match = data.data.match;
-        const currentMatchesList = yield getToken('matchesList');
+        const userID = yield select(selectUserID());
+        const currentMatchesList = yield getToken(`matchesList_${userID}`);
 
         if (currentMatchesList) {
           const selfId = yield select(selectUserID());
@@ -128,7 +129,7 @@ export function* actionPerson(action, type) {
           match.person = userData.data.results;
           yield newMatchAction(userData.data.results);
           yield storeToken(match._id, match);
-          yield storeToken('matchesList', [match._id].concat(currentMatchesList));
+          yield storeToken(`matchesList_${userID}`, [match._id].concat(currentMatchesList));
           yield put(pushNewNotification([{ id: userData.data.results._id }]));
         }
       }
@@ -146,18 +147,20 @@ function* dataDumpAction() {
   const data = yield select(selectLimitedRecommendationsList());
   if (data !== null && data.length !== 0) {
     yield put(dumpAllRecommendations());
+    const userID = yield select(selectUserID());
     const idList = yield storeChunkWithToken(data);
-    yield storeToken('recommendationsList', idList);
+    yield storeToken(`recommendationsList_${userID}`, idList);
     yield put(dumpAllRecommendationsSuccess());
   }
 }
 
 export function* loadLocalData() {
-  const recommendationsList = yield getToken('recommendationsList');
+  const userID = yield select(selectUserID());
+  const recommendationsList = yield getToken(`recommendationsList_${userID}`);
   const shouldUpdate = yield select(selectShouldUpdate());
   if (recommendationsList && !shouldUpdate) {
     console.log('Previous data stored, loading');
-    const matchesList = yield getToken('recommendationsList');
+    const matchesList = yield getToken(`recommendationsList_${userID}`);
     const matches = yield fetchChunkData(matchesList);
     yield put(fetchRecommendationsSuccess(matches));
   } else {
