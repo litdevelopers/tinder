@@ -86,10 +86,8 @@ export default function recommendationsReducer(state = initialState, action) {
         .set('currentDetailView', fromJS({ id: '', image: '' }))
         .set('recommendations', false);
     case SORT_LIKES:
-      const likeList = new Set(action.payload);
       return state
-        // .set('sortLikes', state.get('sortLikes').toSet().union(likeList.toSet()).toList())
-        .set('sortLikes', new Set([...state.get('sortLikes'), ...likeList]));
+        .set('sortLikes', new Set([...state.get('sortLikes'), ...new Set(action.payload)]));
     default:
       return state;
   }
