@@ -65,27 +65,8 @@ function* fetchRecommendationsAction() {
       if (!currentMatches) {
         yield put(fetchRecommendationsSuccess(data.data));
       } else {
-        const filteredPotentialMatches = data.data.filter((each) => {
-          let flag = false;
-          let counter = 0;
-          for (; counter < currentMatches.length; counter++) {
-            if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
-              console.log(each.name);
-              flag = true;
-            }
-          }
-          return flag;
-        });
-        const filteredNewMatches = data.data.filter((each) => {
-          let flag = true;
-          let counter = 0;
-          for (; counter < currentMatches.length; counter++) {
-            if (currentMatches[counter]._id === each._id) { // eslint-disable-line no-underscore-dangle
-              flag = false;
-            }
-          }
-          return flag;
-        });
+        const filteredPotentialMatches = data.data.filter((each) => currentMatches.map((each) => each._id).indexOf(each._id) !== -1); // eslint-disable-line
+        const filteredNewMatches = data.data.filter((each) => currentMatches.map((each) => each._id).indexOf(each._id) === -1); // eslint-disable-line
         yield put(sortLikes(filteredPotentialMatches));
         yield put(fetchRecommendationsSuccess(currentMatches.concat(filteredNewMatches)));
       }
@@ -159,17 +140,15 @@ export function* loadLocalData() {
   const recommendationsList = yield getToken(`recommendationsList_${userID}`);
   const shouldUpdate = yield select(selectShouldUpdate());
   if (recommendationsList && !shouldUpdate) {
-    console.log('Previous data stored, loading');
     const matchesList = yield getToken(`recommendationsList_${userID}`);
     const matches = yield fetchChunkData(matchesList);
     yield put(fetchRecommendationsSuccess(matches));
   } else {
     if (shouldUpdate) yield put(dumpAllRecommendations());
-    console.warn('No data found, fetching new chunk');
     yield put(fetchedRecommendationsWithPrefs());
-    yield call(fetchRecommendationsAction, shouldUpdate);
-    yield call(fetchRecommendationsAction, shouldUpdate);
-    yield call(fetchRecommendationsAction, shouldUpdate);
+    for (let fetchIter = 0; fetchIter < 3; fetchIter++) {
+      yield call(fetchRecommendationsAction);
+    }
   }
 }
 

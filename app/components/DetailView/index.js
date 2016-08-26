@@ -9,7 +9,15 @@ import Text from 'components/Text';
 
 class DetailView extends React.Component {
   componentWillReceiveProps(nextProps) {
-    if (this.props.imageData && this.props.imageData[0].original !== nextProps.imageData[0].original) this.imageGallery.slideToIndex(0);
+    if (nextProps.imageData.length === 0) {
+      return;
+    }
+
+    if (this.props.imageData.length !== 0) {
+      if (this.props.imageData[0].original !== nextProps.imageData[0].original) {
+        this.imageGallery.slideToIndex(0);
+      }
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -31,10 +39,12 @@ class DetailView extends React.Component {
     const age = getAge(this.props.data.birth_date);
     const jobs = this.props.data.jobs && this.props.data.jobs[0];
     const schools = this.props.data.jobs && this.props.data.schools[0];
+    const hasPhotos = this.props.data.photos.length !== 0;
 
     return (
       <div className={styles.detailViewContainer} >
         <div className={styles.detailViewContainer_mainPicture}>
+        {hasPhotos ?
           <ImageGallery
             ref={i => { this.imageGallery = i; }}
             defaultImage={this.props.data.photos[0].url}
@@ -45,7 +55,7 @@ class DetailView extends React.Component {
             onClick={(e) => this.handleClickNext(e)}
             lazyLoad
             renderItem={(item) => <div key={item.original} style={{ backgroundImage: `url(${item.original})`, height: 400, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />}
-          />
+          /> : null}
         </div>
         <div className={styles.detailViewContainer_content}>
           <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
@@ -106,6 +116,8 @@ class DetailView extends React.Component {
 DetailView.propTypes = {
   imageData: PropTypes.array,
   data: PropTypes.object,
+  hasMatches: PropTypes.bool,
+  isFetching: PropTypes.bool,
 };
 
 

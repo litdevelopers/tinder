@@ -12,13 +12,24 @@ const placeholderMapping = {
   '-1': tinderCardMale,
 };
 
+
+function renderPlaceholderMessage(isFetching, hasMatches) {
+  if (isFetching) {
+    return "Hold on, we're loading your recommendations!";
+  }
+  if (hasMatches) {
+    return 'Pick a person to find out more information!';
+  }
+  return "We're having some trouble loading your recommendations. Check back again later!";
+}
+
 export default function Panels(props) {
   return (
     <div
       className={styles.detailView_placeholder}
     >
       <img src={placeholderMapping[props.targetGender]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
-      <Text type="placeholder">{props.hasMatches ? 'Pick a person to find out more!' : 'No matches at this time. Try again later!'}</Text>
+      <Text type="placeholder">{renderPlaceholderMessage(props.isFetching, props.hasMatches)}</Text>
     </div>);
 }
 
@@ -26,5 +37,6 @@ Panels.propTypes = {
   targetGender: PropTypes.number,
   type: PropTypes.string,
   hasMatches: PropTypes.bool,
+  isFetching: PropTypes.bool,
 };
 

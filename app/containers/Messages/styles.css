@@ -64,3 +64,8 @@
   border-bottom: 1px solid #eee;
   cursor: pointer;
 }
+
+.conversationPlaceholderImage {
+  max-height: 200px;
+  align-self: center;
+}

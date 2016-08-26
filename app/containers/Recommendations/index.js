@@ -90,7 +90,13 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             imageData={this.props.recommendationImages}
             onClickButton={this.props.onClickButton}
             targetGender={this.props.targetGender}
-          /> : <Panel type="matchDetailPlaceholder" targetGender={this.props.targetGender} hasMatches={!!this.props.recommendations} />}
+          /> :
+          <Panel
+            type="matchDetailPlaceholder"
+            targetGender={this.props.targetGender}
+            hasMatches={!!this.props.recommendations}
+            isFetching={this.props.isFetching}
+          />}
         </div>
       </div>
     );

@@ -16,6 +16,7 @@ import {
   FETCH_RECOMMENDATIONS_SUCCESS,
   REMOVE_RECOMMENDATION,
   DUMP_ALL_RECOMMENDATIONS,
+  FETCH_RECOMMENDATIONS_LOCALLY,
   SORT_LIKES,
 } from './constants';
 
@@ -53,6 +54,7 @@ export default function recommendationsReducer(state = initialState, action) {
     case LIKE_PERSON:
     case PASS_PERSON:
     case SUPERLIKE_PERSON:
+    case FETCH_RECOMMENDATIONS_LOCALLY:
       return state.set('isFetching', true);
     case LIKE_PERSON_SUCCESS:
     case PASS_PERSON_SUCCESS:

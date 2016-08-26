@@ -39,6 +39,7 @@ import MessageBubble from 'components/MessageBubble';
 import MessengerInput from 'components/MessengerInput';
 import Text from 'components/Text';
 import Infinite from 'react-infinite';
+import conversationPlaceholder from 'static/conversation.png';
 import styles from './styles.css';
 
 
@@ -70,6 +71,16 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
     }));
   }
 
+  renderPlaceholderMessage() {
+    if (this.props.isDataFetching) {
+      return "Hold on, we're syncing your matches.";
+    }
+    if (this.props.selectMatches) {
+      return 'Select a person to start chatting!';
+    }
+    return 'Visit your recommendations to find a new match.';
+  }
+
   render() {
     return (
       <div className={styles.messagesContainer}>
@@ -91,16 +102,19 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                   displayBottomUpwards
                   className={styles.messagesPanel}
                   containerHeight={700}
-                  elementHeight={50}
+                  elementHeight={(this.props.currentPerson && this.props.matchMessages.map((each) => {
+                    return ((Math.ceil(each.payload.message.length / 63)) * 50) + 8;
+                  }).concat(this.props.selectOptimistic.map((each) => ((Math.ceil(each.payload.message.length / 63)) * 50) + 8))) || 50}
                   itemsPerRow={1}
                 >
                     {this.props.currentPerson && this.props.matchMessages ?
                       this.mapMessages() :
                       <Text
                         type="matchName"
-                        style={{ justifyContent: 'center' }}
+                        style={{ justifyContent: 'center', flexDirection: 'column' }}
                       >
-                          {this.props.selectMatches ? 'Pick a match to start a conversation!' : 'Find some new matches!'}
+                        <img src={conversationPlaceholder} className={styles.conversationPlaceholderImage} role="presentation" />
+                        {this.renderPlaceholderMessage()}
                       </Text>}
                 </Infinite>
                 <div className={styles.chatBoxPanel}>

@@ -38,7 +38,7 @@ import { requestNotificationPermissions, createNotification } from 'utils/notifi
 
 function* initializeHistoryStore() {
   const userID = yield select(selectUserID());
-  const actionsHistory = yield getToken(`actionsHistory_${userID}`)
+  const actionsHistory = yield getToken(`actionsHistory_${userID}`);
   if (!actionsHistory) {
     yield storeToken(`actionsHistory_${userID}`, []);
   }
@@ -61,9 +61,21 @@ function* getUserData() {
   }
 }
 
+function* parseNotificationData(data, type) {
+  if (type === 'matches') {
+    const bodyText = data.length > 1 ? `Check out your ${data.length} new matches in Tinder.` : `You matched with ${data[0].details.name}!`;
+    createNotification(bodyText, data[0].details.image);
+  } else if (type === 'messages') {
+    const bodyText = data.length > 1 ? `Check our your ${data.length} new messages in Tinder.` : data[0].details.text;
+    const titleText = data.length > 1 ? 'New messages from Tinder matches!' : `New message from ${data[0].details.name}`;
+    createNotification(bodyText, data[0].details.image, titleText);
+  }
+}
+
 function* parseSyncData(data) {
   const userID = yield select(selectUserID());
   const matchesList = yield getToken(`matchesList_${userID}`);
+  
   if (data.data.matches.length !== 0 && matchesList) { // eslint-disable-line
     /*
       *One is that the user is on the matches page, and we push to reducer with saga watcher
@@ -71,29 +83,35 @@ function* parseSyncData(data) {
       *Cases for new Messages and likes on messages too
       *Flush messages first
       */
+    const permissionsAllowed = yield getToken('notificationsAllowed');
     const messageUpdates = data.data.matches.filter((each) => each.is_new_message);
     const matchUpdates = data.data.matches.filter((each) => !each.is_new_message);
-    const notifications = [];
+    const matchNotifications = [];
     let reloadFlag = false;
     if (matchUpdates.length !== 0) {
       console.warn('New Match in incoming action');
       const currentMatchesList = yield getToken(`matchesList_${userID}`);
       if (currentMatchesList) { // If the user didn't start storing data locally yet, don't flush to indexD
         const filteredMatchUpdates = matchUpdates.filter((each) => currentMatchesList.indexOf(each.id) === -1);
-        const newFilteredMatchesList = yield storeChunkWithToken(filteredMatchUpdates);
-        filteredMatchUpdates.forEach((each) => {
-          notifications.push({
-            id: each.person._id,
-            type: 'match',
-            details: {
-              text: `New match with${each.person.name}!`,
-              image: each.person.photos[0].url,
-            }});
-        });
-        yield storeToken(`matchesList_${userID}`, newFilteredMatchesList.concat(currentMatchesList));
+        if (filteredMatchUpdates) {
+          const newFilteredMatchesList = yield storeChunkWithToken(filteredMatchUpdates);
+          filteredMatchUpdates.forEach((each) => {
+            matchNotifications.push({
+              id: each.person._id,
+              type: 'match',
+              details: {
+                text: each.person.name,
+                image: each.person.photos[0].url,
+              } });
+          });
+          yield storeToken(`matchesList_${userID}`, newFilteredMatchesList.concat(currentMatchesList));
+        }
         reloadFlag = true;
       }
     }
+
+
+    const messageNotifications = [];
 
     if (messageUpdates.length !== 0) {
       console.warn('New message Updates');
@@ -107,19 +125,19 @@ function* parseSyncData(data) {
         for (;inneriter < messageUpdates[iterator].messages.length; inneriter++) {
           const { from, _id } = messageUpdates[iterator].messages[inneriter];
           if (dataToBeMutated[iterator].messages.map((each) => each._id).indexOf(_id) === -1) {
-            console.log('Storing new message');
             dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
             reloadFlag = true;
-          }
-          if (from !== selfID) {
-            notifications.push({
-              id: from,
-              type: 'message',
-              details: {
-                image: dataToBeMutated[iterator].person.photos[0].url,
-                text: `${dataToBeMutated[iterator].person.name}: ${messageUpdates[iterator].messages[inneriter]}`
-              }
-            });
+            if (from !== selfID) {
+              messageNotifications.push({
+                id: from,
+                type: 'message',
+                details: {
+                  name: dataToBeMutated[iterator].person.name,
+                  image: dataToBeMutated[iterator].person.photos[0].url,
+                  text: messageUpdates[iterator].messages[inneriter].message,
+                },
+              });
+            }
           }
         }
         dataToBeMutated[iterator].last_activity_date = messageUpdates[iterator].last_activity_date;
@@ -128,13 +146,14 @@ function* parseSyncData(data) {
       yield storeChunkWithToken(dataToBeMutated);
       yield storeToken(`matchesList_${userID}`, idList.concat(matchesList.filter((each) => idList.indexOf(each) === -1)));
     }
+    if (permissionsAllowed && localStorage.getItem('messageNotification')) {
+      if (matchNotifications.length !== 0) yield call(parseNotificationData, matchNotifications, 'matches');
+      if (messageNotifications.length !== 0) yield call(parseNotificationData, messageNotifications, 'messages');
+    }
+
     if (reloadFlag) yield put(shouldReloadData());
-    if (notifications.length !== 0) {
-      yield put(pushNewNotification(notifications));
-      const notificationsPermission = yield getToken('notificationsAllowed');
-      if (notificationsPermission) {
-        createNotification('Check out your new matches and messages in lit.', null, 'New updates in Tinder!');
-      }
+    if (messageNotifications.length !== 0 || matchNotifications.length !== 0) {
+      yield put(pushNewNotification([...matchNotifications, ...messageNotifications]));
     }
   }
   yield call(storeMetadataAction, userID);

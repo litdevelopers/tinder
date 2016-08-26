@@ -23,6 +23,7 @@ import {
   SET_GENDER_FILTER,
   REORDER_PHOTOS,
   SET_DISCOVER,
+  SELECT_LOCATION,
 } from 'containers/MainDashboard/constants';
 
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -83,6 +84,8 @@ function dashboardReducer(state = initialState, action) {
         .set('isFetching', false);
     case FETCHED_RECOMMENDATIONS_WITH_PREFS:
       return state.set('shouldUpdateRecommendations', false);
+    case SELECT_LOCATION:
+      return state.set('shouldUpdateRecommendations', true);
     case LOCATION_CHANGE:
       return state.set('isFetching', false);
     default:

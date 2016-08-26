@@ -1,6 +1,6 @@
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { LOCATION_CHANGE, push } from 'react-router-redux';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import {
@@ -34,8 +34,9 @@ import { emptyReducer } from 'containers/Auth/actions';
 import { postRequest } from 'utils/request';
 import {
   removeToken,
-  removeChunkWithArray,
+  storeToken,
   getToken,
+  clearStore,
 } from 'utils/operations';
 
 function* updateBioAction(newBio) {
@@ -142,13 +143,18 @@ function* profileUpdateWatcherFunction() {
 
 function* clearLocalData() {
   const userID = yield select(selectUserID());
-  const matchesList = yield getToken(`matchesList_${userID}`);
-  const recommendationsList = yield getToken(`recommendationsList_${userID}`);
+  const tinderToken = yield getToken('tinderToken');
+  const fbToken = yield getToken('fbToken');
+  const lastActivityDate = yield getToken(`last_activity_date_${userID}`);
+  const actionsHistory = yield getToken(`actionsHistory_${userID}`);
+
   try {
-    if (matchesList) yield removeChunkWithArray(matchesList);
-    if (recommendationsList) yield removeChunkWithArray(recommendationsList);
-    yield removeToken(`matchesList_${userID}`);
-    yield removeToken(`recommendationsList_${userID}`);
+    yield clearStore();
+    yield storeToken('tinderToken', tinderToken);
+    yield storeToken('fbToken', fbToken);
+    yield storeToken(`last_activity_date_${userID}`, lastActivityDate);
+    yield storeToken(`actionsHistory_${userID}`, actionsHistory);
+    yield storeToken('notificationsAllowed', true);
   } catch (error) {
     console.warn(error);
   }

@@ -53,6 +53,7 @@ function messagesReducer(state = initialState, action) {
       return state.set('matches', action.payload.concat(state.get('matches')));
     case SELECT_PERSON:
       return state
+      .set('currentPerson', null)
       .set('currentPerson', action.payload)
       .set('newMatches', state.get('newMatches').filter((each) => each.id !== action.payload));
     case SEND_MESSAGE:

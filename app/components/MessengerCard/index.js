@@ -15,7 +15,6 @@ function MessengerCard(props) {
   const recentActivity = parsePingTime(props.data.last_activity_date, false);
   const messages = props.data.messages;
   const recentMessage = messages && messages[messages.length - 1] && messages[messages.length - 1].message;
-
   if (person) {
     return (
       <div onClick={() => props.onClick(person._id)} className={styles.matchBlock}>
@@ -23,7 +22,8 @@ function MessengerCard(props) {
           <div
             className={styles.matchAvatar}
             style={{
-              backgroundImage: `url(${person && person.photos && person.photos[0].processedFiles[0].url})`,
+              backgroundImage: `url(${person && person.photos.length !== 0 && person.photos[0].processedFiles && person.photos[0].processedFiles[0].url})`,
+              backgroundColor: 'lightgrey',
             }}
           />
         </div>

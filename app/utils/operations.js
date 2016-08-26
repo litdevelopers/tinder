@@ -110,6 +110,11 @@ export function createStore(storeName) {
   });
 }
 
+export function clearStore() {
+  return new Promise((resolve, reject) => {
+    localForage.clear().then(() => resolve('done')).catch((err) => reject(err));
+  });
+}
 export function matchesSortByDistance(a, b) {
   return a.distance_mi - b.distance_mi;
 }

@@ -60,7 +60,7 @@ function* loginLocalSaga() {
         yield put(push('/dashboard/home'));
       }
     } catch (err) {
-      chrome.runtime.sendMessage('kijjnmjnmjcakikmngkhhcmacnobchdb', { type: 'doAuth' }); // eslint-disable-line
+      chrome.runtime.sendMessage('ijolldjdhcdcceonmopahocncafnlike', { type: 'doAuth' }); // eslint-disable-line
     }
   }
 }

@@ -8,7 +8,6 @@ import { selectUserID } from 'containers/Dashboard/selectors';
 
 import {
   SEND_MESSAGE,
-  FETCH_MATCHES_DATA,
   FETCH_MATCHES_LOCALLY,
   DUMP_ALL_SUCCESS,
   DUMP_ALL_INIT,
@@ -21,6 +20,7 @@ import {
   sendMessageError,
   updatePointer,
   allDataFetched,
+  fetchMatchData,
   fetchMatchDataError,
   fetchMatchDataSuccess,
   dumpAll,
@@ -44,6 +44,7 @@ function* fetchHistoryData() {
   const postURL = `${AUTH_URL}/tinder/historynew`;
   const pointer = yield select(selectPointer());
   try {
+    yield put(fetchMatchData());
     const data = yield call(postRequest, postURL, { authToken, pointer });
     if (data.status === 200) {
       const { matches, final, ...rest } = data.data; // eslint-disable-line
@@ -78,10 +79,10 @@ export function* dumpDataAction(emptyReducer = true) {
       }
       yield put(dumpAllSuccess());
     } catch (error) {
-      console.log(error);
+      yield put((newNotification(error)));
+      yield put(newNotificationAdded());
     }
   } else {
-    console.warn('Dumping Reducer');
     yield put(dumpAll());
     yield put(dumpAllSuccess());
   }
@@ -91,7 +92,6 @@ export function* loadLocalData(additionalFunction = false) {
   const userID = yield select(selectUserID());
   const matchesList = yield getToken(`matchesList_${userID}`);
   if (matchesList) {
-    console.log('Previous data stored, loading');
     const matches = yield fetchChunkData(matchesList);
     yield put(fetchMatchDataSuccess(matches));
     if (additionalFunction) yield put(additionalFunction());
@@ -99,7 +99,6 @@ export function* loadLocalData(additionalFunction = false) {
     * THE REASON WE DO THIS IS BECAUSE PUT DATA HAS RUN TIME OF O(n) and removing data is seamless, so we wait until data is put and then we remove optimistic UI
     */
   } else {
-    console.warn('No data found, fetching new chunk');
     yield call(fetchHistoryData);
   }
 }
@@ -121,7 +120,7 @@ export function* sendMessageData(payload) {
       messagedUser.last_activity_date = new Date().toISOString();
 
       yield storeToken(result.data.match_id, messagedUser);
-      yield storeToken(`matchesList_${userID}`, [result.data.match_id].concat(currentMatchesList.filter((each) => each !== result.data.match_id)));
+      yield storeToken(`matchesList_${userID}`, [result.data.match_id].concat(matchesList.filter((each) => each !== result.data.match_id)));
       yield call(loadLocalData, reloadDataPlease);
     }
   } catch (error) {
@@ -138,12 +137,6 @@ function* sendMessageWatcher() {
   while (true) {
     const { payload } = yield take(messageWatch);
     yield sendMessageData(payload);
-  }
-}
-
-function* dataWatcher() {
-  while (yield take(FETCH_MATCHES_DATA)) {
-    yield call(fetchHistoryData);
   }
 }
 
@@ -168,7 +161,6 @@ export function* reloadWatcher() {
 
 export function* messageSaga() {
   const messageWatcher = yield fork(sendMessageWatcher);
-  const dataFetchWatcher = yield fork(dataWatcher);
   const reloadWatch = yield fork(reloadWatcher);
   const dataDumpWatch = yield fork(dumpDataWatcher);
   const dataLoadLocalWatch = yield fork(dataLoadLocalWatcher);
@@ -176,7 +168,6 @@ export function* messageSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(reloadWatch);
   yield cancel(messageWatcher);
-  yield cancel(dataFetchWatcher);
   yield cancel(dataLoadLocalWatch);
   yield take(DUMP_ALL_SUCCESS);
   yield cancel(dataDumpWatch);

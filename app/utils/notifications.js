@@ -1,19 +1,14 @@
-import { getToken } from 'utils/operations';
-
 export function createNotification(body, icon, title) {
-  var options = {
-    body,
-    icon,
-  };
-  var n = new Notification(title,options);
+  const n = new Notification(title, { body, icon });
+  setTimeout(n.close.bind(n), 2000);
 }
 
 export function requestNotificationPermissions() {
   return new Promise((resolve, reject) => {
-  	Notification.requestPermission()
-  	.then((permissions) => resolve(permissions === 'granted' ? true: false))
-  	.catch((err) => {
+    Notification.requestPermission()
+    .then((permissions) => resolve(permissions === 'granted'))
+    .catch((err) => {
       reject(err);
-  	});
-  });	
+    });
+  });
 }
