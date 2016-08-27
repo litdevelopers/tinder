@@ -2,13 +2,13 @@ import React, { PropTypes } from 'react';
 import styles from './styles.css';
 import Icon from 'components/Icon';
 
+
 const styleMapping = {
   superlike: {
     marginBottom: 3,
   },
   pass: {
-    marginLeft: 2,
-    fill: '#DB4C2C',
+    left: 4,
   },
 };
 

@@ -14,12 +14,12 @@
 }
 
 
-.you:hover .messageDate{
+.you:active .messageDate{
   visibility: visible;
   display: inline;
 }
 
-.me:hover .messageDate{
+.me:active .messageDate{
   visibility: visible;
   display: inline;
 }

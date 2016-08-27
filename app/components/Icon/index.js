@@ -21,11 +21,11 @@ const iconMapping = {
   ),
 };
 
-
 export default function Icon(props) {
+  const otherStyling = props.style;
   return (
-    <svg style={Object.assign({ height: 25, width: 25 }, ...props.style || {})} viewBox="0 0 102 92">
-      <g style={{ fill: 'inherit' }} style={{ flex: 1 }}>
+    <svg style={{ height: 25, width: 25, ...otherStyling }} viewBox="0 0 102 92">
+      <g style={{ flex: 1 }}>
         {iconMapping[props.type]}
       </g>
     </svg>);

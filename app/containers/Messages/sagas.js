@@ -3,8 +3,9 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
 import { postRequest } from 'utils/request';
-import { messagesSortByRecent, storeChunkWithToken, fetchChunkData, storeToken, getToken } from 'utils/operations';
+import { messagesSortByRecent } from 'utils/operations';
 import { selectUserID } from 'containers/Dashboard/selectors';
+import { selectAuthToken } from 'containers/Auth/selectors';
 
 import {
   SEND_MESSAGE,
@@ -33,11 +34,12 @@ import {
   newNotificationAdded,
 } from 'containers/Notification/actions';
 
-
 import {
-  selectAuthToken,
-} from 'containers/Auth/selectors';
-
+  storeChunkWithToken,
+  fetchChunkData,
+  storeToken,
+  getToken,
+} from 'utils/storage';
 
 function* fetchHistoryData() {
   const authToken = yield select(selectAuthToken());

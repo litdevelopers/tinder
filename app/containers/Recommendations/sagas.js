@@ -1,6 +1,12 @@
 import { take, call, put, select, actionChannel, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
+import { fetchedRecommendationsWithPrefs } from 'containers/Dashboard/actions';
+import { pushNewNotification } from 'containers/Messages/actions';
+import { selectAuthToken } from 'containers/Auth/selectors';
+import { selectUserID } from 'containers/Dashboard/selectors';
+import { postRequest } from 'utils/request';
+
 
 import {
   LIKE_PERSON,
@@ -34,26 +40,17 @@ import {
 } from './actions';
 
 import {
-  fetchedRecommendationsWithPrefs,
-} from 'containers/Dashboard/actions';
+  selectRecommendationsList,
+  selectLimitedRecommendationsList,
+  selectShouldUpdate,
+} from './selectors';
 
 import {
-  pushNewNotification,
-} from 'containers/Messages/actions';
-
-import {
-  selectAuthToken,
-} from 'containers/Auth/selectors';
-
-import {
-  selectUserID,
-} from 'containers/Dashboard/selectors';
-
-
-import { selectRecommendationsList, selectLimitedRecommendationsList, selectShouldUpdate } from './selectors';
-import { postRequest } from 'utils/request';
-import { storeChunkWithToken, fetchChunkData, storeToken, getToken } from 'utils/operations';
-
+  storeChunkWithToken,
+  fetchChunkData,
+  storeToken,
+  getToken,
+} from 'utils/storage';
 
 function* fetchRecommendationsAction() {
   const authToken = yield select(selectAuthToken());
@@ -65,8 +62,9 @@ function* fetchRecommendationsAction() {
       if (!currentMatches) {
         yield put(fetchRecommendationsSuccess(data.data));
       } else {
-        const filteredPotentialMatches = data.data.filter((each) => currentMatches.map((each) => each._id).indexOf(each._id) !== -1); // eslint-disable-line
-        const filteredNewMatches = data.data.filter((each) => currentMatches.map((each) => each._id).indexOf(each._id) === -1); // eslint-disable-line
+        const currentMatchesIdList = currentMatches.map((each) => each._id);
+        const filteredPotentialMatches = data.data.filter((each) => currentMatchesIdList.indexOf(each._id) !== -1); // eslint-disable-line
+        const filteredNewMatches = data.data.filter((each) => currentMatchesIdList.indexOf(each._id) === -1); // eslint-disable-line
         yield put(sortLikes(filteredPotentialMatches));
         yield put(fetchRecommendationsSuccess(currentMatches.concat(filteredNewMatches)));
       }

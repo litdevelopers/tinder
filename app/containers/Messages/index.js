@@ -5,7 +5,7 @@
  */
 
 import React, { PropTypes } from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import ReactDom from 'react-dom';
 import { connect } from 'react-redux';
 import {
   selectPersonSelector,
@@ -42,14 +42,20 @@ import Infinite from 'react-infinite';
 import conversationPlaceholder from 'static/conversation.png';
 import styles from './styles.css';
 
+function parseMessageLength(messageLength) {
+  return ((Math.ceil(messageLength / 63)) * 50) + 8 + (messageLength % 63 === 0 ? 50 : 0);
+}
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  componentWillMount() {
-    this.props.fetchHistoryLocally();
+  constructor() {
+    super();
+    this.state = {
+      reRender: true,
+    };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
+  componentWillMount() {
+    this.props.fetchHistoryLocally();
   }
 
   componentWillUnmount() {
@@ -97,26 +103,28 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
         <div className={styles.messengerPanel}>
           <div className={styles.messengerPanelContainer}>
             <div className={styles.horizontalMessengerPanel}>
-              <div className={styles.columnMessengerPanel}>
-                <Infinite
-                  displayBottomUpwards
-                  className={styles.messagesPanel}
-                  containerHeight={700}
-                  elementHeight={(this.props.currentPerson && this.props.matchMessages.map((each) => {
-                    return ((Math.ceil(each.payload.message.length / 63)) * 50) + 8;
-                  }).concat(this.props.selectOptimistic.map((each) => ((Math.ceil(each.payload.message.length / 63)) * 50) + 8))) || 50}
-                  itemsPerRow={1}
-                >
-                    {this.props.currentPerson && this.props.matchMessages ?
-                      this.mapMessages() :
-                      <Text
-                        type="matchName"
-                        style={{ justifyContent: 'center', flexDirection: 'column' }}
-                      >
-                        <img src={conversationPlaceholder} className={styles.conversationPlaceholderImage} role="presentation" />
-                        {this.renderPlaceholderMessage()}
-                      </Text>}
-                </Infinite>
+              <div className={styles.columnMessengerPanel} id="messengerPanelContainer">
+                {this.props.currentPerson && this.props.matchMessages ?
+                  <Infinite
+                    className={styles.messagesPanel}
+                    containerHeight={700}
+                    elementHeight={(this.props.currentPerson && this.props.matchMessages.map((each) => parseMessageLength(each.payload.message.length))
+                      .concat(this.props.selectOptimistic.map((each) => parseMessageLength(each.message.length))))}
+                    itemsPerRow={1}
+                    displayBottomUpwards
+                  >
+                    {this.mapMessages()}
+                  </Infinite> :
+                  <div className={styles.messagesPanel} style={{ justifyContent: 'flex-end' }}>
+                    <Text
+                      type="matchName"
+                      style={{ justifyContent: 'center', flexDirection: 'column' }}
+                    >
+                      <img src={conversationPlaceholder} className={styles.conversationPlaceholderImage} role="presentation" />
+                      {this.renderPlaceholderMessage()}
+                    </Text>
+                  </div>
+                }
                 <div className={styles.chatBoxPanel}>
                   <MessengerInput
                     sendTo={this.props.currentPerson && this.props.currentPerson._id}

@@ -287,7 +287,10 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                   </div>
                 </div>
                 <div className={styles.mainDashboardScrollableColumn}>
-                
+                  <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Your actions<Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}>Swipe and match history activity in Lit.</Text></Text>
+                  <div className={styles.mainDashboardScrollableColumnContainer} style={{ borderTop: '1px solid #eee' }}>
+                    
+                  </div>
                 </div>
               </div>
             </div>

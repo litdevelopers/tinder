@@ -4,11 +4,11 @@ import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { LOGIN_FACEBOOK, LOGIN_LOCAL, LOGIN_CHROME } from './constants';
 import { loginFacebookSuccess, loginFacebookError } from './actions';
 import { postRequest } from 'utils/request';
-import { storeToken, getToken, createStore } from 'utils/operations';
+import { storeToken, getToken } from 'utils/storage';
 import { AUTH_URL } from 'global_constants';
 import { selectLogin, selectPassword } from './selectors';
 
-function* storeTokensSaga({ authToken, fbToken }){
+function* storeTokensSaga({ authToken, fbToken }) {
   yield storeToken('tinderToken', authToken);
   yield storeToken('fbToken', fbToken);
 }

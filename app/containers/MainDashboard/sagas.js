@@ -3,6 +3,11 @@ import { delay } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
+import { selectAuthToken } from 'containers/Auth/selectors';
+import { selectUserID } from 'containers/Dashboard/selectors';
+import { postRequest } from 'utils/request';
+import { emptyReducer } from 'containers/Auth/actions';
+
 import {
   EDITING_BIO,
   REORDER_PHOTOS,
@@ -21,23 +26,17 @@ import {
   selectIsSettingLocation,
 } from './selectors';
 
-import { selectAuthToken } from 'containers/Auth/selectors';
-import { selectUserID } from 'containers/Dashboard/selectors';
-
 import {
   newNotification,
   newNotificationAdded,
 } from 'containers/Notification/actions';
 
-import { emptyReducer } from 'containers/Auth/actions';
-
-import { postRequest } from 'utils/request';
 import {
   removeToken,
   storeToken,
   getToken,
   clearStore,
-} from 'utils/operations';
+} from 'utils/storage';
 
 function* updateBioAction(newBio) {
   yield call(delay, 1000);

@@ -2,8 +2,11 @@ import { delay } from 'redux-saga';
 import { take, call, put, actionChannel, fork, race, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
+import {
+  pushNotification,
+  handledNotification,
+} from './actions';
 
-import { pushNotification, handledNotification } from './actions';
 import {
   GLOBAL_NOTIFICATION_ADDED,
   NOTIFICATION_MANUAL_REMOVE,

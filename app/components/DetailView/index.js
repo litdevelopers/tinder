@@ -59,6 +59,7 @@ class DetailView extends React.Component {
         </div>
         <div className={styles.detailViewContainer_content}>
           <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
+          {this.props.isPotentialLike ? <Text type="potentialLike">Potential Like!</Text> : null}
           <div>
             <Text type="age" style={{ color: 'black' }}>{age}</Text>
             <Text type="lastActive">{parsePingTime(this.props.data.ping_time)}</Text>
@@ -118,6 +119,7 @@ DetailView.propTypes = {
   data: PropTypes.object,
   hasMatches: PropTypes.bool,
   isFetching: PropTypes.bool,
+  isPotentialLike: PropTypes.bool,
 };
 
 

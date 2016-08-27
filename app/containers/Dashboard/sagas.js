@@ -33,8 +33,18 @@ import {
 import { selectUserID } from './selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { postRequest } from 'utils/request';
-import { storeToken, getToken, storeChunkWithToken, fetchChunkData } from 'utils/operations';
-import { requestNotificationPermissions, createNotification } from 'utils/notifications';
+
+import {
+  storeToken,
+  getToken,
+  storeChunkWithToken,
+  fetchChunkData,
+} from 'utils/storage';
+
+import {
+  requestNotificationPermissions,
+  createNotification,
+} from 'utils/notifications';
 
 function* initializeHistoryStore() {
   const userID = yield select(selectUserID());
@@ -72,11 +82,11 @@ function* parseNotificationData(data, type) {
   }
 }
 
-function* parseSyncData(data) {
-  const userID = yield select(selectUserID());
+function* parseSyncData(data, userID) {
   const matchesList = yield getToken(`matchesList_${userID}`);
-  
-  if (data.data.matches.length !== 0 && matchesList) { // eslint-disable-line
+  if (matchesList === null) return;
+
+  if (data.matches.length !== 0 && matchesList) { // eslint-disable-line
     /*
       *One is that the user is on the matches page, and we push to reducer with saga watcher
       *Two is the user is not on the matches page, and we push to indexdb for fetch
@@ -84,12 +94,14 @@ function* parseSyncData(data) {
       *Flush messages first
       */
     const permissionsAllowed = yield getToken('notificationsAllowed');
-    const messageUpdates = data.data.matches.filter((each) => each.is_new_message);
-    const matchUpdates = data.data.matches.filter((each) => !each.is_new_message);
-    const matchNotifications = [];
+    const messageUpdates = data.matches.filter((each) => each.is_new_message);
+    const matchUpdates = data.matches.filter((each) => !each.is_new_message);
     let reloadFlag = false;
+
+    /* MATCHES NOTIFICATIONS START HERE */
+    const matchNotifications = [];
+
     if (matchUpdates.length !== 0) {
-      console.warn('New Match in incoming action');
       const currentMatchesList = yield getToken(`matchesList_${userID}`);
       if (currentMatchesList) { // If the user didn't start storing data locally yet, don't flush to indexD
         const filteredMatchUpdates = matchUpdates.filter((each) => currentMatchesList.indexOf(each.id) === -1);
@@ -110,14 +122,12 @@ function* parseSyncData(data) {
       }
     }
 
-
+    /* MESSAGE NOTIFICATIONS START HERE */
     const messageNotifications = [];
 
     if (messageUpdates.length !== 0) {
-      console.warn('New message Updates');
       const idList = messageUpdates.map((each) => each._id);
       const dataToBeMutated = yield fetchChunkData(idList);
-      const selfID = yield select(selectUserID());
       if (!dataToBeMutated) return;
       let iterator = 0;
       for (;iterator < idList.length; iterator++) {
@@ -127,7 +137,7 @@ function* parseSyncData(data) {
           if (dataToBeMutated[iterator].messages.map((each) => each._id).indexOf(_id) === -1) {
             dataToBeMutated[iterator].messages.push(messageUpdates[iterator].messages[inneriter]);
             reloadFlag = true;
-            if (from !== selfID) {
+            if (from !== userID) {
               messageNotifications.push({
                 id: from,
                 type: 'message',
@@ -156,7 +166,6 @@ function* parseSyncData(data) {
       yield put(pushNewNotification([...matchNotifications, ...messageNotifications]));
     }
   }
-  yield call(storeMetadataAction, userID);
 }
 
 
@@ -169,7 +178,11 @@ export function* tinderBackgroundSync() {
       try {
         const data = yield call(postRequest, postURL, { authToken });
         // TODO: Support more than matches
-        yield call(parseSyncData, data);
+        if (data.status === 200) {
+          const userID = yield select(selectUserID());
+          yield call(parseSyncData, data.data, userID);
+          yield call(storeMetadataAction, userID);
+        }
       } catch (error) {
         yield put(fetchUpdatesError(error));
         yield put((newNotification(error)));
@@ -194,19 +207,13 @@ function* rehydrateMatchesAction() {
 
   try {
     const data = yield call(postRequest, postURL, { authToken, lastActivityDate });
-    yield call(parseSyncData, data);
+    yield call(parseSyncData, data, userID);
     yield put(rehydrateMatchesSuccess());
     yield fork(tinderBackgroundSync);
   } catch (error) {
     yield put(rehydrateMatchesError(error));
     yield put((newNotification(error)));
     yield put(newNotificationAdded());
-  }
-}
-
-function* getDataFetchWatcher() {
-  while (yield take(FETCH_DATA)) {
-    yield fork(getUserData);
   }
 }
 
@@ -218,6 +225,12 @@ function* checkNotificationPermissionsAction() {
     localStorage.setItem('matchesNotification', permissions);
     localStorage.setItem('messageNotification', permissions);
     localStorage.setItem('messagesLikeNotification', permissions);
+  }
+}
+
+function* getDataFetchWatcher() {
+  while (yield take(FETCH_DATA)) {
+    yield fork(getUserData);
   }
 }
 

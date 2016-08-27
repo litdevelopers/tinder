@@ -24,7 +24,7 @@ function MatchCard(props) {
 
   const detailDiv = (schoolText || bioText) ?
     <div className={styles.matchCardContainer_hide}>
-    {bioText}
+      {/* {bioText} */}
       <div className={styles.matchCardContainer_details}>
         {schoolText}
       </div>
@@ -32,7 +32,7 @@ function MatchCard(props) {
 
   return (
     <div
-      className={type === "active" ? `${styles.matchCardLike} ${styles.matchCard}` : styles.matchCard}
+      className={type === 'active' ? `${styles.matchCardLike} ${styles.matchCard}` : styles.matchCard}
       style={{
         backgroundImage: `url(${data.photos[0].url})`,
       }}

@@ -23,7 +23,7 @@
 .name {
   color: #FFF;
   margin:0;
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 600;
 }
 
@@ -159,4 +159,17 @@
   flex: 1;
   flex-direction: column;
   justify-content: center;
+}
+
+.potentialLike {
+  composes: age;
+  color: white;
+  font-size: 10px;
+  background-color: #DB4C2C;
+  display: inline;
+  padding: 6px;
+  border-radius: 3px;
+  position: relative;
+  bottom: 5px;
+  left: 5px;
 }
