@@ -8,6 +8,8 @@ import { storeToken, getToken } from 'utils/storage';
 import { AUTH_URL } from 'global_constants';
 import { selectLogin, selectPassword } from './selectors';
 
+const CHROME_EXTENSION_ID = 'kbbgokgcdejefkdhggclcelinelhfoob';
+
 function* storeTokensSaga({ authToken, fbToken }) {
   yield storeToken('tinderToken', authToken);
   yield storeToken('fbToken', fbToken);
@@ -60,7 +62,7 @@ function* loginLocalSaga() {
         yield put(push('/dashboard/home'));
       }
     } catch (err) {
-      chrome.runtime.sendMessage('ijolldjdhcdcceonmopahocncafnlike', { type: 'doAuth' }); // eslint-disable-line
+      chrome.runtime.sendMessage(CHROME_EXTENSION_ID, { type: 'doAuth' }); // eslint-disable-line
     }
   }
 }
