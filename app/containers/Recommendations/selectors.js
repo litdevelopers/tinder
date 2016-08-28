@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: 1 */
+
 import { createSelector } from 'reselect';
 import { selectDashboard } from 'containers/Dashboard/selectors';
 import { mergeArray } from 'utils/operations';
@@ -16,9 +18,7 @@ const selectRecommendationsList = () => createSelector(
 const selectPotentialMatchList = () => createSelector(
     selectRecommendations(),
     (dashboardState) => {
-      const matches = Array.from(dashboardState.sortLikes).map((each) => {
-        return each._id;
-      });
+      const matches = Array.from(dashboardState.sortLikes).map((each) => each._id);
       return matches;
     }
 );
