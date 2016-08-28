@@ -200,7 +200,7 @@ function* storeMetadataAction(userID) {
   if (!localStorage.getItem('tinderUserID')) {
     localStorage.setItem('tinderUserID', userID);
   }
-  localStorage.setItem(`last_activity_date_${userID}`, new Date().toISOString());
+  yield storeToken(`last_activity_date_${userID}`, new Date().toISOString());
   yield put(storeMetadataSuccess());
 }
 
