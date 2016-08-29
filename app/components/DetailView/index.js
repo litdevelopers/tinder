@@ -71,41 +71,37 @@ class DetailView extends React.Component {
             <div>
               <Text type="profileHeader">Common Connections</Text>
               <div className={styles.commonConnectionsContainer}>
-            {this.props.data.common_connections.map((each) => {
-              return (
-                <div className={styles.connectionItem} key={each.id}>
-                  <a
-                    href={getFacebookUrl(each.id)}
-                    target="_blank"
-                  >
-                    <div
-                      key={each.id}
-                      style={{ backgroundImage: `url(${getFacebookPicture(each.id)})` }}
-                      className={styles.connectionImage}
-                    />
-                  </a>
-                  <Text type="connectionName">{each.name || 'Friend'}</Text>
-                </div>
-              );
-            })}
+            {this.props.data.common_connections.map((each) => (
+              <div className={styles.connectionItem} key={each.id}>
+                <a
+                  href={getFacebookUrl(each.id)}
+                  target="_blank"
+                >
+                  <div
+                    key={each.id}
+                    style={{ backgroundImage: `url(${getFacebookPicture(each.id)})` }}
+                    className={styles.connectionImage}
+                  />
+                </a>
+                <Text type="connectionName">{each.name || 'Friend'}</Text>
+              </div>
+            ))}
               </div>
             </div> : null}
           {this.props.data.common_interests && this.props.data.common_interests.length > 0 ?
             <div className={styles.commonInterestsWrapper}>
               <Text type="profileHeader">Common Interests</Text>
               <div className={styles.commonInterestsContainer}>
-                {this.props.data.common_interests.map((each) => {
-                  return (
-                    <a
-                      key={each.id}
-                      href={getFacebookUrl(each.id)}
-                      target="_blank"
-                      className={styles.commonInterestsLink}
-                    >
-                      <Text type="commonInterest">{each.name}</Text>
-                    </a>
-                  );
-                })}
+                {this.props.data.common_interests.map((each) => (
+                  <a
+                    key={each.id}
+                    href={getFacebookUrl(each.id)}
+                    target="_blank"
+                    className={styles.commonInterestsLink}
+                  >
+                    <Text type="commonInterest">{each.name}</Text>
+                  </a>
+                  ))}
               </div>
             </div> : null}
         </div>

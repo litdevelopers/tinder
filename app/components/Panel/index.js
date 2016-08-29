@@ -12,7 +12,6 @@ const placeholderMapping = {
   '-1': tinderCardMale,
 };
 
-
 function renderPlaceholderMessage(isFetching, hasMatches) {
   if (isFetching) {
     return "Hold on, we're loading your recommendations!";
@@ -23,20 +22,17 @@ function renderPlaceholderMessage(isFetching, hasMatches) {
   return "We're having some trouble loading your recommendations. Check back again later!";
 }
 
-export default function Panels(props) {
-  return (
-    <div
-      className={styles.detailView_placeholder}
-    >
-      <img src={placeholderMapping[props.targetGender]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
-      <Text type="placeholder">{renderPlaceholderMessage(props.isFetching, props.hasMatches)}</Text>
-    </div>);
-}
+const Panel = ({ targetGender, hasMatches, isFetching }) =>
+(<div className={styles.detailView_placeholder}>
+  <img src={placeholderMapping[targetGender]} role="presentation" style={{ maxHeight: 300, opacity: 0.5, alignSelf: 'center' }} />
+  <Text type="placeholder">{renderPlaceholderMessage(isFetching, hasMatches)}</Text>
+</div>);
 
-Panels.propTypes = {
+Panel.propTypes = {
   targetGender: PropTypes.number,
-  type: PropTypes.string,
   hasMatches: PropTypes.bool,
   isFetching: PropTypes.bool,
 };
+
+export default Panel;
 

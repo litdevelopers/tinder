@@ -12,17 +12,15 @@ const styleMapping = {
   },
 };
 
-function Button(props) {
-  return (
-    <button
-      className={styles[props.type]}
-      onClick={() => {
-        props.onClick(props.id, props.hash, props.type);
-      }}
-    >
-      {props.children ? props.children : <Icon type={props.type} style={styleMapping[props.type]} />}
-    </button>);
-}
+const Button = ({ children, type, id, hash, onClick }) => (
+  <button
+    className={styles[type]}
+    onClick={() => {
+      onClick(id, hash, type);
+    }}
+  >
+    {children || <Icon type={type} style={styleMapping[type]} />}
+  </button>);
 
 Button.propTypes = {
   children: PropTypes.oneOfType([

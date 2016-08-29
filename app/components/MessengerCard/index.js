@@ -38,7 +38,7 @@ const MessengerCard = ({ data, onClick, isNew }) => {
     );
   }
   return null;
-}
+};
 
 MessengerCard.propTypes = {
   data: PropTypes.object.isRequired,
