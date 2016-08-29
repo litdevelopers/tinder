@@ -59,7 +59,7 @@ function messagesReducer(state = initialState, action) {
     case SEND_MESSAGE:
       return state
         .set('isSending', true)
-        .set('optimisticUI', state.get('optimisticUI').concat(action.payload));
+        .set('optimisticUI', action.payload.message.match(/gif/) ? state.get('optimisticUI') : state.get('optimisticUI').concat(action.payload));
     case SEND_MESSAGE_ERROR:
       return state.set('isSending', false);
     case SEND_MESSAGE_SUCCESS:

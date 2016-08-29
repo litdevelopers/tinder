@@ -1,5 +1,6 @@
 export function createNotification(body, icon, title) {
   if (window.location.pathname !== '/dashboard/messages') {
+    if (title.match(/match/) && window.location.pathname === '/dashboard/recommendations') return;
     const n = new Notification(title, { body, icon });
     setTimeout(n.close.bind(n), 4000);
   }

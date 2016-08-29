@@ -128,7 +128,7 @@ function* parseSyncData(data, userID) {
                 text: person.name,
                 image: person.photos[0].url,
               } });
-            yield put(newMatch(filteredMatchUpdates[filteredIter]));
+            yield put(newMatch(filteredMatchUpdates[filteredIter].person.name, filteredMatchUpdates[filteredIter].id));
           }
 
           yield storeToken(`matchesList_${userID}`, newFilteredMatchesList.concat(currentMatchesList));

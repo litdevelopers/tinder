@@ -27,8 +27,10 @@ class MessengerInput extends React.Component { // eslint-disable-line react/pref
   render() {
     return (
       <div className={styles.write}>
-        <input value={this.state.inputField} onChange={(e) => { this.setState({ inputField: e.target.value }); }} onKeyPress={(e) => this.handleKeyPress(e)} contentEditable="true" className={styles.input} type="text" disabled={this.props.disabled}/>
-        <a className={styles.send} />
+        <div className={styles.writeContainer}>
+          <input value={this.state.inputField} placeholder={this.props.sendToName ? `Chat with ${this.props.sendToName}` : 'Chat with...'} onChange={(e) => { this.setState({ inputField: e.target.value }); }} onKeyPress={(e) => this.handleKeyPress(e)} contentEditable="true" className={styles.input} type="text" disabled={this.props.disabled} />
+          <a className={styles.send} />
+        </div>
       </div>
     );
   }
@@ -38,6 +40,7 @@ MessengerInput.propTypes = {
   sendTo: PropTypes.string,
   sendMessage: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
+  sendToName: PropTypes.string,
 };
 
 export default MessengerInput;

@@ -25,6 +25,7 @@ const typeMapping = {
   LIKE_PERSON: (personName) => `You liked ${personName}`,
   SUPERLIKE_PERSON: (personName) => `You superliked ${personName}`,
   PASS_PERSON: (personName) => `You passed on  ${personName}`,
+  NEW_MATCH: (personName) => `You matched with ${personName}`,
 };
 
 function renderText(type, details) {
@@ -44,7 +45,7 @@ const HistoryEntry = ({ data, onClickButton }) => {
           <Text type="historyDate">{renderDate(data.details)}</Text>
         </div>
         <div className={styles.buttonsContainer}>
-        {buttonTypes.map((each) => {
+        {data.type !== 'NEW_MATCH' && buttonTypes.map((each) => {
           if (each.type !== data.type) {
             return (
               <Button

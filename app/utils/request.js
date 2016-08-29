@@ -16,3 +16,19 @@ export function postRequest(url, body) {
     });
   });
 }
+
+export function getRequest(url, queryParams) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url,
+      method: 'GET',
+      params: queryParams,
+    })
+    .then((result) => {
+      resolve(result);
+    })
+    .catch((errors) => {
+      reject(errors);
+    });
+  });
+}

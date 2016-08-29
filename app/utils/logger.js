@@ -2,7 +2,8 @@ import {
   LIKE_PERSON,
   PASS_PERSON,
   SUPERLIKE_PERSON,
-} from '../containers/Recommendations/constants';
+  NEW_MATCH,
+} from '../containers/Recommendations/constants'; 
 
 import { shiftDataWithToken } from './storage';
 
@@ -10,6 +11,7 @@ const recordedActions = [
   LIKE_PERSON,
   PASS_PERSON,
   SUPERLIKE_PERSON,
+  NEW_MATCH,
 ];
 
 const actionLoggerMiddleware = () => next => action => {

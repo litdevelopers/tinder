@@ -2,7 +2,7 @@ import { take, call, put, select, fork, cancel, actionChannel } from 'redux-saga
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
 
-import { postRequest } from 'utils/request';
+import { postRequest, getRequest } from 'utils/request';
 import { messagesSortByRecent } from 'utils/operations';
 import { selectUserID } from 'containers/Dashboard/selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
@@ -40,6 +40,9 @@ import {
   storeToken,
   getToken,
 } from 'utils/storage';
+
+const PUBLIC_GIPHY_API_KEY = 'dc6zaTOxFJmzC';
+const PUBLIC_GIPHY_URL = 'http://api.giphy.com/v1/gifs/search';
 
 function* fetchHistoryData() {
   const authToken = yield select(selectAuthToken());
@@ -108,7 +111,16 @@ export function* loadLocalData(additionalFunction = false) {
 // Individual exports for testing
 export function* sendMessageData(payload) {
   const userToken = yield select(selectAuthToken());
-  const { id, message } = payload;
+  const { id } = payload;
+  let message;
+  if (payload.message.match(/\/gif/)) {
+    const gifData = yield call(getRequest, PUBLIC_GIPHY_URL, { api_key: PUBLIC_GIPHY_API_KEY, limit: 1, q: payload.message.split('/gif ')[1] });
+    if (gifData.status === 200) {
+      message = gifData.data.data[0].images.original.url;
+    }
+  } else {
+    message = payload.message;
+  }
   const postURL = `${AUTH_URL}/tinder/message/${id}`;
   try {
     const result = yield call(postRequest, postURL, { userToken, message });

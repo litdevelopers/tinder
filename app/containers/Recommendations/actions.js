@@ -22,13 +22,13 @@ import {
   NEW_MATCH,
 } from './constants';
 
-export function newMatch({ _id, ...restOfData }) {
+export function newMatch(details, id) {
   return {
     type: NEW_MATCH,
-    id: _id,
-    payload: {
-      data: restOfData,
+    id,
+    details: {
       date: new Date().toISOString(),
+      name: details,
     },
   };
 }

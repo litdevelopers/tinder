@@ -128,6 +128,7 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                 <div className={styles.chatBoxPanel}>
                   <MessengerInput
                     sendTo={this.props.currentPerson && this.props.currentPerson._id}
+                    sendToName={this.props.currentPerson && this.props.currentPerson.person.name}
                     sendMessage={this.props.onSendMessage}
                     disabled={!this.props.currentPerson}
                   />

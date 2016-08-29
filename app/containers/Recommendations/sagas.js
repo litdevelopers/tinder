@@ -128,7 +128,7 @@ function* actionPerson(action, type, removePerson) {
           yield storeToken(match._id, match);
           yield storeToken(`matchesList_${userID}`, [match._id].concat(currentMatchesList));
           yield put(pushNewNotification([{ id: userData.data.results._id }]));
-          yield put(newMatch(match));
+          yield put(newMatch(match.person.name, match._id));
         }
       }
     }
