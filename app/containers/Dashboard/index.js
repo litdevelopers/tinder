@@ -6,14 +6,24 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { selectIsSyncing } from './selectors';
 import { fetchUpdates, rehydrateMatches, checkNotificationPermissions } from './actions';
+import { selectAuthToken } from 'containers/Auth/selectors';
+import { createStructuredSelector } from 'reselect';
 
 import Notification from 'containers/Notification';
 import styles from './styles.css';
 
 export class Dashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    this.props.rehydrateMatches();
+    const { authToken } = this.props;
+
+    if (!authToken) {
+      localStorage.setItem('routeIntent', window.location.pathname);
+      window.location.replace('/login');
+    } else if (!this.props.isSyncing) {
+      this.props.rehydrateMatches();
+    }
   }
 
   componentDidMount() {
@@ -35,6 +45,8 @@ Dashboard.propTypes = {
   startBackgroundSync: PropTypes.func.isRequired,
   rehydrateMatches: PropTypes.func,
   checkNotificationPermissions: PropTypes.func,
+  authToken: PropTypes.string,
+  isSyncing: PropTypes.bool,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -45,5 +57,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+const mapStateToProps = createStructuredSelector({
+  authToken: selectAuthToken(),
+  isSyncing: selectIsSyncing(),
+});
 
-export default connect(null, mapDispatchToProps)(Dashboard);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

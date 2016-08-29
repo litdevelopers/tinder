@@ -1,56 +1,32 @@
+.messageBubble {
+  font-size: 16px;
+  position: relative;
+  display: inline-block;
+  clear: both;
+  margin-bottom: 8px;
+  padding: 13px 14px;
+  vertical-align: top;
+  border-radius: 5px;
+  -webkit-box-sizing: content-box !important;
+  -moz-box-sizing: content-box !important;
+  box-sizing: content-box !important;
+}
+
 .me {
   color: #1a1a1a;
   background-color: #eceff1;
-  align-self: flex-start;
-  font-size: 16px;
-  position: relative;
-  display: inline-block;
-  clear: both;
-  margin-bottom: 8px;
-  padding: 13px 14px;
-  vertical-align: top;
-  border-radius: 5px;
+  composes: messageBubble;
   float: left;
-}
-
-
-.you:active .messageDate{
-  visibility: visible;
-  display: inline;
-}
-
-.me:active .messageDate{
-  visibility: visible;
-  display: inline;
-}
-
-.me:before {
-  left: -3px;
-  background-color: #eceff1;
-  position: absolute;
-  top: 19px;
-  display: block;
-  width: 8px;
-  height: 6px;
-  content: '\00a0';
-  -webkit-transform: rotate(29deg) skew(-35deg);
-          transform: rotate(29deg) skew(-35deg);
+  align-self: flex-start;
 }
 
 .you {
-  float: right;
+  align-self: flex-end;
   color: #fff;
   background-color: #00b0ff;
-  align-self: flex-end;
-  font-size: 16px;
-  position: relative;
-  display: inline-block;
-  clear: both;
-  margin-bottom: 8px;
-  padding: 13px 14px;
-  vertical-align: top;
-  border-radius: 5px;
+  composes: messageBubble;
 }
+
 .you:before {
   right: -3px;
   background-color: #00b0ff;
@@ -76,4 +52,27 @@
 
 .you .messageDate {
   color: white;
+}
+
+.you:active .messageDate{
+  visibility: visible;
+  display: inline;
+}
+
+.me:active .messageDate{
+  visibility: visible;
+  display: inline;
+}
+
+.me:before {
+  left: -3px;
+  background-color: #eceff1;
+  position: absolute;
+  top: 19px;
+  display: block;
+  width: 8px;
+  height: 6px;
+  content: '\00a0';
+  -webkit-transform: rotate(29deg) skew(-35deg);
+          transform: rotate(29deg) skew(-35deg);
 }

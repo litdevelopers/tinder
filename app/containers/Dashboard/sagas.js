@@ -15,6 +15,7 @@ import {
 import {
   fetchDataSuccess,
   fetchDataError,
+  fetchUpdates,
   fetchUpdatesError,
   fetchUpdatesEnd,
   storeMetadataSuccess,
@@ -158,9 +159,9 @@ function* parseSyncData(data, userID) {
       yield storeChunkWithToken(dataToBeMutated);
       yield storeToken(`matchesList_${userID}`, idList.concat(matchesList.filter((each) => idList.indexOf(each) === -1)));
     }
-    if (permissionsAllowed && localStorage.getItem('messageNotification')) {
-      if (matchNotifications.length !== 0) yield call(parseNotificationData, matchNotifications, 'matches');
-      if (messageNotifications.length !== 0) yield call(parseNotificationData, messageNotifications, 'messages');
+    if (permissionsAllowed) {
+      if (matchNotifications.length !== 0 && localStorage.getItem('matchesNotification')) yield call(parseNotificationData, matchNotifications, 'matches');
+      if (messageNotifications.length !== 0 && localStorage.getItem('messagesNotification')) yield call(parseNotificationData, messageNotifications, 'messages');
     }
 
     if (reloadFlag) yield put(shouldReloadData());
@@ -173,6 +174,7 @@ function* parseSyncData(data, userID) {
 
 export function* tinderBackgroundSync() {
   try {
+    yield put(fetchUpdates());
     while (true) { // eslint-disable-line
       const authToken = yield select(selectAuthToken());
       const postURL = `${AUTH_URL}/tinder/updatesnew`;

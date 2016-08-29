@@ -55,3 +55,16 @@
   padding: 10px 5px;
   text-decoration: none;
 }
+
+.detailViewContainerButtons {
+  justify-content: space-around;
+  display: flex;
+  width: 60%;
+  margin: 10px auto;
+}
+
+.detailViewContainerButtons button {
+  flex: 1;
+  max-width: 50px;
+  max-height: 50px;
+}

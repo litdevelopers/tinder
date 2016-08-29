@@ -5,7 +5,6 @@
  */
 
 import React, { PropTypes } from 'react';
-import ReactDom from 'react-dom';
 import { connect } from 'react-redux';
 import {
   selectPersonSelector,
@@ -42,20 +41,17 @@ import Infinite from 'react-infinite';
 import conversationPlaceholder from 'static/conversation.png';
 import styles from './styles.css';
 
-function parseMessageLength(messageLength) {
-  return ((Math.ceil(messageLength / 63)) * 50) + 8 + (messageLength % 63 === 0 ? 50 : 0);
-}
+// function parseMessageLength(messageLength) {
+//   return ((Math.ceil(messageLength / 63)) * 50) + 8 + (messageLength % 63 === 0 ? 50 : 0);
+// }
 
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor() {
-    super();
-    this.state = {
-      reRender: true,
-    };
-  }
-
   componentWillMount() {
     this.props.fetchHistoryLocally();
+  }
+
+  componentDidUpdate() {
+    document.getElementById('matchMessageContainer').scrollTop = document.getElementById('matchMessageContainer').scrollHeight;
   }
 
   componentWillUnmount() {
@@ -105,16 +101,10 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
             <div className={styles.horizontalMessengerPanel}>
               <div className={styles.columnMessengerPanel} id="messengerPanelContainer">
                 {this.props.currentPerson && this.props.matchMessages ?
-                  <Infinite
-                    className={styles.messagesPanel}
-                    containerHeight={700}
-                    elementHeight={(this.props.currentPerson && this.props.matchMessages.map((each) => parseMessageLength(each.payload.message.length))
-                      .concat(this.props.selectOptimistic.map((each) => parseMessageLength(each.message.length))))}
-                    itemsPerRow={1}
-                    displayBottomUpwards
-                  >
+                  <div className={styles.messagesPanel} id="matchMessageContainer">
                     {this.mapMessages()}
-                  </Infinite> :
+                  </div>
+                  :
                   <div className={styles.messagesPanel} style={{ justifyContent: 'flex-end' }}>
                     <Text
                       type="matchName"
@@ -193,3 +183,15 @@ Messages.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);
+
+
+// <Infinite
+//                     className={styles.messagesPanel}
+//                     containerHeight={700}
+//                     elementHeight={(this.props.currentPerson && this.props.matchMessages.map((each) => parseMessageLength(each.payload.message.length))
+//                       .concat(this.props.selectOptimistic.map((each) => parseMessageLength(each.message.length))))}
+//                     itemsPerRow={1}
+//                     displayBottomUpwards
+//                   >
+//                     {this.mapMessages()}
+//                   </Infinite>

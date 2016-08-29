@@ -1,7 +1,7 @@
 export function createNotification(body, icon, title) {
   if (window.location.pathname !== '/dashboard/messages') {
     const n = new Notification(title, { body, icon });
-    setTimeout(n.close.bind(n), 2000);
+    setTimeout(n.close.bind(n), 4000);
   }
 }
 

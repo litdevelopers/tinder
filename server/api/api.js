@@ -43,7 +43,6 @@ router.post('/tinder/historynew', (req, res) => {
   client.setAuthToken(authToken);
   tinderPromise.getHistory(client)
   .then((data) => {
-    // const returnedArray = data.matches.filter((each) => each.messages.length);
     const returnedArray = data.matches;
     res.status(200).json({
       blocks: data.blocks,
@@ -117,16 +116,6 @@ router.post('/tinder/recommendations', (req, res) => {
   .catch((error) => res.status(400).json(error));
 });
 
-router.post('/tinder/updates', (req, res) => {
-  const xAuth = req.body.authToken;
-  const client = new tinder.TinderClient();
-
-  client.setAuthToken(xAuth);
-  tinderPromise.getUserUpdates(client)
-  .then((response) => res.status(200).json(response))
-  .catch((error) => res.status(400).json(error));
-});
-
 router.post('/tinder/updatesnew', (req, res) => {
   const { authToken, lastActivityDate } = req.body;
   const client = new tinder.TinderClient();
@@ -134,7 +123,10 @@ router.post('/tinder/updatesnew', (req, res) => {
   client.setAuthToken(authToken);
   tinderPromise.getUserUpdatesNew(client, lastActivityDate)
   .then((response) => res.status(200).json(response))
-  .catch((error) => res.status(400).json(error));
+  .catch((error) => {
+    console.log(error);
+    res.status(400).json(error);
+  });
 });
 
 router.post('/tinder/checkAuth', (req, res) => {

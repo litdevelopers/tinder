@@ -37,6 +37,7 @@ const initialState = fromJS({
   lastError: false,
   updates: [],
   isFetching: false,
+  isSyncing: false,
 });
 
 
@@ -45,7 +46,7 @@ function dashboardReducer(state = initialState, action) {
     case FETCH_UPDATES:
     case FETCH_DATA:
       return state
-        .set('isFetching', true);
+        .set('isSyncing', true);
     case FETCH_DATA_SUCCESS:
       return state
         .set(action.payload.dataType, fromJS(action.payload.data));
@@ -53,7 +54,7 @@ function dashboardReducer(state = initialState, action) {
     case FETCH_DATA_ERROR:
       return state
         .set('lastError', action.payload)
-        .set('isFetching', false);
+        .set('isSyncing', false);
     case EDITING_BIO:
       return state.setIn(['user', 'bio'], action.payload);
     case SET_DISCOVER:
@@ -81,7 +82,7 @@ function dashboardReducer(state = initialState, action) {
       return state.setIn(['user', 'photos'], action.payload);
     case FETCH_UPDATES_END:
       return state
-        .set('isFetching', false);
+        .set('isSyncing', false);
     case FETCHED_RECOMMENDATIONS_WITH_PREFS:
       return state.set('shouldUpdateRecommendations', false);
     case SELECT_LOCATION:

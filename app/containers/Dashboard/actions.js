@@ -19,7 +19,7 @@ import {
   CHECK_NOTIFICATION_PERMISSIONS,
 } from './constants';
 
-export function checkNotificationPermissions(){
+export function checkNotificationPermissions() {
   return {
     type: CHECK_NOTIFICATION_PERMISSIONS,
   };

@@ -20,13 +20,18 @@ const selectDashboard = () => createSelector(
     if (!substate) {
       return undefined;
     }
-    return substate.toJS()
+    return substate.toJS();
   }
 );
 
 const selectFetching = () => createSelector(
   selectDashboard(),
   (dashboardState) => dashboardState.isFetching || false
+);
+
+const selectIsSyncing = () => createSelector(
+  selectDashboard(),
+  (state) => state.isSyncing,
 );
 
 const selectTargetGender = () => createSelector(
@@ -51,7 +56,7 @@ const selectUserObject = () => createSelector(
 
 const selectUserID = () => createSelector(
   selectUserObject(),
-  (substate) => substate._id
+  (substate) => substate._id // eslint-disable-line
 );
 
 const selectDashboardHistory = () => createSelector(
@@ -84,4 +89,5 @@ export {
   selectDashboardHistory,
   selectMatchesHistory,
   selectUserName,
+  selectIsSyncing,
 };

@@ -51,7 +51,6 @@
 .chatBoxPanel {
   flex: 0.5;
   /*border-top: 1px solid #eee;*/
-  width: 100%;
   display: flex;
   padding: 20px;
   align-items: center;

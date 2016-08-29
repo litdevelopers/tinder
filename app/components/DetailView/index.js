@@ -5,7 +5,9 @@ import { getAge, parsePingTime } from 'utils/operations';
 import { getFacebookUrl, getFacebookPicture } from 'utils/facebook';
 
 import styles from './styles.css';
+import Icon from 'components/Icon';
 import Text from 'components/Text';
+import Button from 'components/Button';
 
 class DetailView extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -35,10 +37,22 @@ class DetailView extends React.Component {
     }
   }
 
+
+  renderButtons({ _id, contentHash }, onClickButton) {
+    return (
+      <div className={styles.detailViewContainerButtons}>
+        <Button type="pass" onClick={onClickButton} id={_id} hash={contentHash}></Button>
+        <Button type="superlike" onClick={onClickButton} id={_id} hash={contentHash}></Button>
+        <Button type="like" onClick={onClickButton} id={_id} hash={contentHash}></Button>
+      </div>
+    );
+  }
+
   render() {
     const age = getAge(this.props.data.birth_date);
     const jobs = this.props.data.jobs && this.props.data.jobs[0];
     const schools = this.props.data.jobs && this.props.data.schools[0];
+    const instagramData = this.props.data.instagram;
     const hasPhotos = this.props.data.photos.length !== 0;
 
     return (
@@ -59,6 +73,7 @@ class DetailView extends React.Component {
         </div>
         <div className={styles.detailViewContainer_content}>
           <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
+          {instagramData ? <a href={`https://instagram.com/${instagramData.username}`} target="_blank" style={{ color: 'black' }} ><Icon type="instagram" style={{ marginBottom: 10, marginLeft: 5 }} /></a> : null}
           {this.props.isPotentialLike ? <Text type="potentialLike">Potential Like!</Text> : null}
           <div>
             <Text type="age" style={{ color: 'black' }}>{age}</Text>
@@ -67,6 +82,7 @@ class DetailView extends React.Component {
           <Text type="school">{schools && schools.name}</Text>
           <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? ' at ' : null}{jobs && jobs.company && <a href={jobs.company.id} target="_blank">{jobs.company.name}</a>}</Text>
           <Text type="bio">{this.props.data.bio}</Text>
+
           {this.props.data.common_connections && this.props.data.common_connections.length > 0 ?
             <div>
               <Text type="profileHeader">Common Connections</Text>
@@ -104,6 +120,7 @@ class DetailView extends React.Component {
                   ))}
               </div>
             </div> : null}
+            {this.props.recommendationView ? this.renderButtons(this.props.data, this.props.onClickAction) : null}
         </div>
       </div>
     );
@@ -116,6 +133,8 @@ DetailView.propTypes = {
   hasMatches: PropTypes.bool,
   isFetching: PropTypes.bool,
   isPotentialLike: PropTypes.bool,
+  onClickAction: PropTypes.func,
+  recommendationView: PropTypes.bool,
 };
 
 
