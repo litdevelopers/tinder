@@ -3,10 +3,10 @@
   flex: 1;
   height: 40px;
   padding: 0 10px;
-  color: #1a1a1a;
+  color: #1A1A1A;
   border: 0;
   outline: none;
-  background-color: #eceff1;
+  background-color: #ECEFF1;
   font-weight: 400;
   display: flex;
   flex-direction: column;
@@ -23,10 +23,10 @@
   width: 100%;
   height: 40px;
   padding: 0 10px;
-  color: #1a1a1a;
+  color: #1A1A1A;
   border: 0;
   outline: none;
-  background-color: #eceff1;
+  background-color: #ECEFF1;
   font-weight: 400;
 }
 
@@ -41,7 +41,7 @@
   height: 42px;
   margin-left: 11px;
   content: '';
-  background-image: url("http://s30.postimg.org/nz9dho0pp/send.png");
+  background-image: url('http://s30.postimg.org/nz9dho0pp/send.png');
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;

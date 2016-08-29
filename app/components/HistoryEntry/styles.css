@@ -2,7 +2,7 @@
   list-style: none;
   flex: 1;
   width: 100%;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #EEE;
   margin: 0;
   display: flex;
   flex-direction: row;
@@ -14,7 +14,7 @@
   flex: 1;
 }
 
-.textContainer{
+.textContainer {
   flex: 2;
   display: flex;
   align-content: center;

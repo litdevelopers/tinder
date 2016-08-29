@@ -149,7 +149,7 @@ export function sortLikes(data) {
   return {
     type: SORT_LIKES,
     payload: data,
-  }
+  };
 }
 
 export function sortRecommendations(sortType) {

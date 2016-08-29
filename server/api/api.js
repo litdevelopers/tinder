@@ -124,7 +124,6 @@ router.post('/tinder/updatesnew', (req, res) => {
   tinderPromise.getUserUpdatesNew(client, lastActivityDate)
   .then((response) => res.status(200).json(response))
   .catch((error) => {
-    console.log(error);
     res.status(400).json(error);
   });
 });

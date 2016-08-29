@@ -3,6 +3,8 @@
  * Messages
  *
  */
+/* eslint no-underscore-dangle: 1 */
+
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';

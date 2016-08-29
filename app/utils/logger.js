@@ -3,7 +3,7 @@ import {
   PASS_PERSON,
   SUPERLIKE_PERSON,
   NEW_MATCH,
-} from '../containers/Recommendations/constants'; 
+} from '../containers/Recommendations/constants';
 
 import { shiftDataWithToken } from './storage';
 
