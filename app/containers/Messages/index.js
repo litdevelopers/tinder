@@ -19,6 +19,7 @@ import {
 
 import {
   selectTargetGender,
+  selectUserID,
 } from 'containers/Dashboard/selectors';
 
 import { createStructuredSelector } from 'reselect';
@@ -41,10 +42,6 @@ import Infinite from 'react-infinite';
 import conversationPlaceholder from 'static/conversation.png';
 import styles from './styles.css';
 
-// function parseMessageLength(messageLength) {
-//   return ((Math.ceil(messageLength / 63)) * 50) + 8 + (messageLength % 63 === 0 ? 50 : 0);
-// }
-
 export class Messages extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     this.props.fetchHistoryLocally();
@@ -61,7 +58,15 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   mapMatches() {
-    return this.props.selectMatches && this.props.selectMatches.map((each) => <MessengerCard onClick={this.props.selectPerson} key={each._id} data={each} isNew={each.person && each.person._id && this.props.newMatches.indexOf(each.person._id) !== -1} />);
+    return this.props.selectMatches && this.props.selectMatches.map((each) => {
+      return (<MessengerCard
+        onClick={this.props.selectPerson}
+        key={each._id}
+        data={each}
+        isReply={each.messages.length !== 0 && each.messages.slice(-1)[0].from === this.props.currentUserId}
+        isNew={each.person && each.person._id && this.props.newMatches.indexOf(each.person._id) !== -1}
+      />);
+    });
   }
 
   mapMessages() {
@@ -164,6 +169,7 @@ const mapStateToProps = createStructuredSelector({
   isDataFetching: selectIsFetching(),
   newMatches: selectNewNotifications(),
   targetGender: selectTargetGender(),
+  currentUserId: selectUserID(),
 });
 
 Messages.propTypes = {
@@ -171,6 +177,7 @@ Messages.propTypes = {
     PropTypes.bool,
     PropTypes.array,
   ]),
+  currentUserId: PropTypes.string,
   selectPerson: PropTypes.func,
   currentPerson: PropTypes.object,
   matchMessages: PropTypes.array,
@@ -188,15 +195,3 @@ Messages.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);
-
-
-// <Infinite
-//                     className={styles.messagesPanel}
-//                     containerHeight={700}
-//                     elementHeight={(this.props.currentPerson && this.props.matchMessages.map((each) => parseMessageLength(each.payload.message.length))
-//                       .concat(this.props.selectOptimistic.map((each) => parseMessageLength(each.message.length))))}
-//                     itemsPerRow={1}
-//                     displayBottomUpwards
-//                   >
-//                     {this.mapMessages()}
-//                   </Infinite>

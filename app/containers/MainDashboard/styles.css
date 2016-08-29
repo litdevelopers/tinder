@@ -271,3 +271,9 @@
 	position: absolute;
 	z-index: -1;
 }
+
+.actionsHistoryContainer {
+	display: flex;
+  flex-direction: column;
+	padding: 0;
+}

@@ -79,11 +79,11 @@ export function clearStore() {
   });
 }
 
-export function appendDataWithtoken(token, data) {
+export function shiftDataWithToken(token, data) {
   return new Promise((resolve, reject) => {
     getToken(token)
     .then((retrivedData) => {
-      storeToken(token, retrivedData.concat(data)).then(() => resolve('done!'));
+      storeToken(token, [data, ...retrivedData.filter((each) => each.id !== data.id)]).then(() => resolve('done!'));
     })
     .catch((err) => reject(err));
   });

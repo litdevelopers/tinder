@@ -39,6 +39,7 @@ import {
   dumpAllRecommendations,
   dumpAllRecommendationsSuccess,
   sortLikes,
+  newMatch,
 } from './actions';
 
 import {
@@ -95,19 +96,25 @@ function* newMatchAction(data) {
   yield put(newNotificationAdded());
 }
 
-function* actionPerson(action, type) {
+function* actionPerson(action, type, removePerson) {
   const userToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/${type}`;
-  yield put(removeRecommendation(action.id));
+  let removedPerson = false;
+
+  if (type === 'pass') {
+    yield put(removeRecommendation(action.id));
+    removedPerson = true;
+  }
 
   try {
     const data = yield call(postRequest, postURL, { userToken, userID: action.id, hash: action.hash });
     if (data.status === 200) {
+      if (removePerson && !removedPerson) yield put(removeRecommendation(action.id));
       yield put(detailPerson(''));
       if (type === 'like') yield put(likePersonSuccess({ id: action.id, action: 'like' }));
       if (type === 'superlike') yield put(superLikePersonSuccess({ id: action.id, action: 'superlike' }));
       if (type === 'pass') yield put(passPersonSuccess({ id: action.id, action: 'pass' }));
-      if ((type === 'like' || type === 'superlike') && data.data.match) {
+      if ((type === 'like' || type === 'superlike') && data.data.match && removePerson) {
         const match = data.data.match;
         const userID = yield select(selectUserID());
         const currentMatchesList = yield getToken(`matchesList_${userID}`);
@@ -121,6 +128,7 @@ function* actionPerson(action, type) {
           yield storeToken(match._id, match);
           yield storeToken(`matchesList_${userID}`, [match._id].concat(currentMatchesList));
           yield put(pushNewNotification([{ id: userData.data.results._id }]));
+          yield put(newMatch(match));
         }
       }
     }
@@ -128,9 +136,19 @@ function* actionPerson(action, type) {
     if (type === 'like') yield put(likePersonError(error));
     if (type === 'superlike') yield put(superLikePersonError(error));
     if (type === 'pass') yield put(passPersonError(error));
-    yield put(newNotification(error));
-    yield put(newNotificationAdded());
+    yield call(handleError, type, error);
   }
+}
+
+function* handleError(type, error) {
+  let dispatchedError;
+  if (type === 'like' || type === 'superlike') {
+    dispatchedError = `We just had trouble ${type.split('like')[0]}liking a recommendation. Try again later!`;
+  } else {
+    dispatchedError = error;
+  }
+  yield put(newNotification(dispatchedError));
+  yield put(newNotificationAdded());
 }
 
 function* dataDumpAction() {
@@ -162,13 +180,13 @@ export function* loadLocalData() {
 }
 
 
-export function* actionWatcher() {
+export function* actionWatcher(removePerson = true) {
   const actionWatch = yield actionChannel([LIKE_PERSON, SUPERLIKE_PERSON, PASS_PERSON]);
   while (true) { // eslint-disable-line
     const action = yield take(actionWatch);
-    if (action.type === LIKE_PERSON) yield actionPerson(action, 'like');
-    if (action.type === SUPERLIKE_PERSON) yield actionPerson(action, 'superlike');
-    if (action.type === PASS_PERSON) yield actionPerson(action, 'pass');
+    if (action.type === LIKE_PERSON) yield actionPerson(action, 'like', removePerson);
+    if (action.type === SUPERLIKE_PERSON) yield actionPerson(action, 'superlike', removePerson);
+    if (action.type === PASS_PERSON) yield actionPerson(action, 'pass', removePerson);
   }
 }
 

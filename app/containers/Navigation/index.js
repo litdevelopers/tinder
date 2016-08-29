@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import styles from './styles.css';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { locationSelector } from './selectors';
 import { selectNewNotifications } from 'containers/Messages/selectors';
 import { selectUserName } from 'containers/Dashboard/selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
@@ -40,7 +39,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  location: locationSelector(),
   notifications: selectNewNotifications(),
   userName: selectUserName(),
   isLoggedIn: selectAuthToken(),

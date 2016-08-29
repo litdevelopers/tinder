@@ -21,6 +21,7 @@ import {
   storeMetadataSuccess,
   rehydrateMatchesSuccess,
   rehydrateMatchesError,
+  updateActionsReducer,
 } from './actions';
 
 import {
@@ -32,6 +33,8 @@ import {
   shouldReloadData,
   pushNewNotification,
 } from 'containers/Messages/actions';
+
+import { newMatch } from 'containers/Recommendations/actions';
 
 import { selectUserID } from './selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
@@ -49,12 +52,16 @@ import {
   createNotification,
 } from 'utils/notifications';
 
-function* initializeHistoryStore() {
-  const userID = yield select(selectUserID());
+function* initializeHistoryStore(userID) {
   const actionsHistory = yield getToken(`actionsHistory_${userID}`);
   if (!actionsHistory) {
     yield storeToken(`actionsHistory_${userID}`, []);
   }
+}
+
+function* updateActionsReducerAction(userID) {
+  const actions = yield getToken(`actionsHistory_${userID}`);
+  yield put(updateActionsReducer(actions));
 }
 
 function* getUserData() {
@@ -65,7 +72,9 @@ function* getUserData() {
     if (data.status === 200) {
       yield put(fetchDataSuccess('user', data.data.user));
       yield put(fetchDataSuccess('rating', data.data.rating));
-      yield fork(initializeHistoryStore);
+      const userID = yield select(selectUserID());
+      yield fork(initializeHistoryStore, userID);
+      yield fork(updateActionsReducerAction, userID);
     }
   } catch (error) {
     yield put(fetchDataError(error));
@@ -110,15 +119,18 @@ function* parseSyncData(data, userID) {
         const filteredMatchUpdates = matchUpdates.filter((each) => currentMatchesList.indexOf(each.id) === -1);
         if (filteredMatchUpdates) {
           const newFilteredMatchesList = yield storeChunkWithToken(filteredMatchUpdates);
-          filteredMatchUpdates.forEach((each) => {
+          for (let filteredIter = 0; filteredIter < filteredMatchUpdates.length; filteredIter++) {
+            const { person } = filteredMatchUpdates[filteredIter];
             matchNotifications.push({
-              id: each.person._id,
+              id: person._id,
               type: 'match',
               details: {
-                text: each.person.name,
-                image: each.person.photos[0].url,
+                text: person.name,
+                image: person.photos[0].url,
               } });
-          });
+            yield put(newMatch(filteredMatchUpdates[filteredIter]));
+          }
+
           yield storeToken(`matchesList_${userID}`, newFilteredMatchesList.concat(currentMatchesList));
         }
         reloadFlag = true;

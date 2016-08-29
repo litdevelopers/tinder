@@ -4,7 +4,7 @@ import {
   SUPERLIKE_PERSON,
 } from '../containers/Recommendations/constants';
 
-import { appendDataWithtoken } from './storage';
+import { shiftDataWithToken } from './storage';
 
 const recordedActions = [
   LIKE_PERSON,
@@ -14,7 +14,7 @@ const recordedActions = [
 
 const actionLoggerMiddleware = () => next => action => {
   if (recordedActions.indexOf(action.type) !== -1) {
-    appendDataWithtoken(`actionsHistory_${localStorage.getItem('tinderUserID')}`, action);
+    shiftDataWithToken(`actionsHistory_${localStorage.getItem('tinderUserID')}`, action);
   }
   return next(action);
 };

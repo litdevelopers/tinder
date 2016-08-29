@@ -17,7 +17,15 @@ import {
   REHYDRATE_MATCHES_SUCCESS,
   REHYDRATE_MATCHES_ERROR,
   CHECK_NOTIFICATION_PERMISSIONS,
+  UPDATE_ACTIONS_REDUCER,
 } from './constants';
+
+export function updateActionsReducer(data) {
+  return {
+    type: UPDATE_ACTIONS_REDUCER,
+    payload: data,
+  };
+}
 
 export function checkNotificationPermissions() {
   return {

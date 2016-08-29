@@ -5,7 +5,6 @@ import styles from './styles.css';
 import Text from 'components/Text';
 import Button from 'components/Button';
 
-
 const buttonMapping = [
   'pass', 'superlike', 'like',
 ];

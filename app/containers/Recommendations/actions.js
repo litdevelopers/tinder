@@ -19,14 +19,29 @@ import {
   DUMP_ALL_RECOMMENDATIONS_START,
   DUMP_ALL_RECOMMENDATIONS_SUCCESS,
   SORT_LIKES,
+  NEW_MATCH,
 } from './constants';
+
+export function newMatch({ _id, ...restOfData }) {
+  return {
+    type: NEW_MATCH,
+    id: _id,
+    payload: {
+      data: restOfData,
+      date: new Date().toISOString(),
+    },
+  };
+}
 
 export function superLikePerson(id, hash, details) {
   return {
     type: SUPERLIKE_PERSON,
     id,
     hash,
-    details,
+    details: {
+      ...details,
+      date: new Date().toISOString(),
+    },
   };
 }
 
@@ -49,7 +64,10 @@ export function likePerson(id, hash, details) {
     type: LIKE_PERSON,
     id,
     hash,
-    details,
+    details: {
+      ...details,
+      date: new Date().toISOString(),
+    },
   };
 }
 
@@ -72,7 +90,10 @@ export function passPerson(id, hash, details) {
     type: PASS_PERSON,
     id,
     hash,
-    details,
+    details: {
+      ...details,
+      date: new Date().toISOString(),
+    },
   };
 }
 

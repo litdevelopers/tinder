@@ -25,14 +25,19 @@ const selectPotentialMatchList = () => createSelector(
 
 const selectLimitedRecommendationsList = () => createSelector(
   selectRecommendations(),
-  (substate) => substate.recommendations ? substate.recommendations.slice(0, 20) : null
+  (substate) => {
+    if (substate.recommendations) {
+      return substate.recommendations.slice(0, 20);
+    }
+    return null;
+  }
 );
 
 const selectCurrentRecommendation = () => createSelector(
   selectRecommendations(),
   selectRecommendationsList(),
   (recommendationsState, matches) => {
-    if (!matches) return undefined; // eslint-disable-line
+    if (!matches) return undefined;
     return matches.filter((each) => each._id === recommendationsState.currentDetailView.id)[0];
   }
 );

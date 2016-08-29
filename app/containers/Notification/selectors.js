@@ -6,9 +6,3 @@ export const selectCurrentError = () => createSelector(
   selectNotifications(),
   (notificationsState) => notificationsState.currentMessage
 );
-
-// export const selectQueuedError = () => createSelector(
-// 	selectNotifications(),
-// 	(notificationsState) => notificationsState.globalErrors[0]
-// );
-

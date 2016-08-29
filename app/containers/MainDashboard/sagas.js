@@ -1,7 +1,11 @@
+/* eslint no-constant-condition: 0 */
+
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
+
+import { actionWatcher } from 'containers/Recommendations/sagas';
 
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { selectUserID } from 'containers/Dashboard/selectors';
@@ -145,17 +149,17 @@ function* clearLocalData() {
   const tinderToken = yield getToken('tinderToken');
   const fbToken = yield getToken('fbToken');
   const lastActivityDate = yield getToken(`last_activity_date_${userID}`);
-  const actionsHistory = yield getToken(`actionsHistory_${userID}`);
 
   try {
     yield clearStore();
     yield storeToken('tinderToken', tinderToken);
     yield storeToken('fbToken', fbToken);
     yield storeToken(`last_activity_date_${userID}`, lastActivityDate);
-    yield storeToken(`actionsHistory_${userID}`, actionsHistory);
+    yield storeToken(`actionsHistory_${userID}`, []);
     yield storeToken('notificationsAllowed', true);
   } catch (error) {
-    console.warn(error);
+    yield put((newNotification(error)));
+    yield put(newNotificationAdded());
   }
 }
 
@@ -195,7 +199,8 @@ export function* mainDashboardSaga() {
   const locationUpdateWatcher = yield fork(locationUpdateWatcherFunction);
   const logOutWatch = yield fork(logOutWatcher);
   const clearLocalWatch = yield fork(clearLocalWatcher);
-  const watchers = [bioWatcher, photoOrderWatcher, profileUpdateWatcher, locationUpdateWatcher, logOutWatch, clearLocalWatch];
+  const recommendationsWatch = yield fork(actionWatcher, false);
+  const watchers = [recommendationsWatch, bioWatcher, photoOrderWatcher, profileUpdateWatcher, locationUpdateWatcher, logOutWatch, clearLocalWatch];
 
   yield take(LOCATION_CHANGE);
   yield watchers.map((each) => cancel(each));

@@ -39,11 +39,6 @@ const selectTargetGender = () => createSelector(
   (dashboardState) => dashboardState.user.gender_filter
 );
 
-const selectGlobalErrors = () => createSelector(
-  selectDashboard(),
-  (dashboardState) => dashboardState.globalErrors
-);
-
 const selectUserObject = () => createSelector(
   selectDashboard(),
   (dashboardState) => {
@@ -77,12 +72,16 @@ const selectUserName = () => createSelector(
   }
 );
 
+const selectActionsHistory = () => createSelector(
+  selectDashboard(),
+  (state) => state.actionsHistory
+);
+
 export default selectDashboard;
 export {
   selectDashboard,
   selectDashboardDomain,
   selectTargetGender,
-  selectGlobalErrors,
   selectFetching,
   selectUserObject,
   selectUserID,
@@ -90,4 +89,5 @@ export {
   selectMatchesHistory,
   selectUserName,
   selectIsSyncing,
+  selectActionsHistory,
 };

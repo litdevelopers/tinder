@@ -76,7 +76,7 @@ class DetailView extends React.Component {
         <div className={styles.detailViewContainer_content}>
           <div className={styles.detailViewContainer_contentName}>
             <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
-            {instagramData ? <a href={`https://instagram.com/${instagramData.username}`} target="_blank" style={{ color: 'black' }} ><Icon type="instagram" style={{ marginBottom: 10, marginLeft: 5 }} /></a> : null}
+            {instagramData ? <a href={`https://instagram.com/${instagramData.username}`} target="_blank" style={{ color: 'black' }} ><Icon type="instagram" style={{ marginTop: 5, marginLeft: 5, float: 'right' }} /></a> : null}
             {this.props.isPotentialLike ? <Text type="potentialLike">Potential Like!</Text> : null}
           </div>
           <div>

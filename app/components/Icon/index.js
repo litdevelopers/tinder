@@ -22,12 +22,14 @@ const iconMapping = {
   instagram: (
     <path d="M50,4.9c-21.7,0-39.8,15.4-44.1,35.8c-0.6,3-1,6.1-1,9.2c0,24.9,20.2,45.1,45,45.1S95,74.9,95,50c0-3.2-0.3-6.3-1-9.2  C89.8,20.3,71.7,4.9,50,4.9z M71.3,19.3c4.3,0,7.9,3.5,7.9,7.9c0,4.2-3.2,7.6-7.3,7.8c-0.2,0-0.4,0-0.5,0c-4.3,0-7.9-3.5-7.9-7.9  c0,0,0,0,0,0C63.4,22.8,67,19.3,71.3,19.3z M50,32.9c9.4,0,17.1,7.7,17.1,17.1c0,9.4-7.7,17.1-17.1,17.1c-9.4,0-17.1-7.7-17.1-17.1  C32.9,40.6,40.6,32.9,50,32.9z M50,85.1c-19.3,0-35-15.7-35-35.1c0-2.4,0.3-4.8,0.7-7.2c0.1-0.7,0.3-1.4,0.5-2h9  c-1.1,2.9-1.7,6-1.7,9.2c0,14.6,11.9,26.5,26.5,26.5S76.5,64.6,76.5,50c0-3.3-0.6-6.4-1.7-9.2h9c0.2,0.7,0.4,1.4,0.5,2  c0.5,2.4,0.7,4.8,0.7,7.2C85,69.3,69.3,85.1,50,85.1z" />
   ),
+  replyArrow: (<path fill="#000000" d="M19 21.002v-8c0-2.209-1.791-4-4-4h-9.172l3.595 3.594-1.414 1.415-4.595-4.6-1.414-1.409 6-6 1.415 1.414-3.587 3.586h9.172c3.314 0 6 2.686 6 6v8h-2z"/>),
 };
 
-const Icon = ({ style, type }) => {
+
+const Icon = ({ style, type, viewBox }) => {
   const otherStyling = style;
   return (
-    <svg style={{ height: 25, width: 25, ...otherStyling }} viewBox="0 0 102 92">
+    <svg style={{ height: 25, width: 25, ...otherStyling }} viewBox={viewBox}>
       <g style={{ flex: 1 }}>
         {iconMapping[type]}
       </g>
@@ -37,6 +39,11 @@ const Icon = ({ style, type }) => {
 Icon.propTypes = {
   style: React.PropTypes.object,
   type: React.PropTypes.string,
+  viewBox: React.PropTypes.string,
+};
+
+Icon.defaultProps = {
+  viewBox: '0 0 102 92',
 };
 
 export default Icon;

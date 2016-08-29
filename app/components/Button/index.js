@@ -9,6 +9,7 @@ const styleMapping = {
   },
   pass: {
     left: 4,
+    marginLeft: 3,
   },
 };
 

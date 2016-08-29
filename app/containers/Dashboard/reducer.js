@@ -13,6 +13,7 @@ import {
   FETCH_DATA_ERROR,
   FETCH_DATA_SUCCESS,
   FETCHED_RECOMMENDATIONS_WITH_PREFS,
+  UPDATE_ACTIONS_REDUCER,
 } from './constants';
 
 import {
@@ -32,6 +33,7 @@ const initialState = fromJS({
   user: false,
   rating: false,
   history: false,
+  actionsHistory: [],
   recommendations: false,
   shouldUpdateRecommendations: true,
   lastError: false,
@@ -89,6 +91,8 @@ function dashboardReducer(state = initialState, action) {
       return state.set('shouldUpdateRecommendations', true);
     case LOCATION_CHANGE:
       return state.set('isFetching', false);
+    case UPDATE_ACTIONS_REDUCER:
+      return state.set('actionsHistory', action.payload);
     default:
       return state;
   }

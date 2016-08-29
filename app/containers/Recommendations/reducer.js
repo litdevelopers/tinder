@@ -18,6 +18,7 @@ import {
   DUMP_ALL_RECOMMENDATIONS,
   FETCH_RECOMMENDATIONS_LOCALLY,
   SORT_LIKES,
+  NEW_MATCH,
 } from './constants';
 
 import {
@@ -90,6 +91,8 @@ export default function recommendationsReducer(state = initialState, action) {
     case SORT_LIKES:
       return state
         .set('sortLikes', new Set([...state.get('sortLikes'), ...new Set(action.payload)]));
+    case NEW_MATCH:
+      return state.set('lastAction', action.data);
     default:
       return state;
   }

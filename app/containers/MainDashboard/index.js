@@ -8,8 +8,10 @@ import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-ho
 import { editingBio, reorderPhotos, selectingLocation, setAgeFilter, setDistanceFilter, setGenderFilter, selectLocation, setGender, setDiscover, logOut, clearLocalData } from './actions';
 import { fetchData } from 'containers/Dashboard/actions';
 
-import { selectUserObject } from 'containers/Dashboard/selectors';
+import { selectUserObject, selectActionsHistory } from 'containers/Dashboard/selectors';
 import { selectIsSettingLocation, selectMarkerLocation } from './selectors';
+import { superLikePerson, likePerson, passPerson } from 'containers/Recommendations/actions';
+
 
 import { getFacebookUrl } from 'utils/facebook';
 import { getAge } from 'utils/operations';
@@ -18,6 +20,7 @@ import Text from 'components/Text';
 import Button from 'components/Button';
 import MapView from 'components/MapView';
 import Icon from 'components/Icon';
+import HistoryEntry from 'components/HistoryEntry';
 import styles from './styles.css';
 
 const VALUE_TO_START_RENDERING = 3.8;
@@ -86,6 +89,17 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
     return <PhotoList axis="x" items={photos} onSortEnd={({ oldIndex, newIndex }) => { this.props.reorderPhotos(arrayMove(photos, oldIndex, newIndex)); }} />;
   }
 
+  renderHistory() {
+    if (!this.props.actionsHistory) {
+      return undefined;
+    }
+    return this.props.actionsHistory.map((each) =>
+      <HistoryEntry
+        key={each.id}
+        data={each}
+        onClickButton={this.props.onClickButton}
+      />);
+  }
 
   render() {
     const { userObject } = this.props;
@@ -287,7 +301,9 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                 <div className={styles.mainDashboardScrollableColumn}>
                   <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Your actions<Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}>Swipe and match history activity in Lit.</Text></Text>
                   <div className={styles.mainDashboardScrollableColumnContainer} style={{ borderTop: '1px solid #eee' }}>
-                    
+                    <ul className={styles.actionsHistoryContainer}>
+                      {this.renderHistory()}
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -318,12 +334,15 @@ MainDashboard.propTypes = {
   ]),
   markerLocation: PropTypes.object,
   isSelectingLocation: PropTypes.bool,
+  actionsHistory: PropTypes.array,
+  onClickButton: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   userObject: selectUserObject(),
   markerLocation: selectMarkerLocation(),
   isSelectingLocation: selectIsSettingLocation(),
+  actionsHistory: selectActionsHistory(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -340,6 +359,11 @@ function mapDispatchToProps(dispatch) {
     setDiscover: (newValue) => dispatch(setDiscover(newValue)),
     logOut: () => dispatch(logOut()),
     clearLocalData: () => dispatch(clearLocalData()),
+    onClickButton: (id, hash, details, type) => {
+      if (type === 'like') dispatch(likePerson(id, hash, details));
+      if (type === 'pass') dispatch(passPerson(id, hash, details));
+      if (type === 'superlike') dispatch(superLikePerson(id, hash, details));
+    },
   };
 }
 

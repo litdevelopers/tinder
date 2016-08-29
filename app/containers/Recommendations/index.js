@@ -146,8 +146,8 @@ function mapDispatchToProps(dispatch) {
     onMultiple: (recommendations, type) => {
       const currentRecommendations = recommendations;
       currentRecommendations.map((each) => {
-        if (type === 'like') return dispatch(likePerson(each._id, each.content_hash));
-        if (type === 'pass') return dispatch(passPerson(each._id, each.content_hash));
+        if (type === 'like') return dispatch(likePerson(each._id, each.content_hash, { name: each.name }));
+        if (type === 'pass') return dispatch(passPerson(each._id, each.content_hash, { name: each.name }));
         return null;
       });
     },

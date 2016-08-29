@@ -173,3 +173,12 @@
   bottom: 5px;
   left: 5px;
 }
+
+.historyAction {
+  font-size: 14px;
+}
+
+.historyDate {
+  margin-left: 10px;
+  font-size: 12px;
+}
