@@ -21,11 +21,12 @@ import {
   SORT_LIKES,
 } from './constants';
 
-export function superLikePerson(id, hash) {
+export function superLikePerson(id, hash, details) {
   return {
     type: SUPERLIKE_PERSON,
     id,
     hash,
+    details,
   };
 }
 
@@ -43,11 +44,12 @@ export function superLikePersonError(errors) {
   };
 }
 
-export function likePerson(id, hash) {
+export function likePerson(id, hash, details) {
   return {
     type: LIKE_PERSON,
     id,
     hash,
+    details,
   };
 }
 
@@ -65,11 +67,12 @@ export function likePersonError(errors) {
   };
 }
 
-export function passPerson(id, hash) {
+export function passPerson(id, hash, details) {
   return {
     type: PASS_PERSON,
     id,
     hash,
+    details,
   };
 }
 

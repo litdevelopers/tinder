@@ -122,7 +122,7 @@ DashboardRecommendations.propTypes = {
   onMultiple: PropTypes.func.isRequired,
   onFilter: PropTypes.func.isRequired,
   fetchRecommendations: PropTypes.func.isRequired,
-  targetGender: PropTypes.number.isRequired,
+  targetGender: PropTypes.number,
   isFetching: PropTypes.bool,
   dumpAllRecommendations: PropTypes.func,
   fetchRecommendationsLocally: PropTypes.func,
@@ -154,10 +154,10 @@ function mapDispatchToProps(dispatch) {
     onClickCard: (id, image) => {
       dispatch(detailPerson(id, image));
     },
-    onClickButton: (id, hash, type) => {
-      if (type === 'like') dispatch(likePerson(id, hash));
-      if (type === 'pass') dispatch(passPerson(id, hash));
-      if (type === 'superlike') dispatch(superLikePerson(id, hash));
+    onClickButton: (id, hash, details, type) => {
+      if (type === 'like') dispatch(likePerson(id, hash, details));
+      if (type === 'pass') dispatch(passPerson(id, hash, details));
+      if (type === 'superlike') dispatch(superLikePerson(id, hash, details));
     },
     dumpAllRecommendations: () => dispatch(dumpAllRecommendationsStart()),
   };

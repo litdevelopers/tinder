@@ -51,7 +51,9 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   componentDidUpdate() {
-    document.getElementById('matchMessageContainer').scrollTop = document.getElementById('matchMessageContainer').scrollHeight;
+    if (this.matchMessageContainer) {
+      this.matchMessageContainer.scrollTop = this.matchMessageContainer.scrollHeight;
+    }
   }
 
   componentWillUnmount() {
@@ -101,7 +103,10 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
             <div className={styles.horizontalMessengerPanel}>
               <div className={styles.columnMessengerPanel} id="messengerPanelContainer">
                 {this.props.currentPerson && this.props.matchMessages ?
-                  <div className={styles.messagesPanel} id="matchMessageContainer">
+                  <div
+                    className={styles.messagesPanel}
+                    ref={(thisComponent) => { this.matchMessageContainer = thisComponent; }}
+                  >
                     {this.mapMessages()}
                   </div>
                   :

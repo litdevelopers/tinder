@@ -13,6 +13,8 @@
   flex: 3;
   padding: 20px 10px;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
 }
 
 .commonConnectionsContainer {
@@ -60,7 +62,10 @@
   justify-content: space-around;
   display: flex;
   width: 60%;
-  margin: 10px auto;
+  margin: 50px auto 0px auto;
+  flex: 1;
+  align-self: flex-end;
+  align-items: flex-end;
 }
 
 .detailViewContainerButtons button {
@@ -68,3 +73,4 @@
   max-width: 50px;
   max-height: 50px;
 }
+

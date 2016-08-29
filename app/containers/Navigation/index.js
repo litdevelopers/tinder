@@ -17,8 +17,8 @@ class Navigation extends React.Component { // eslint-disable-line
         <span onClick={this.props.navigateTo} id="/dashboard/home" className={window.location.pathname === '/dashboard/home' ? styles.navigation_item_active : styles.navigation_item}>{this.props.userName || 'Dashboard'}</span>
         <span onClick={this.props.navigateTo} id="/dashboard/recommendations" className={window.location.pathname === '/dashboard/recommendations' ? styles.navigation_item_active : styles.navigation_item}>Recommendations</span>
         <span onClick={this.props.navigateTo} id="/dashboard/messages" className={window.location.pathname === '/dashboard/messages' ? styles.navigation_item_active : styles.navigation_item}>Matches{this.props.notifications && this.props.notifications.length ? <div className={styles.newDot} /> : null}</span>
-      </div>: <div className={styles.navigation} />
-    );     
+      </div> : <div className={styles.navigation} />
+    );
   }
 }
 

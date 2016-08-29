@@ -76,8 +76,8 @@ function* getUserData() {
 
 function* parseNotificationData(data, type) {
   if (type === 'matches') {
-    const bodyText = data.length > 1 ? `Check out your ${data.length} new matches in Tinder.` : `You matched with ${data[0].details.name}!`;
-    createNotification(bodyText, data[0].details.image);
+    const bodyText = data.length > 1 ? `Check out your ${data.length} new matches in Tinder.` : `You matched with ${data[0].details.text}!`;
+    createNotification(bodyText, data[0].details.image, `New ${data.length > 1 ? 'matches' : 'match'} from Tinder!`);
   } else if (type === 'messages') {
     const bodyText = data.length > 1 ? `Check our your ${data.length} new messages in Tinder.` : data[0].details.text;
     const titleText = data.length > 1 ? 'New messages from Tinder matches!' : `New message from ${data[0].details.name}`;
@@ -199,7 +199,7 @@ export function* tinderBackgroundSync() {
 }
 
 function* storeMetadataAction(userID) {
-  if (!localStorage.getItem('tinderUserID')) {
+  if (!localStorage.getItem('tinderUserID') || userID !== localStorage.getItem('tinderUserID')) {
     localStorage.setItem('tinderUserID', userID);
   }
   yield storeToken(`last_activity_date_${userID}`, new Date().toISOString());

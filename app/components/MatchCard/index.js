@@ -6,8 +6,12 @@ import Text from 'components/Text';
 import Button from 'components/Button';
 
 
-function MatchCard(props) {
-  const { data, type } = props;
+const buttonMapping = [
+  'pass', 'superlike', 'like',
+];
+
+
+const MatchCard = ({ data, type, onClick, onClickButton }) => {
   const bioText = (data.bio.trim()) ?
     <p className={styles.matchCardContainer_bio}>{data.bio}</p> :
   null;
@@ -40,14 +44,12 @@ function MatchCard(props) {
     >
       <div className={styles.matchCardContainer}>
         <div className={styles.matchCardButtons}>
-          <Button type="pass" onClick={props.onClickButton} id={data._id} hash={data.content_hash}></Button>
-          <Button type="superlike" onClick={props.onClickButton} id={data._id} hash={data.content_hash}></Button>
-          <Button type="like" onClick={props.onClickButton} id={data._id} hash={data.content_hash}></Button>
+          {buttonMapping.map((each) => <Button key={each} type={each} details={{ name: data.name }} onClick={onClickButton} id={data._id} hash={data.content_hash}></Button>)}
         </div>
         <div
           className={styles.matchCardContainer_wrapper}
           onClick={() => {
-            props.onClick(data._id, data.photos[0].url);
+            onClick(data._id, data.photos[0].url);
           }}
         >
           {ageText}
@@ -59,13 +61,14 @@ function MatchCard(props) {
       </div>
     </div>
 );
-}
+};
 
 MatchCard.propTypes = {
   onClickButton: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   data: PropTypes.object.isRequired,
   tab_index: PropTypes.number,
+  type: PropTypes.string,
 };
 
 

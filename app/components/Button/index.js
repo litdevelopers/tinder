@@ -12,11 +12,11 @@ const styleMapping = {
   },
 };
 
-const Button = ({ children, type, id, hash, onClick }) => (
+const Button = ({ children, type, id, hash, details, onClick }) => (
   <button
     className={styles[type]}
     onClick={() => {
-      onClick(id, hash, type);
+      onClick(id, hash, details, type);
     }}
   >
     {children || <Icon type={type} style={styleMapping[type]} />}
@@ -31,6 +31,7 @@ Button.propTypes = {
   id: PropTypes.string,
   hash: PropTypes.string,
   onClick: PropTypes.func.isRequired,
+  details: PropTypes.object,
 };
 
 export default Button;

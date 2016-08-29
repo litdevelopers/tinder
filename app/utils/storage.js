@@ -78,3 +78,13 @@ export function clearStore() {
     localForage.clear().then(() => resolve('done')).catch((err) => reject(err));
   });
 }
+
+export function appendDataWithtoken(token, data) {
+  return new Promise((resolve, reject) => {
+    getToken(token)
+    .then((retrivedData) => {
+      storeToken(token, retrivedData.concat(data)).then(() => resolve('done!'));
+    })
+    .catch((err) => reject(err));
+  });
+}

@@ -9,6 +9,10 @@ import Icon from 'components/Icon';
 import Text from 'components/Text';
 import Button from 'components/Button';
 
+const buttonMapping = [
+  'pass', 'superlike', 'like',
+];
+
 class DetailView extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.imageData.length === 0) {
@@ -38,12 +42,10 @@ class DetailView extends React.Component {
   }
 
 
-  renderButtons({ _id, contentHash }, onClickButton) {
+  renderButtons({ _id, content_hash, name }, onClickButton) {
     return (
       <div className={styles.detailViewContainerButtons}>
-        <Button type="pass" onClick={onClickButton} id={_id} hash={contentHash}></Button>
-        <Button type="superlike" onClick={onClickButton} id={_id} hash={contentHash}></Button>
-        <Button type="like" onClick={onClickButton} id={_id} hash={contentHash}></Button>
+      {buttonMapping.map((each) => <Button key={each} type={each} details={{ name }} onClick={onClickButton} id={_id} hash={content_hash}></Button>)}
       </div>
     );
   }
@@ -72,9 +74,11 @@ class DetailView extends React.Component {
           /> : null}
         </div>
         <div className={styles.detailViewContainer_content}>
-          <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
-          {instagramData ? <a href={`https://instagram.com/${instagramData.username}`} target="_blank" style={{ color: 'black' }} ><Icon type="instagram" style={{ marginBottom: 10, marginLeft: 5 }} /></a> : null}
-          {this.props.isPotentialLike ? <Text type="potentialLike">Potential Like!</Text> : null}
+          <div className={styles.detailViewContainer_contentName}>
+            <Text type="name" style={{ color: 'black' }}>{this.props.data.name}</Text>
+            {instagramData ? <a href={`https://instagram.com/${instagramData.username}`} target="_blank" style={{ color: 'black' }} ><Icon type="instagram" style={{ marginBottom: 10, marginLeft: 5 }} /></a> : null}
+            {this.props.isPotentialLike ? <Text type="potentialLike">Potential Like!</Text> : null}
+          </div>
           <div>
             <Text type="age" style={{ color: 'black' }}>{age}</Text>
             <Text type="lastActive">{parsePingTime(this.props.data.ping_time)}</Text>
