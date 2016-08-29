@@ -22,7 +22,7 @@ function MessengerCard(props) {
           <div
             className={styles.matchAvatar}
             style={{
-              backgroundImage: `url(${person && person.photos.length !== 0 && person.photos[0].processedFiles && person.photos[0].processedFiles[0].url})`,
+              backgroundImage: `url(${person && person.photos.length !== 0 && person.photos[0].processedFiles && person.photos[0].processedFiles[2].url})`,
               backgroundColor: 'lightgrey',
             }}
           />

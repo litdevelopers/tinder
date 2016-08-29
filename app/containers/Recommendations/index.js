@@ -11,6 +11,7 @@ import { selectTargetGender } from 'containers/Dashboard/selectors';
 import DetailView from 'components/DetailView';
 import MatchCard from 'components/MatchCard';
 import Panel from 'components/Panel';
+import Button from 'components/Button';
 import Infinite from 'react-infinite';
 
 import styles from './styles.css';
@@ -64,10 +65,8 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
               <option value="oldest">Oldest</option>
             </select>
             <div className={styles.dashboardMatchesContainerButtons}>
-            {
-              // <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'like')}>Like All</Button>
-              // <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.matches, 'pass')}>Pass All</Button>
-            }
+              <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.recommendations, 'like')}>Like All</Button>
+              <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.recommendations, 'pass')}>Pass All</Button>
             </div>
           </div>
           {recommendations ?
