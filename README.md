@@ -11,6 +11,11 @@ React Tinder offers all the same features as the Tinder mobile application with 
 - Want to pass instead of like? Go back to your history and change your mind in history.
 - Live chat with matches
 
+# Images  
+![Profile Screen](https://raw.githubusercontent.com/litdevelopers/tinder/master/media/profile.png)
+![Recommendations Screen](https://raw.githubusercontent.com/litdevelopers/tinder/master/media/recommendations.png)
+![Messaging Screen](https://raw.githubusercontent.com/litdevelopers/tinder/master/media/messages.png)
+
 # Usage
 1. Fork or Clone the repository.
 2. run ```npm install``` while in the directory of the project.
