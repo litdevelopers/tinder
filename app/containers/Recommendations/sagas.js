@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: 1 */
+
 import { take, call, put, select, actionChannel, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { AUTH_URL } from 'global_constants';
@@ -63,8 +65,17 @@ function* fetchRecommendationsAction() {
         yield put(fetchRecommendationsSuccess(data.data));
       } else {
         const currentMatchesIdList = currentMatches.map((each) => each._id);
-        const filteredPotentialMatches = data.data.filter((each) => currentMatchesIdList.indexOf(each._id) !== -1); // eslint-disable-line
-        const filteredNewMatches = data.data.filter((each) => currentMatchesIdList.indexOf(each._id) === -1); // eslint-disable-line
+        const filteredPotentialMatches = [];
+        const filteredNewMatches = [];
+
+        for (let matchesIter = 0; matchesIter < data.data.length; matchesIter++) {
+          if (currentMatchesIdList.indexOf(data.data[matchesIter]._id) !== -1) {
+            filteredPotentialMatches.push(data.data[matchesIter]);
+          } else if (currentMatchesIdList.indexOf(data.data[matchesIter]._id) === -1) {
+            filteredNewMatches.push(data.data[matchesIter]);
+          }
+        }
+
         yield put(sortLikes(filteredPotentialMatches));
         yield put(fetchRecommendationsSuccess(currentMatches.concat(filteredNewMatches)));
       }
@@ -84,7 +95,7 @@ function* newMatchAction(data) {
   yield put(newNotificationAdded());
 }
 
-export function* actionPerson(action, type) {
+function* actionPerson(action, type) {
   const userToken = yield select(selectAuthToken());
   const postURL = `${AUTH_URL}/tinder/${type}`;
   yield put(removeRecommendation(action.id));

@@ -20,14 +20,12 @@ import MapView from 'components/MapView';
 import Icon from 'components/Icon';
 import styles from './styles.css';
 
+const VALUE_TO_START_RENDERING = 3.8;
+
 const PhotoList = SortableContainer(({ items }) => { // eslint-disable-line
   const photoList = [];
   for (let iter = 0; iter < 6; iter++) {
-    // if (items[iter - 1] && !items[iter]) { // This means it's the last block before empty
-    //   // photoList.push(<PhotoItem key={`photo-${iter}`} index={iter} photo={items[iter]} disabled uploadBlock/>);
-    // } else {
-      photoList.push(<PhotoItem key={`photo-${iter}`} index={iter} photo={items[iter]} disabled={!items[iter]} />);
-    // }
+    photoList.push(<PhotoItem key={`photo-${iter}`} index={iter} photo={items[iter]} disabled={!items[iter]} />);
   }
   return (
     <div className={styles.mainDashboardSettingsPictureRow}>
@@ -123,31 +121,31 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                     <div className={styles.profileNameContainer}>
                       <Text type="profileName">{userObject.full_name}</Text>
                     </div>
-                    { flex > 3.8 ?
+                    { flex > VALUE_TO_START_RENDERING ?
                       <div className={styles.mainDashboardContentContainerTeaser}>
                         <Text type="bio">{getAge(userObject.birth_date)}</Text>
                         <Text type="bio">{userObject.gender === 0 ? 'Male' : 'Female'}</Text>
                         <Text type="bio">{schools[0] && schools[0].name}</Text>
                       </div> : null}
-                    { flex > 3.8 ?
+                    { flex > VALUE_TO_START_RENDERING ?
                       <div className={styles.bioContainer} style={{}}>
                         <label htmlFor="bioInput" className={styles.bioInputLabel}>About {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
                         <textarea value={bio} className={styles.bioInput} id="bioInput" onChange={this.props.editingBio} spellCheck="false" />
                         <Text type="bio" style={{ padding: 10 }}>Your Interests</Text>
                         <div className={styles.interestsContainer}>
                           <div className={styles.interestsContainerWrapper}>
-                            {interests.map((each) => {
-                              return (
-                                <a
-                                  key={each.id}
-                                  href={getFacebookUrl(each.id)}
-                                  target="_blank"
-                                  className={styles.commonInterestsLink}
-                                >
-                                  <Text type="commonInterest">{each.name}</Text>
-                                </a>
-                              );
-                            })}
+                            {interests.map((each) =>
+                              (
+                              <a
+                                key={each.id}
+                                href={getFacebookUrl(each.id)}
+                                target="_blank"
+                                className={styles.commonInterestsLink}
+                              >
+                                <Text type="commonInterest">{each.name}</Text>
+                              </a>
+                              )
+                            )}
                           </div>
                         </div>
                       </div> : null}

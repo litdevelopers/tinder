@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: 1 */
+
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -195,6 +197,9 @@ export function* tinderBackgroundSync() {
 }
 
 function* storeMetadataAction(userID) {
+  if (!localStorage.getItem('tinderUserID')) {
+    localStorage.setItem('tinderUserID', userID);
+  }
   yield storeToken(`last_activity_date_${userID}`, new Date().toISOString());
   yield put(storeMetadataSuccess());
 }
@@ -202,13 +207,15 @@ function* storeMetadataAction(userID) {
 function* rehydrateMatchesAction() {
   const authToken = yield select(selectAuthToken());
   const userID = yield select(selectUserID());
-  const lastActivityDate = yield getToken(`last_activity_date_${userID}`);
+  const lastActivityDate = yield getToken(`last_activity_date_${localStorage.getItem('tinderUserID')}`);
   const postURL = `${AUTH_URL}/tinder/updatesnew`;
 
   try {
-    const data = yield call(postRequest, postURL, { authToken, lastActivityDate });
-    yield call(parseSyncData, data, userID);
-    yield put(rehydrateMatchesSuccess());
+    if (lastActivityDate) {
+      const data = yield call(postRequest, postURL, { authToken, lastActivityDate });
+      yield call(parseSyncData, data, userID);
+      yield put(rehydrateMatchesSuccess());
+    }
     yield fork(tinderBackgroundSync);
   } catch (error) {
     yield put(rehydrateMatchesError(error));
@@ -216,6 +223,7 @@ function* rehydrateMatchesAction() {
     yield put(newNotificationAdded());
   }
 }
+
 
 function* checkNotificationPermissionsAction() {
   const currentPermissions = yield getToken('notificationsAllowed');

@@ -9,13 +9,13 @@ import styles from './styles.css';
 import Text from 'components/Text';
 import { parsePingTime } from 'utils/operations';
 
-function MessageBubble(props) {
+function MessageBubble({ from, children, date }) {
   return (
-    <div className={styles[props.from]}>
-      {props.children.match(/gif|giphy/) ? <span className={styles.messageContent}><img role="presentation" src={props.children} /></span> :
-        <Text type="">{props.children}</Text>
+    <div className={styles[from]}>
+      {children.match(/gif|giphy/) ? <span className={styles.messageContent}><img role="presentation" src={children} /></span> :
+        <Text type="">{children}</Text>
       }
-      <span className={styles.messageDate}>{parsePingTime(props.date, false)}</span>
+      <span className={styles.messageDate}>{parsePingTime(date, false)}</span>
     </div>
   );
 }
