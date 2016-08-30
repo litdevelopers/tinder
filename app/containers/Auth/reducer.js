@@ -1,6 +1,4 @@
 import {
-  CHANGE_LOGIN,
-  CHANGE_PASSWORD,
   LOGIN_FACEBOOK,
   LOGIN_FACEBOOK_ERROR,
   LOGIN_FACEBOOK_SUCCESS,
@@ -24,12 +22,6 @@ const initialState = fromJS({
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_LOGIN:
-      return state
-        .set('login', action.payload);
-    case CHANGE_PASSWORD:
-      return state
-          .set('password', action.payload);
     case LOGIN_FACEBOOK:
       return state
           .set('isAuthing', true);

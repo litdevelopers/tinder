@@ -80,8 +80,35 @@
 }
 
 .fetchMatches {
-  flex-basis: 10%;
+  font-size: 12px;
+  max-height: 30px;
+  padding: 5px 15px;
+  border-radius: 3px;
+  margin-left: 10px;
+  color: white;
+  font-weight: 500;
+  background-color: #e95f5c;
+  border: 1px solid #e95f5c;
 }
+
+.fetchMatchesHollow {
+  composes: fetchMatches;
+  background-color: transparent;
+  color: #e95f5c;
+}
+
+.fetchMatches:hover {
+  background-color: transparent;
+  color: #e95f5c;
+  transition: 0.25s;
+}
+
+.fetchMatchesHollow:hover {
+  background-color: #e95f5c;
+  color: white;
+  transition: 0.25s;
+}
+
 
 
 .accountSettings {

@@ -60,7 +60,7 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             <select
               onChange={this.changeFilter}
             >
-              <option value="normal">Sort By...</option>
+              <option value="normal">Sort By</option>
               <option value="lastActive">Recently Active</option>
               <option value="distance">Nearby</option>
               <option value="youngest">Youngest</option>
@@ -68,7 +68,7 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             </select>
             <div className={styles.dashboardMatchesContainerButtons}>
               <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.recommendations, 'like')}>Like All</Button>
-              <Button type="fetchMatches" onClick={() => this.props.onMultiple(this.props.recommendations, 'pass')}>Pass All</Button>
+              <Button type="fetchMatchesHollow" onClick={() => this.props.onMultiple(this.props.recommendations, 'pass')}>Pass All</Button>
             </div>
           </div>
           {recommendations ?

@@ -10,11 +10,12 @@
   -webkit-box-sizing: content-box !important;
   -moz-box-sizing: content-box !important;
   box-sizing: content-box !important;
+  max-width: 80%;
 }
 
 .me {
-  color: #1a1a1a;
-  background-color: #eceff1;
+  color: #FFF;
+  background-color: #1aafd0;
   composes: messageBubble;
   float: left;
   align-self: flex-start;
@@ -22,14 +23,14 @@
 
 .you {
   align-self: flex-end;
-  color: #fff;
-  background-color: #00b0ff;
+  color: #1a1a1a;
+  background-color: #eceff1;
   composes: messageBubble;
 }
 
 .you:before {
   right: -3px;
-  background-color: #00b0ff;
+  background-color: #eceff1;
   position: absolute;
   top: 19px;
   display: block;
@@ -51,7 +52,7 @@
 }
 
 .you .messageDate {
-  color: white;
+  color: black;
 }
 
 .you:active .messageDate{
@@ -62,11 +63,12 @@
 .me:active .messageDate{
   visibility: visible;
   display: inline;
+  color: white;
 }
 
 .me:before {
   left: -3px;
-  background-color: #eceff1;
+  background-color: #1aafd0;
   position: absolute;
   top: 19px;
   display: block;

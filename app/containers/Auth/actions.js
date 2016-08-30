@@ -1,6 +1,4 @@
 import {
-    CHANGE_PASSWORD,
-    CHANGE_LOGIN,
     LOGIN_FACEBOOK,
     LOGIN_FACEBOOK_SUCCESS,
     LOGIN_FACEBOOK_ERROR,
@@ -36,21 +34,6 @@ export function loginLocalSuccess(token) {
   return {
     type: LOGIN_LOCAL_SUCCESS,
     payload: token,
-  };
-}
-
-
-export function changeLogin(login) {
-  return {
-    type: CHANGE_LOGIN,
-    payload: login,
-  };
-}
-
-export function changePassword(password) {
-  return {
-    type: CHANGE_PASSWORD,
-    payload: password,
   };
 }
 

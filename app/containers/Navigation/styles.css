@@ -1,7 +1,7 @@
 .navigation{
   display: flex;
   flex:1;
-  min-height:80px;
+  min-height: 60px;
   border-bottom:1px solid #e2e2e2;
   flex-direction: row;
   justify-content: flex-start;
@@ -31,13 +31,22 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
+  height: 100%;
+  padding: 20px;
 }
 
 .navigation_item_active {
   composes: navigation_item;
   color:#DB4C2C !important;
   cursor: pointer;
+  border-bottom: 3px solid #DB4C2C;
 }
+
+.navigation_item:hover {
+  color: #DB4C2C;
+  border-bottom: 3px solid #DB4C2C;
+}
+
 
 .newDot {
   height: 8px;

@@ -16,6 +16,9 @@ import { superLikePerson, likePerson, passPerson } from 'containers/Recommendati
 import { getFacebookUrl } from 'utils/facebook';
 import { getAge } from 'utils/operations';
 
+import messages from './messages';
+import { FormattedMessage } from 'react-intl';
+
 import Text from 'components/Text';
 import Button from 'components/Button';
 import MapView from 'components/MapView';
@@ -138,14 +141,14 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
                     { flex > VALUE_TO_START_RENDERING ?
                       <div className={styles.mainDashboardContentContainerTeaser}>
                         <Text type="bio">{getAge(userObject.birth_date)}</Text>
-                        <Text type="bio">{userObject.gender === 0 ? 'Male' : 'Female'}</Text>
+                        <Text type="bio">{userObject.gender === 0 ? <FormattedMessage {...messages.male} /> : <FormattedMessage {...messages.female} />}</Text>
                         <Text type="bio">{schools[0] && schools[0].name}</Text>
                       </div> : null}
                     { flex > VALUE_TO_START_RENDERING ?
                       <div className={styles.bioContainer} style={{}}>
-                        <label htmlFor="bioInput" className={styles.bioInputLabel}>About {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
+                        <label htmlFor="bioInput" className={styles.bioInputLabel}><FormattedMessage {...messages.about} /> {userObject.name} <Text type="bioInputTextCount">{500 - bio.length}</Text></label>
                         <textarea value={bio} className={styles.bioInput} id="bioInput" onChange={this.props.editingBio} spellCheck="false" />
-                        <Text type="bio" style={{ padding: 10 }}>Your Interests</Text>
+                        <Text type="bio" style={{ padding: 10 }}><FormattedMessage {...messages.yourInterests} /></Text>
                         <div className={styles.interestsContainer}>
                           <div className={styles.interestsContainerWrapper}>
                             {interests.map((each) =>
@@ -170,12 +173,12 @@ export class MainDashboard extends React.Component { // eslint-disable-line reac
           </div>
           <div className={styles.mainDashboardSettings}>
             <div className={styles.mainDashboardSettingsMain}>
-              <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Your Photos<Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}>Rearrange your images</Text></Text>
+              <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}><FormattedMessage {...messages.photoHeader} /><Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}><FormattedMessage {...messages.photoSubheader} /></Text></Text>
               {this.renderPhotos(photos)}
               <div className={styles.mainDashboardScrollable}>
                 <div className={styles.mainDashboardScrollableColumn}>
                   <div className={styles.mainDashboardScrollableColumnContainer}>
-                    <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}>Age, Gender and distance options<Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}>Adjust your settings here</Text></Text>
+                    <Text type="dashboardSettingsHeader" style={{ fontWeight: 300 }}><FormattedMessage {...messages.ageAndDistanceHeader} /><Text type="dashboardSettingsSubheader" style={{ fontSize: 12 }}><FormattedMessage {...messages.ageAndDistanceSubheader} /></Text></Text>
                     <div className={styles.mainDashboardSlider}>
                       <Rheostat
                         min={18}

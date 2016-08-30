@@ -13,12 +13,13 @@ const styleMapping = {
   },
 };
 
-const Button = ({ children, type, id, hash, details, onClick }) => (
+const Button = ({ children, type, id, hash, details, onClick, ...props }) => (
   <button
     className={styles[type]}
     onClick={() => {
       onClick(id, hash, details, type);
     }}
+    {...props}
   >
     {children || <Icon type={type} style={styleMapping[type]} />}
   </button>);

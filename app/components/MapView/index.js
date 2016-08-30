@@ -35,7 +35,8 @@ export default class MapView extends React.Component {
       <div className={styles.mapViewContainer} id="mapContainer">
         <Button
           onClick={this.handleButtonClick}
-          type="locationToggle"
+          type="fetchMatches"
+          style={{ position: 'absolute', zIndex: 3, right: 0, margin: 10 }}
         >
           Set Location
         </Button>

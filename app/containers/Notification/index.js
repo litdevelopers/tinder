@@ -26,7 +26,7 @@ class Dropdown extends React.Component { // eslint-disable-line
   renderDropdown(currentNotification) {
     let notificationString;
     let type;
-    if (currentNotification.match(/liking/)) {
+    if (currentNotification.toString().match(/liking/)) {
       notificationString = currentNotification;
       type = 'error';
     } else if (currentNotification.toString().match(/400|network|trouble|timeout/i)) {

@@ -34,6 +34,9 @@ import {
   dumpAllInit,
 } from './actions';
 
+import messages from './messages';
+import { FormattedMessage } from 'react-intl';
+
 import MessengerCard from 'components/MessengerCard';
 import DetailView from 'components/DetailView';
 import Panel from 'components/Panel';
@@ -73,23 +76,33 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
 
   mapMessages() {
     return this.props.matchMessages.map((each) => {
-      return (<MessageBubble key={each.payload._id} from={each.from} date={each.payload.sent_date}>{each.payload.message}</MessageBubble>);
+      return (<MessageBubble
+        key={each.payload._id}
+        from={each.from}
+        date={each.payload.sent_date}
+      >
+        {each.payload.message}
+      </MessageBubble>);
     })
     .concat(this.props.selectOptimistic.map((each) => {
       if (each.id === this.props.currentPerson.id) {
-        return <MessageBubble key={each.message} from="you">{each.message}</MessageBubble>;
+        return (<MessageBubble
+        key={each.message}
+        from="you">
+          {each.message}
+        </MessageBubble>);
       }
     }));
   }
 
   renderPlaceholderMessage() {
     if (this.props.isDataFetching) {
-      return "Hold on, we're syncing your matches.";
+      return <FormattedMessage {...messages.whenLoadingData} />;
     }
     if (this.props.selectMatches) {
-      return 'Select a person to start chatting!';
+      return <FormattedMessage {...messages.whenLoadedData} />;
     }
-    return 'Visit your recommendations to find a new match.';
+      return <FormattedMessage {...messages.whenNoDataisFound} />;
   }
 
   render() {

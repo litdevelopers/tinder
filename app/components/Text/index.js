@@ -5,6 +5,7 @@ const Text = (props) => {
   if (!props.children) {
     return null;
   }
+  const { className } = props;
   return (<span {...props} className={styles[props.type]}>{props.children}</span>);
 };
 

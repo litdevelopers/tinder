@@ -101,7 +101,7 @@ function* actionPerson(action, type, removePerson) {
   const postURL = `${AUTH_URL}/tinder/${type}`;
   let removedPerson = false;
 
-  if (type === 'pass') {
+  if (type === 'pass' && removePerson) {
     yield put(removeRecommendation(action.id));
     removedPerson = true;
   }
@@ -109,7 +109,9 @@ function* actionPerson(action, type, removePerson) {
   try {
     const data = yield call(postRequest, postURL, { userToken, userID: action.id, hash: action.hash });
     if (data.status === 200) {
-      if (removePerson && !removedPerson) yield put(removeRecommendation(action.id));
+      if (removePerson && !removedPerson) {
+        yield put(removeRecommendation(action.id));
+      }
       yield put(detailPerson(''));
       if (type === 'like') yield put(likePersonSuccess({ id: action.id, action: 'like' }));
       if (type === 'superlike') yield put(superLikePersonSuccess({ id: action.id, action: 'superlike' }));

@@ -22,10 +22,10 @@ const buttonTypes = [
 
 
 const typeMapping = {
-  LIKE_PERSON: (personName) => `You liked ${personName}`,
-  SUPERLIKE_PERSON: (personName) => `You superliked ${personName}`,
-  PASS_PERSON: (personName) => `You passed on  ${personName}`,
-  NEW_MATCH: (personName) => `You matched with ${personName}`,
+  LIKE_PERSON: (personName) => <Text type="historyAction">You <Text type="historyAction" style={{ fontWeight: 600}}>liked </Text>{personName}</Text>,
+  SUPERLIKE_PERSON: (personName) => <Text type="historyAction">You <Text type="historyAction" style={{ fontWeight: 600}}>superliked </Text>{personName}</Text>,
+  PASS_PERSON: (personName) => <Text type="historyAction">You <Text type="historyAction" style={{ fontWeight: 600}}>passed </Text>on {personName}</Text>,
+  NEW_MATCH: (personName) => <Text type="historyAction">You <Text type="historyAction" style={{ fontWeight: 600}}>matched </Text>with {personName}</Text>,
 };
 
 function renderText(type, details) {

@@ -22,24 +22,15 @@ class Auth extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.props.onLogin}>
-          <input type="text" value={this.props.login} placeholder="facebook login" onChange={this.props.onChangeLogin} />
-          <input type="password" value={this.props.password} placeholder="facebook password" onChange={this.props.onChangePassword} />
-          <button type="submit">Submit</button>
-        </form>
       </div>
     );
   }
 }
 
 Auth.propTypes = {
-  onChangeLogin: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
   onLogin: PropTypes.func.isRequired,
   loginLocal: PropTypes.func.isRequired,
   routeToDashboard: PropTypes.func.isRequired,
-  login: PropTypes.string,
-  password: PropTypes.string,
   token: PropTypes.string,
 };
 
@@ -47,8 +38,6 @@ Auth.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    onChangeLogin: (event) => dispatch(changeLogin(event.target.value)),
-    onChangePassword: (event) => dispatch(changePassword(event.target.value)),
     loginLocal: () => dispatch(loginLocal()),
     onLogin: (e) => {
       e.preventDefault();
@@ -59,8 +48,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  login: selectLogin(),
-  password: selectPassword(),
   token: selectAuthToken(),
 });
 

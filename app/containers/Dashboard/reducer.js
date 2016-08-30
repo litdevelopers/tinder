@@ -45,18 +45,24 @@ const initialState = fromJS({
 
 function dashboardReducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_UPDATES:
     case FETCH_DATA:
-      return state
-        .set('isSyncing', true);
-    case FETCH_DATA_SUCCESS:
-      return state
-        .set(action.payload.dataType, fromJS(action.payload.data));
-    case FETCH_UPDATES_ERROR:
+      return state.set('isFetching', true);
     case FETCH_DATA_ERROR:
       return state
-        .set('lastError', action.payload)
+      .set('lastError', action.payload)
+      .set('isFetching', false);
+    case FETCH_DATA_SUCCESS:
+      return state.set(action.payload.dataType, fromJS(action.payload.data));
+    case FETCH_UPDATES:
+      return state.set('isSyncing', true);
+    case FETCH_UPDATES_ERROR:
+      return state
+        .set('lastError', action.payload);
+    case FETCH_UPDATES_END:
+      return state
         .set('isSyncing', false);
+    case UPDATE_ACTIONS_REDUCER:
+      return state.set('actionsHistory', action.payload);
     case EDITING_BIO:
       return state.setIn(['user', 'bio'], action.payload);
     case SET_DISCOVER:
@@ -82,17 +88,12 @@ function dashboardReducer(state = initialState, action) {
       .setIn(['user', 'gender'], action.payload.gender);
     case REORDER_PHOTOS:
       return state.setIn(['user', 'photos'], action.payload);
-    case FETCH_UPDATES_END:
-      return state
-        .set('isSyncing', false);
     case FETCHED_RECOMMENDATIONS_WITH_PREFS:
       return state.set('shouldUpdateRecommendations', false);
     case SELECT_LOCATION:
       return state.set('shouldUpdateRecommendations', true);
     case LOCATION_CHANGE:
       return state.set('isFetching', false);
-    case UPDATE_ACTIONS_REDUCER:
-      return state.set('actionsHistory', action.payload);
     default:
       return state;
   }

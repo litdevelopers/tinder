@@ -8,6 +8,7 @@ import 'babel-polyfill';
 
 /* eslint-disable import/no-unresolved */
 // Load the manifest.json file and the .htaccess file
+import 'file?name=[name].[ext]!./favicon.ico';
 import '!file?name=[name].[ext]!./manifest.json';
 import 'file?name=[name].[ext]!./.htaccess';
 

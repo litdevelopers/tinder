@@ -1,4 +1,5 @@
 import { fromJS, List } from 'immutable';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   SUPERLIKE_PERSON,
   PASS_PERSON,
@@ -85,14 +86,14 @@ export default function recommendationsReducer(state = initialState, action) {
       return state
       .set('recommendations', state.get('recommendations').filter((each) => each._id !== action.payload));
     case DUMP_ALL_RECOMMENDATIONS:
-      return state
-        .set('currentDetailView', fromJS({ id: '', image: '' }))
-        .set('recommendations', false);
+      return state.set('recommendations', false);
     case SORT_LIKES:
       return state
         .set('sortLikes', new Set([...state.get('sortLikes'), ...new Set(action.payload)]));
     case NEW_MATCH:
       return state.set('lastAction', action.data);
+    case LOCATION_CHANGE:
+      return initialState;
     default:
       return state;
   }

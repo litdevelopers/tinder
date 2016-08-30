@@ -7,6 +7,7 @@ import { AUTH_URL } from 'global_constants';
 
 import {
   FETCH_DATA,
+  FETCH_UPDATES,
   REHYDRATE_MATCHES,
   REHYDRATE_MATCHES_SUCCESS,
   CHECK_NOTIFICATION_PERMISSIONS,
@@ -36,7 +37,7 @@ import {
 
 import { newMatch } from 'containers/Recommendations/actions';
 
-import { selectUserID } from './selectors';
+import { selectUserID, selectIsSyncing } from './selectors';
 import { selectAuthToken } from 'containers/Auth/selectors';
 import { postRequest } from 'utils/request';
 
@@ -73,8 +74,13 @@ function* getUserData() {
       yield put(fetchDataSuccess('user', data.data.user));
       yield put(fetchDataSuccess('rating', data.data.rating));
       const userID = yield select(selectUserID());
+      const isSyncing = yield select(selectIsSyncing());
       yield fork(initializeHistoryStore, userID);
       yield fork(updateActionsReducerAction, userID);
+      if (!isSyncing) {
+        yield call(rehydrateMatchesAction, userID, isSyncing);  
+      }
+      localStorage.setItem('tinderUserID', userID);
     }
   } catch (error) {
     yield put(fetchDataError(error));
@@ -186,7 +192,6 @@ function* parseSyncData(data, userID) {
 
 export function* tinderBackgroundSync() {
   try {
-    yield put(fetchUpdates());
     while (true) { // eslint-disable-line
       const authToken = yield select(selectAuthToken());
       const postURL = `${AUTH_URL}/tinder/updatesnew`;
@@ -211,26 +216,21 @@ export function* tinderBackgroundSync() {
 }
 
 function* storeMetadataAction(userID) {
-  if (!localStorage.getItem('tinderUserID') || userID !== localStorage.getItem('tinderUserID')) {
-    localStorage.setItem('tinderUserID', userID);
-  }
   yield storeToken(`last_activity_date_${userID}`, new Date().toISOString());
-  yield put(storeMetadataSuccess());
+  // yield put(storeMetadataSuccess());
 }
 
-function* rehydrateMatchesAction() {
+function* rehydrateMatchesAction(userID, isAlreadySyncing) {
   const authToken = yield select(selectAuthToken());
-  const userID = yield select(selectUserID());
-  const lastActivityDate = yield getToken(`last_activity_date_${localStorage.getItem('tinderUserID')}`);
+  const lastActivityDate = yield getToken(`last_activity_date_${userID}`);
   const postURL = `${AUTH_URL}/tinder/updatesnew`;
-
   try {
-    if (lastActivityDate) {
+    if (userID) {
       const data = yield call(postRequest, postURL, { authToken, lastActivityDate });
-      yield call(parseSyncData, data, userID);
+      yield call(parseSyncData, data.data, userID);
       yield put(rehydrateMatchesSuccess());
+      if (!isAlreadySyncing) yield put(fetchUpdates());
     }
-    yield fork(tinderBackgroundSync);
   } catch (error) {
     yield put(rehydrateMatchesError(error));
     yield put((newNotification(error)));
@@ -268,12 +268,18 @@ function* notificationCheckWatcher() {
   }
 }
 
+function* dataUpdateWatcher() {
+  while (yield take(FETCH_UPDATES)) {
+    yield fork(tinderBackgroundSync);
+  }
+}
+
 // Individual exports for testing
 export function* dashboardSaga() {
   const rehydrateMatchesWatch = yield fork(rehydrateMatchesWatcher);
   const dataFetchWatcher = yield fork(getDataFetchWatcher);
   const notificationCheckWatch = yield fork(notificationCheckWatcher);
-  // yield fork(getUpdatesWatcher);
+  const updateDataWatch = yield fork(dataUpdateWatcher);
 
 
   yield take(LOCATION_CHANGE);

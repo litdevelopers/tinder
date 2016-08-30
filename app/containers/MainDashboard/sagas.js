@@ -131,7 +131,13 @@ function* profileUpdateWatcherFunction() {
   let currentUpdate;
 
   while (yield ([SET_AGE_FILTER, SET_DISTANCE_FILTER])) {
-    const { payload } = yield take([SET_AGE_FILTER, SET_DISTANCE_FILTER, SET_GENDER_FILTER, SET_GENDER, SET_DISCOVER]);
+    const { payload } = yield take([
+      SET_AGE_FILTER,
+      SET_DISTANCE_FILTER,
+      SET_GENDER_FILTER,
+      SET_GENDER,
+      SET_DISCOVER,
+    ]);
     if (currentUpdate) {
       yield cancel(currentUpdate);
     }
