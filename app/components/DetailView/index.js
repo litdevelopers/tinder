@@ -124,7 +124,6 @@ class DetailView extends React.Component {
                   ))}
               </div>
             </div> : null}
-            {this.props.recommendationView ? this.renderButtons(this.props.data, this.props.onClickAction) : null}
         </div>
       </div>
     );
@@ -137,7 +136,6 @@ DetailView.propTypes = {
   hasMatches: PropTypes.bool,
   isFetching: PropTypes.bool,
   isPotentialLike: PropTypes.bool,
-  onClickAction: PropTypes.func,
   recommendationView: PropTypes.bool,
 };
 

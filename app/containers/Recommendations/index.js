@@ -92,7 +92,6 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
             onClickButton={this.props.onClickButton}
             targetGender={this.props.targetGender}
             isPotentialLike={this.props.potentialMatches.includes(this.props.recommendationDetail._id)}
-            onClickAction={this.props.onClickButton}
             recommendationView
           /> :
           <Panel
