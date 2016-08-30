@@ -9,7 +9,13 @@ React Tinder offers all the same features as the Tinder mobile application with 
 - Incremental Storage: Have thousands of matches? Don't download them all again. Only load the **new** matches and messages.
 - Figure out who has already liked you! So you only like those people and not waste your likes.
 - Want to pass instead of like? Go back to your history and change your mind in history.
-- Live chat with matches
+- Live chat with matches.
+- Update your location to travel around the world.
+
+# Images  
+![Profile Screen](https://raw.githubusercontent.com/litdevelopers/tinder/master/media/profile.png)
+![Recommendations Screen](https://raw.githubusercontent.com/litdevelopers/tinder/master/media/recommendations.png)
+![Messaging Screen](https://raw.githubusercontent.com/litdevelopers/tinder/master/media/messages.png)
 
 # Usage
 1. Fork or Clone the repository.
