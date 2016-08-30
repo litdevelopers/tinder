@@ -46,6 +46,7 @@ import {
   selectRecommendationsList,
   selectLimitedRecommendationsList,
   selectShouldUpdate,
+  selectCurrentID,
 } from './selectors';
 
 import {
@@ -112,7 +113,8 @@ function* actionPerson(action, type, removePerson) {
       if (removePerson && !removedPerson) {
         yield put(removeRecommendation(action.id));
       }
-      yield put(detailPerson(''));
+      const selectedID = yield select(selectCurrentID());
+      if (selectedID === action.id) yield put(detailPerson(''));
       if (type === 'like') yield put(likePersonSuccess({ id: action.id, action: 'like' }));
       if (type === 'superlike') yield put(superLikePersonSuccess({ id: action.id, action: 'superlike' }));
       if (type === 'pass') yield put(passPersonSuccess({ id: action.id, action: 'pass' }));

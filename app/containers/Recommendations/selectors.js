@@ -33,12 +33,17 @@ const selectLimitedRecommendationsList = () => createSelector(
   }
 );
 
-const selectCurrentRecommendation = () => createSelector(
+const selectCurrentID = () => createSelector(
   selectRecommendations(),
+  (substate) => substate.currentDetailView.id
+);
+
+const selectCurrentRecommendation = () => createSelector(
   selectRecommendationsList(),
-  (recommendationsState, matches) => {
+  selectCurrentID(),
+  (matches, currentID) => {
     if (!matches) return undefined;
-    return matches.filter((each) => each._id === recommendationsState.currentDetailView.id)[0];
+    return matches.filter((each) => each._id === currentID)[0];
   }
 );
 
@@ -73,4 +78,5 @@ export {
   selectIsFetching,
   selectShouldUpdate,
   selectPotentialMatchList,
+  selectCurrentID,
 };
