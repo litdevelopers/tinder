@@ -7,7 +7,7 @@ A tinder web client built in React & Redux Saga -
 React Tinder offers all the same features as the Tinder mobile application with some bonuses:  
 - Web notifications! Get notified when you get a new match or message. 
 - Incremental Storage: Have thousands of matches? Don't download them all again. Only load the **new** matches and messages.
-- Figure out who has already liked you! So you only like those people and not waste your likes.
+- Figure out who has already liked you! So you only like those people and not waste your likes. (This feature only works if **tinder** can provide us with data to indicate as such thanks to @GrandmasterMeio)
 - Want to pass instead of like? Go back to your history and change your mind in history.
 - Live chat with matches.
 - Update your location to travel around the world.
