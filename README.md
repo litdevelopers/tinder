@@ -22,7 +22,7 @@ React Tinder offers all the same features as the Tinder mobile application with 
 2. run ```npm install``` while in the directory of the project.
 3. Open chrome and load in a new "unpacked extension" from the extensions screen.
 4. Open project folder and load in the ```src``` folder in ```/chrome```.
-5. Open ```/app/containers/auth.js/sagas.js/``` and edit the variable CHROME_EXTENSION_ID to the one found in your chrome extensions screen.  
+5. Open ```/app/containers/auth/sagas.js/``` and edit the variable CHROME_EXTENSION_ID to the one found in your chrome extensions screen.  
 6. run ```npm start``` in the root directory of the project.
 7. Navigate to ```localhost:3000/login``` and the chrome extension will handle the login process.  
 8. Find your soulmate.
