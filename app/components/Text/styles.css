@@ -1,8 +1,8 @@
 .age {
   text-transform: uppercase;
   font-weight: 700;
-  margin:0;
-  font-size:12px;
+  margin: 0;
+  font-size: 12px;
   color: white;
 }
 
@@ -10,7 +10,7 @@
   font-weight: 600;
   text-transform: uppercase;
   font-size: 10px;
-  color:white;
+  color: white;
 }
 
 .distance {
@@ -22,13 +22,13 @@
 
 .name {
   color: #FFF;
-  margin:0;
+  margin: 0;
   font-size: 30px;
   font-weight: 600;
 }
 
 .profileHeader {
-  flex:1;
+  flex: 1;
   margin-top: 15px;
   text-transform: uppercase;
   font-size: 12px;
@@ -53,7 +53,7 @@
   display: block;
   font-size: 12px;
   margin-bottom: 10px;
-  margin-top:10px;
+  margin-top: 10px;
 }
 
 .commonInterest {
@@ -68,7 +68,7 @@
 
 .school {
   display: block;
-  font-size:10px;
+  font-size: 10px;
   text-transform: uppercase;
   font-weight: 500;
 }
@@ -83,14 +83,8 @@
   flex: 2;
 }
 
-.lastActive{
-  composes: distance;
-  float: right;
-  text-transform: initial;
-}
-
 .profileName {
-  font-size:40px;
+  font-size: 40px;
 }
 
 .bioInputTextCount {
@@ -107,16 +101,15 @@
 .matchRecentMessage {
   display: block;
   font-size: 14px;
-  color: #aaa;
+  color: #AAA;
   max-width: 200px;
 }
 
 .matchActivity {
   text-align: right;
-  color: #aaa;
+  color: #AAA;
   font-size: 12px;
 }
-
 
 .dashboardSettingsHeader {
   font-size: 16px;
@@ -148,7 +141,7 @@
 
 .radioButtonLabel {
   composes: matchRecentMessage;
-  margin: 0px 5px;
+  margin: 0 5px;
 }
 
 .dashboardSettingsHeaderPhoto {

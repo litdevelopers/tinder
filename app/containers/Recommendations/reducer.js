@@ -1,4 +1,4 @@
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   SUPERLIKE_PERSON,
@@ -24,14 +24,12 @@ import {
 
 import {
   matchesSortByDistance,
-  matchesSortByLastActive,
   matchesSortByYoungest,
   matchesSortByOldest,
 } from 'utils/operations';
 
 const sortMapping = {
   distance: matchesSortByDistance,
-  lastActive: matchesSortByLastActive,
   youngest: matchesSortByYoungest,
   oldest: matchesSortByOldest,
 };

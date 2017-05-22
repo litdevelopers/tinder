@@ -7,7 +7,7 @@ export function getAge(dateString) {
   return getCurrentYear() - new Date(dateString).getFullYear() - 1;
 }
 
-export function parsePingTime(dateString, text=true) {
+export function parsePingTime(dateString, text = true) {
   if (!dateString) return 'Active some time ago';
   const currentDate = new Date().getTime();
   const pingTimeDifferenceMinutes = (currentDate - new Date(dateString).getTime()) / 60000;
@@ -37,10 +37,6 @@ export function mergeArray(arr1, arr2, length, mapFunc) {
 
 export function matchesSortByDistance(a, b) {
   return a.distance_mi - b.distance_mi;
-}
-
-export function matchesSortByLastActive(a, b) {
-  return new Date(b.ping_time).getTime() - new Date(a.ping_time).getTime();
 }
 
 export function matchesSortByYoungest(a, b) {
