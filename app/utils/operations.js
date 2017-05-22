@@ -7,7 +7,7 @@ export function getAge(dateString) {
   return getCurrentYear() - new Date(dateString).getFullYear() - 1;
 }
 
-export function parsePingTime(dateString, text=true) {
+export function parsePingTime(dateString, text = true) {
   if (!dateString) return 'Active some time ago';
   const currentDate = new Date().getTime();
   const pingTimeDifferenceMinutes = (currentDate - new Date(dateString).getTime()) / 60000;
