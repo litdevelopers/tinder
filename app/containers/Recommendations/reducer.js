@@ -24,14 +24,12 @@ import {
 
 import {
   matchesSortByDistance,
-  matchesSortByLastActive,
   matchesSortByYoungest,
   matchesSortByOldest,
 } from 'utils/operations';
 
 const sortMapping = {
   distance: matchesSortByDistance,
-  lastActive: matchesSortByLastActive,
   youngest: matchesSortByYoungest,
   oldest: matchesSortByOldest,
 };

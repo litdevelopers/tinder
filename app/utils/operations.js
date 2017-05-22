@@ -39,10 +39,6 @@ export function matchesSortByDistance(a, b) {
   return a.distance_mi - b.distance_mi;
 }
 
-export function matchesSortByLastActive(a, b) {
-  return new Date(b.ping_time).getTime() - new Date(a.ping_time).getTime();
-}
-
 export function matchesSortByYoungest(a, b) {
   return getAge(a.birth_date) - getAge(b.birth_date);
 }

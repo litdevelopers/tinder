@@ -61,7 +61,6 @@ class DashboardRecommendations extends React.Component { // eslint-disable-line
               onChange={this.changeFilter}
             >
               <option value="normal">Sort By</option>
-              <option value="lastActive">Recently Active</option>
               <option value="distance">Nearby</option>
               <option value="youngest">Youngest</option>
               <option value="oldest">Oldest</option>

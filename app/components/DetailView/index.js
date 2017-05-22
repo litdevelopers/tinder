@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import ImageGallery from 'react-image-gallery';
 
-import { getAge, parsePingTime } from 'utils/operations';
+import { getAge } from 'utils/operations';
 import { getFacebookUrl, getFacebookPicture } from 'utils/facebook';
 
 import styles from './styles.css';
@@ -81,7 +81,6 @@ class DetailView extends React.Component {
           </div>
           <div>
             <Text type="age" style={{ color: 'black' }}>{age}</Text>
-            <Text type="lastActive">{parsePingTime(this.props.data.ping_time)}</Text>
           </div>
           <Text type="school">{schools && schools.name}</Text>
           <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? ' at ' : null}{jobs && jobs.company && <a href={jobs.company.id} target="_blank">{jobs.company.name}</a>}</Text>

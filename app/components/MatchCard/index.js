@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { getAge, convertDistanceToLocal, parsePingTime } from 'utils/operations';
+import { getAge, convertDistanceToLocal } from 'utils/operations';
 
 import styles from './styles.css';
 import Text from 'components/Text';
@@ -18,9 +18,6 @@ const MatchCard = ({ data, type, onClick, onClickButton }) => {
     <Text type="age">{getAge(data.birth_date)}
       <Text type="distance">
         {convertDistanceToLocal(data.distance_mi)} km away
-      </Text>
-      <Text type="distance">
-        {parsePingTime(data.ping_time)}
       </Text>
     </Text>);
   const schoolText = (data.schools[0] && data.schools[0].name) ? <Text type="detail">{data.schools[0].name}</Text> : null;

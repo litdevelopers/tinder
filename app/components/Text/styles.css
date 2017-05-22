@@ -83,12 +83,6 @@
   flex: 2;
 }
 
-.lastActive{
-  composes: distance;
-  float: right;
-  text-transform: initial;
-}
-
 .profileName {
   font-size:40px;
 }
