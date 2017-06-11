@@ -9,6 +9,9 @@ import {
   SEND_MESSAGE,
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_ERROR,
+  UNMATCH,
+  UNMATCH_SUCCESS,
+  UNMATCH_ERROR,
   ALL_DATA_FETCHED,
   UPDATE_POINTER,
   FETCH_MATCHES_DATA,
@@ -103,6 +106,28 @@ export function sendMessageSuccess() {
 export function sendMessageError(error) {
   return {
     type: SEND_MESSAGE_ERROR,
+    payload: error,
+  };
+}
+
+export function unmatch(id) {
+  return {
+    type: UNMATCH,
+    payload: {
+      id,
+    },
+  };
+}
+
+export function unmatchSuccess() {
+  return {
+    type: UNMATCH_SUCCESS,
+  };
+}
+
+export function unmatchError(error) {
+  return {
+    type: UNMATCH_ERROR,
     payload: error,
   };
 }

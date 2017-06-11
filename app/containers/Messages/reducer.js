@@ -10,6 +10,7 @@ import {
   SEND_MESSAGE,
   SEND_MESSAGE_ERROR,
   SEND_MESSAGE_SUCCESS,
+  UNMATCH,
   UPDATE_POINTER,
   ALL_DATA_FETCHED,
   FETCH_MATCHES_DATA,
@@ -60,10 +61,15 @@ function messagesReducer(state = initialState, action) {
       return state
         .set('isSending', true)
         .set('optimisticUI', action.payload.message.match(/gif/) ? state.get('optimisticUI') : state.get('optimisticUI').concat(action.payload));
-    case SEND_MESSAGE_ERROR:
-      return state.set('isSending', false);
     case SEND_MESSAGE_SUCCESS:
       return state.set('isSending', false);
+    case SEND_MESSAGE_ERROR:
+      return state.set('isSending', false);
+    case UNMATCH:
+      return state
+        .set('isFetching', true)
+        .set('optimisticUI', [])
+        .set('currentPerson', null);
     case UPDATE_POINTER:
       return state.set('pointer', state.get('pointer') + 1);
     case ALL_DATA_FETCHED:
@@ -75,7 +81,7 @@ function messagesReducer(state = initialState, action) {
     case LOCATION_CHANGE:
       return state
       .set('optimisticUI', [])
-      .set('currentPerson', '');
+      .set('currentPerson', null);
     case RELOAD_DATA_PLEASE:
       return state
       .set('optimisticUI', []);

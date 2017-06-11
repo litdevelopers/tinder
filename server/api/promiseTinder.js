@@ -157,6 +157,18 @@ function sendMessage(client, id, message) {
   });
 }
 
+function unmatch(client, id) {
+  return new Promise((resolve, reject) => {
+    client.unmatch(id, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
 function setPhotoOrder(newOrder, client) {
   return new Promise((resolve, reject) => {
     client.updatePhotoOrder(newOrder, (error, response) => {
@@ -221,6 +233,7 @@ module.exports = {
   getMeta,
   setBio,
   sendMessage,
+  unmatch,
   setPhotoOrder,
   setLocation,
   setProfile,

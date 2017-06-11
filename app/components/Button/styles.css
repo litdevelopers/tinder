@@ -4,7 +4,7 @@
   color: white;
   font-size: 10px;
   margin:5px;
-  }
+}
 
 .locationToggle {
   composes: button;
@@ -32,6 +32,7 @@
 
 .buttonMatch {
   composes: button;
+  cursor: pointer;
   height: 50px;
   width: 50px;
   font-weight: 600;
@@ -60,7 +61,6 @@
   border-color: #5cc3e8;
 }
 
-
 .superlike:hover{
   color: white;
   background-color: #5cc3e8;
@@ -79,7 +79,8 @@
   transition: 0.25s;
 }
 
-.fetchMatches {
+.fetchMatches, .unmatch {
+  cursor: pointer;
   font-size: 12px;
   max-height: 30px;
   padding: 5px 15px;
@@ -97,7 +98,7 @@
   color: #e95f5c;
 }
 
-.fetchMatches:hover {
+.fetchMatches:hover, .unmatch:hover {
   background-color: transparent;
   color: #e95f5c;
   transition: 0.25s;
@@ -108,8 +109,6 @@
   color: white;
   transition: 0.25s;
 }
-
-
 
 .accountSettings {
   flex: 1;
