@@ -11,7 +11,7 @@ const buttonMapping = [
 
 
 const MatchCard = ({ data, type, onClick, onClickButton }) => {
-  const bioText = (data.bio.trim()) ?
+  const bioText = (data.bio && data.bio.trim()) ?
     <p className={styles.matchCardContainer_bio}>{data.bio}</p> :
   null;
   const ageText = (
@@ -30,6 +30,7 @@ const MatchCard = ({ data, type, onClick, onClickButton }) => {
       </div>
     </div> : null;
 
+  /* eslint-disable no-underscore-dangle */
   return (
     <div
       className={type === 'active' ? `${styles.matchCardLike} ${styles.matchCard}` : styles.matchCard}
@@ -56,7 +57,8 @@ const MatchCard = ({ data, type, onClick, onClickButton }) => {
         </div>
       </div>
     </div>
-);
+  );
+  /* eslint-enable no-underscore-dangle */
 };
 
 MatchCard.propTypes = {
