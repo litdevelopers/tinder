@@ -178,6 +178,15 @@ router.post('/tinder/message/:id', (req, res) => {
   .catch((error) => res.status(400).json(error));
 });
 
+router.post('/tinder/unmatch/:id', (req, res) => {
+  const client = new tinder.TinderClient();
+  const { userToken } = req.body;
+  const id = req.params.id;
+  client.setAuthToken(userToken);
+  tinderPromise.unmatch(client, id)
+    .then(() => res.status(200).json({ id }))
+    .catch((error) => res.status(400).json(error));
+});
 
 router.post('/tinder/update/profile', (req, res) => {
   const client = new tinder.TinderClient();

@@ -29,6 +29,7 @@ import { createStructuredSelector } from 'reselect';
 import {
   selectPersonAction,
   sendMessage,
+  unmatch,
   fetchMatchData,
   fetchMatchDataLocally,
   dumpAllInit,
@@ -63,35 +64,39 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
   }
 
   mapMatches() {
-    return this.props.selectMatches && this.props.selectMatches.map((each) => {
-      return (<MessengerCard
+    return this.props.selectMatches && this.props.selectMatches.map((each) =>
+      <MessengerCard
         onClick={this.props.selectPerson}
         key={each._id}
         data={each}
         isReply={each.messages.length !== 0 && each.messages.slice(-1)[0].from === this.props.currentUserId}
         isNew={each.person && each.person._id && this.props.newMatches.indexOf(each.person._id) !== -1}
-      />);
-    });
+      />
+    );
   }
 
   mapMessages() {
-    return this.props.matchMessages.map((each) => {
-      return (<MessageBubble
+    return this.props.matchMessages.map((each) =>
+      <MessageBubble
         key={each.payload._id}
         from={each.from}
         date={each.payload.sent_date}
       >
         {each.payload.message}
-      </MessageBubble>);
-    })
+      </MessageBubble>
+    )
     .concat(this.props.selectOptimistic.map((each) => {
-      if (each.id === this.props.currentPerson.id) {
-        return (<MessageBubble
-        key={each.message}
-        from="you">
+      if (each.id !== this.props.currentPerson.id) {
+        return null;
+      }
+
+      return (
+        <MessageBubble
+          key={each.message}
+          from="you"
+        >
           {each.message}
         </MessageBubble>);
-      }
     }));
   }
 
@@ -102,7 +107,8 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
     if (this.props.selectMatches) {
       return <FormattedMessage {...messages.whenLoadedData} />;
     }
-      return <FormattedMessage {...messages.whenNoDataisFound} />;
+
+    return <FormattedMessage {...messages.whenNoDataisFound} />;
   }
 
   render() {
@@ -154,6 +160,8 @@ export class Messages extends React.Component { // eslint-disable-line react/pre
                   <DetailView
                     data={this.props.currentPerson.person}
                     imageData={this.props.matchDetailImages}
+                    unmatch={this.props.onUnmatch}
+                    matchId={this.props.currentPerson && this.props.currentPerson._id}
                   /> :
                   <Panel hasMatches targetGender={this.props.targetGender} />}
               </div>
@@ -169,6 +177,7 @@ function mapDispatchToProps(dispatch) {
   return {
     selectPerson: (id) => dispatch(selectPersonAction(id)),
     onSendMessage: (id, message) => dispatch(sendMessage(id, message)),
+    onUnmatch: (id) => dispatch(unmatch(id)),
     fetchHistory: () => dispatch(fetchMatchData()),
     fetchHistoryLocally: () => dispatch(fetchMatchDataLocally()),
     dumpAll: () => dispatch(dumpAllInit()),
@@ -199,6 +208,7 @@ Messages.propTypes = {
   matchMessages: PropTypes.array,
   matchDetailImages: PropTypes.array,
   onSendMessage: PropTypes.func,
+  onUnmatch: PropTypes.func,
   fetchHistory: PropTypes.func,
   selectOptimisticUI: PropTypes.func,
   selectOptimistic: PropTypes.array,

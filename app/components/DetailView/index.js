@@ -9,10 +9,6 @@ import Icon from 'components/Icon';
 import Text from 'components/Text';
 import Button from 'components/Button';
 
-const buttonMapping = [
-  'pass', 'superlike', 'like',
-];
-
 class DetailView extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.imageData.length === 0) {
@@ -39,15 +35,6 @@ class DetailView extends React.Component {
     } else {
       this.imageGallery.slideToIndex(0);
     }
-  }
-
-
-  renderButtons({ _id, content_hash, name }, onClickButton) {
-    return (
-      <div className={styles.detailViewContainerButtons}>
-      {buttonMapping.map((each) => <Button key={each} type={each} details={{ name }} onClick={onClickButton} id={_id} hash={content_hash}></Button>)}
-      </div>
-    );
   }
 
   render() {
@@ -85,6 +72,7 @@ class DetailView extends React.Component {
           <Text type="school">{schools && schools.name}</Text>
           <Text type="jobs">{(jobs && jobs.title) && jobs.title.name}{(jobs && jobs.title) && jobs.company ? ' at ' : null}{jobs && jobs.company && <a href={jobs.company.id} target="_blank">{jobs.company.name}</a>}</Text>
           <Text type="bio">{this.props.data.bio}</Text>
+          {this.props.unmatch ? <Button type="unmatch" onClick={() => this.props.unmatch(this.props.matchId)}>Unmatch</Button> : null}
 
           {this.props.data.common_connections && this.props.data.common_connections.length > 0 ?
             <div>
@@ -136,7 +124,8 @@ DetailView.propTypes = {
   isFetching: PropTypes.bool,
   isPotentialLike: PropTypes.bool,
   recommendationView: PropTypes.bool,
+  unmatch: PropTypes.func,
+  matchId: PropTypes.string,
 };
-
 
 export default DetailView;

@@ -9,6 +9,7 @@ import { selectAuthToken } from 'containers/Auth/selectors';
 
 import {
   SEND_MESSAGE,
+  UNMATCH,
   FETCH_MATCHES_LOCALLY,
   DUMP_ALL_SUCCESS,
   DUMP_ALL_INIT,
@@ -19,6 +20,8 @@ import { selectPointer, selectMatches } from './selectors';
 import {
   sendMessageSuccess,
   sendMessageError,
+  unmatchSuccess,
+  unmatchError,
   updatePointer,
   allDataFetched,
   fetchMatchData,
@@ -109,6 +112,40 @@ export function* loadLocalData(additionalFunction = false) {
 }
 
 // Individual exports for testing
+export function* doUnmatch(payload) {
+  const userToken = yield select(selectAuthToken());
+  const { id } = payload;
+  const postURL = `${AUTH_URL}/tinder/unmatch/${id}`;
+  try {
+    const result = yield call(postRequest, postURL, { userToken });
+    if (result.status === 200) {
+      yield put(unmatchSuccess());
+
+      const unmatchedId = result.data.id;
+
+      const userID = yield select(selectUserID());
+      const matchesList = yield getToken(`matchesList_${userID}`);
+
+      yield storeToken(`matchesList_${userID}`, matchesList.filter((each) => each !== unmatchedId));
+
+      yield call(loadLocalData, reloadDataPlease);
+    }
+  } catch (error) {
+    yield put(unmatchError(error));
+    yield put(newNotification(error));
+    yield put(newNotificationAdded());
+  }
+}
+
+function* unmatchWatcher() {
+  const unmatchWatch = yield actionChannel(UNMATCH);
+
+  while (true) {
+    const { payload } = yield take(unmatchWatch);
+    yield doUnmatch(payload);
+  }
+}
+
 export function* sendMessageData(payload) {
   const userToken = yield select(selectAuthToken());
   const { id } = payload;
@@ -144,7 +181,6 @@ export function* sendMessageData(payload) {
   }
 }
 
-
 function* sendMessageWatcher() {
   const messageWatch = yield actionChannel(SEND_MESSAGE);
 
@@ -175,6 +211,7 @@ export function* reloadWatcher() {
 
 export function* messageSaga() {
   const messageWatcher = yield fork(sendMessageWatcher);
+  const unmatchWatch = yield fork(unmatchWatcher);
   const reloadWatch = yield fork(reloadWatcher);
   const dataDumpWatch = yield fork(dumpDataWatcher);
   const dataLoadLocalWatch = yield fork(dataLoadLocalWatcher);
@@ -182,6 +219,7 @@ export function* messageSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(reloadWatch);
   yield cancel(messageWatcher);
+  yield cancel(unmatchWatch);
   yield cancel(dataLoadLocalWatch);
   yield take(DUMP_ALL_SUCCESS);
   yield cancel(dataDumpWatch);
